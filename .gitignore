@@ -1,5 +1,4 @@
 *.class
-*.log
 
 # sbt specific
 .cache
@@ -26,7 +25,6 @@ bin/
 /modules
 /project/project
 /project/target
-/target
 tmp/
 test-result
 server.pid
