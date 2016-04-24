@@ -3,7 +3,7 @@ class Greeter {
     greet() {
         return "<h1>" + this.greeting + "</h1>";
     }
-};
+}
 
 var greeter = new Greeter("Hello, world!");
 
