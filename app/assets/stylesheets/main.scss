@@ -1,0 +1,19 @@
+.navbar {
+  margin-bottom: 20px;
+  background: #009900;
+  border-radius: 0;
+
+  a.nav-link {
+    color: white;
+  }
+}
+.md-button {
+  color : currentColor;
+}
+.md-button:not([disabled]):hover {
+  background-color: rgba(158, 158, 158, 0.2);
+}
+.md-button[disabled] {
+  color : rgba(0, 0, 0, 0.26);
+  background-color: transparent;
+}
