@@ -23,7 +23,7 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "zone.js" % "0.6.6",
   "org.webjars.npm" % "typescript" % "1.8.10",
   "org.webjars.npm" % "tslint-eslint-rules" % "1.2.0",
-  "org.webjars.npm" % "bootstrap" % "3.3.6"
+  "org.webjars.npm" % "bootstrap" % "4.0.0-alpha.2"
 )
 
 dependencyOverrides += "org.webjars.npm" % "minimatch" % "2.0.10"
@@ -39,4 +39,4 @@ resolveFromWebjarsNodeModulesDir := true
 
 routesGenerator := InjectedRoutesGenerator
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
+unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
