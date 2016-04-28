@@ -23,8 +23,8 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "zone.js" % "0.6.6",
   "org.webjars.npm" % "typescript" % "1.8.10",
   "org.webjars.npm" % "tslint-eslint-rules" % "1.2.0",
-  "org.webjars" % "bootstrap" % "4.0.0-alpha.2",
-  "org.webjars" % "angular-material" % "1.0.7"
+  "org.webjars.npm" % "bootstrap" % "4.0.0-alpha.2",
+  "org.webjars.npm" % "angular-material" % "1.0.7"
 )
 
 dependencyOverrides += "org.webjars.npm" % "minimatch" % "2.0.10"
