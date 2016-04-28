@@ -1,4 +1,6 @@
 import {bootstrap}    from "angular2/platform/browser"
-import {AppComponent} from "./app.component"
+import {ScriptQueue} from "./script.queue.component"
+import {CamView} from "./camview.component"
 
-bootstrap(AppComponent);
+bootstrap(ScriptQueue);
+bootstrap(CamView);
