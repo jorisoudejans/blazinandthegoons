@@ -29,6 +29,21 @@ libraryDependencies ++= Seq(
 
 dependencyOverrides += "org.webjars.npm" % "minimatch" % "2.0.10"
 
+// FindBugs
+import de.johoop.findbugs4sbt.FindBugs._
+import de.johoop.findbugs4sbt.ReportType
+
+findbugsSettings
+findbugsIncludeFilters := Some(<FindBugsFilter> // include controllers
+  <Match>
+    <Package name="controllers" />
+  </Match>
+</FindBugsFilter>)
+findbugsReportType := Some(ReportType.FancyHtml) // generate html
+findbugsReportPath := Some(crossTarget.value / "findbugs" / "report.html") // create html extension so we can open it in our browser
+
+compile <<= (compile in Compile).dependsOn(findbugs) // generate report on every compilation
+
 
 // the typescript typing information is by convention in the typings directory
 // It provides ES6 implementations. This is required when compiling to ES5.
