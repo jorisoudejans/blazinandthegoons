@@ -1,7 +1,7 @@
-language: scala
-scala:
-    - 2.11.2
+language: java
 script:
     - sbt test
+    - sbt checkstyle
+    - sbt test:checkstyle
 jdk:
     - oraclejdk8
