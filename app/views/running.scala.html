@@ -1,0 +1,63 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html lang="en">
+    @header(name = "Test")
+    <body>
+        <nav class="navbar">
+            <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header">
+                    &#9776;
+            </button>
+            <div class="collapse navbar-toggleable-xs" id="navbar-header">
+                <a class="navbar-brand" href="#">Blazin and the Goons</a>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+                <form class="form-inline pull-xs-right">
+                    <input class="form-control" type="text" placeholder="Search">
+                    <button class="btn btn-secondary-outline" type="submit">Search</button>
+                </form>
+            </div>
+        </nav> <!-- /navbar -->
+
+        <div class="container-fluid">
+
+            <!-- Main component for a primary marketing message or call to action -->
+            <div class="col-md-8">
+                <script-queue></script-queue>
+            </div>
+            <div class="col-md-4">
+                <camview></camview>
+                <div class="col-md-12"><button type="button" class="btn btn-info">Next camera</button></div>
+            </div>
+        </div> <!-- /container -->
+
+        <script>    @* javascript is async downloaded by SystemJs *@
+                System.config({
+                    packages: {
+                        'assets/app': {
+                            defaultExtension: 'js'
+                        },
+                        'assets/lib': {
+                            defaultExtension: 'js'
+                        }
+                    }
+                });
+            System.import('assets/app/running')
+                    .then(null, console.error.bind(console));
+		</script>
+
+    </body>
+</html>
