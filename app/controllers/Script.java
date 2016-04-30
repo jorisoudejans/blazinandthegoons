@@ -10,6 +10,8 @@ import views.html.*;
 import java.util.Date;
 import java.util.List;
 
+import models.Action;
+
 public class Script extends Controller {
 
     public Result index() {
@@ -31,6 +33,21 @@ public class Script extends Controller {
         script.creationDate = new Date(); // now
         script.save();
         return ok(Json.toJson(script));
+    }
+
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result addAction(Long id) {
+        models.Script script = models.Script.find.byId(id);
+        if (script != null) {
+            JsonNode json = request().body().asJson();
+            String description = json.findPath("description").textValue();
+            Action action = new Action();
+            action.description = description;
+            script.actions.add(action);
+            script.save();
+            return ok(Json.toJson(script));
+        }
+        return notFound("Script "+id);
     }
 
 }

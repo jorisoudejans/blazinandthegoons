@@ -1,6 +1,25 @@
 <h2>Script List</h2>
 <p><i>Pick a script from the list</i></p>
-<p>{{scripts}}</p>
-<div *ngFor="#script of scripts">
-    {{script.id}}: {{script.name}}
-</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Script name</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="#script of scripts">
+        <td>{{script.id}}</td>
+        <td>{{script.name}}</td>
+        <td>
+            <button (click)="showScript(script.id)">
+                Manage
+            </button>
+            <p>{{ scriptData }}</p>
+        </td>
+    </tr>
+    </tbody>
+
+
+</table>

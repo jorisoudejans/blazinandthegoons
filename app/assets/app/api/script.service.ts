@@ -1,14 +1,29 @@
 import {Injectable}     from "angular2/core";
-import {Http, Response} from "angular2/http";
+import {Http, Response, Headers, RequestOptions} from "angular2/http";
 import {Script}           from "./script";
 import {Observable}     from "rxjs/Observable";
 
 @Injectable()
 export class ScriptService {
     constructor (private http: Http) {}
-    private _heroesUrl = "scripts";  // URL to web api
+    private _heroesUrl = "api/scripts";  // URL to web api
     getScripts (): Observable<Script[]> {
         return this.http.get(this._heroesUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getScript (id: number): Observable<Script> {
+        return this.http.get(this._heroesUrl + "/" + id)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    createScript (name: string): Observable<Script> {
+
+        let body = JSON.stringify({ "name": name });
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this._heroesUrl + "/create", body, options)
             .map(this.extractData)
             .catch(this.handleError);
     }

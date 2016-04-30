@@ -12,11 +12,18 @@ export class ScriptListComponent implements OnInit {
     constructor (private _heroService: ScriptService) {}
     errorMessage: string;
     scripts:Script[];
+    scriptData: Script;
     ngOnInit() { this.getScripts(); }
     getScripts() {
         this._heroService.getScripts()
             .subscribe(
                 scripts => this.scripts = scripts,
                 error =>  this.errorMessage = <any>error);
+    }
+    showScript(id: number) {
+        this._heroService.getScript(id)
+            .subscribe(
+                scriptData => this.scriptData = scriptData
+        );
     }
 }
