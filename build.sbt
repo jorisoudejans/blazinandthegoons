@@ -4,7 +4,7 @@ version := "1.0"
 
 lazy val `blazinandthegoons` = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
-scalaVersion := "2.11.1" // TODO Up version
+scalaVersion := "2.11.7"
 
 incOptions := incOptions.value.withNameHashing(true)
 
@@ -26,6 +26,10 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "4.0.0-alpha.2",
   "org.webjars" % "angular-material" % "1.0.7"
 )
+
+import de.johoop.findbugs4sbt.FindBugs._
+
+findbugsSettings
 
 dependencyOverrides += "org.webjars.npm" % "minimatch" % "2.0.10"
 
