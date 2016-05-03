@@ -1,5 +1,5 @@
+package controllers;
 
-import controllers.Script;
 import org.junit.*;
 import play.Application;
 import play.mvc.Result;
