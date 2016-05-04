@@ -1,0 +1,8 @@
+<h2>Script</h2>
+<ul class="action-list" *ngIf="scriptData">
+    <li class="action-list-item" *ngFor="#action of scriptData.actions">
+        <span>{{action.id}}</span>
+        <span></span>
+        <span>{{action.description}}</span>
+    </li>
+</ul>
