@@ -2,7 +2,7 @@
 <ul class="action-list" *ngIf="scriptData">
     <li class="action-list-item" *ngFor="#action of scriptData.actions">
         <span>{{action.id}}</span>
-        <span></span>
+        <span>Preset: {{action.preset.name}}</span>
         <span>{{action.description}}</span>
     </li>
 </ul>

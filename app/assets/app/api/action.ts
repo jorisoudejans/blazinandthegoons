@@ -9,9 +9,9 @@ export class Action {
     constructor(
         public id: number,
         public description: string,
-        public script: string,
-        public active: boolean,
-        public preset: Preset
+        public estTime: number,
+        public preset: Preset,
+        public active: boolean
     ) { active = false; }
 
 

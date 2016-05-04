@@ -1,4 +1,5 @@
 import {Action} from "./api/action";
+import {Preset} from "./api/preset";
 
 export class Script {
 

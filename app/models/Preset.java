@@ -18,11 +18,22 @@ public class Preset extends Model {
     @Id
     public Long id;
 
+    @Constraints.Required
     public String name;
+
+    @Constraints.Required
     public int camera;
+
+    @Constraints.Required
     public float pan;
+
+    @Constraints.Required
     public float tilt;
+
+    @Constraints.Required
     public float zoom;
+
+    @Constraints.Required
     public float focus;
 
     public static Finder<Long, Preset> find = new Finder<Long,Preset>(Preset.class);
