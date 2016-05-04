@@ -21,6 +21,9 @@ public class Action extends Model {
     @Constraints.Required
     public String description;
 
+
+    public Preset preset;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     public Script script;
