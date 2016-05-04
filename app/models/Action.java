@@ -21,8 +21,30 @@ public class Action extends Model {
     @Constraints.Required
     public String description;
 
+    @Constraints.Required
+    public int timestamp;
+
+    @Constraints.Required
+    public int estTime;
+
+    public Preset preset;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     public Script script;
+
+    public static Finder<Long, Action> find = new Finder<Long,Action>(Action.class);
+
+    public static Action createAction(String des, int timestamp, int estTime, Preset preset, Script script) {
+        Action act =  new Action();
+        act.description = des;
+        act.timestamp = timestamp;
+        act.estTime = estTime;
+        act.preset = preset;
+        act.script = script;
+
+        act.save();
+        return act;
+    }
 
 }
