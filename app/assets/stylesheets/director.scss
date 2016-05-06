@@ -86,3 +86,26 @@ $grid-padding: 4px;
         line-height: $caption-height;
         padding: 0 16px;
       }
+
+.camera-list {
+  padding-left: 0;
+  padding-right: 0;
+  background-color: rgb(0,153,0);
+  box-shadow: inset 0px 0px 20px 10px rgba(0,0,0,0.2);
+}
+  .camera-list .main-camera-list-item {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .camera-list .camera-list-item {
+    padding-left: 2 * $grid-padding;
+    padding-right: 2 * $grid-padding;
+  }
+    .camera-list .camera-list-item .camera-figure {
+      padding-bottom: 2 * $grid-padding;
+      margin: 0;
+    }
+    .camera-list .main-camera-list-item .main-camera-figure {
+      width: 100%;
+      border: 3px solid red;
+    }

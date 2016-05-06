@@ -19,7 +19,7 @@ public class Application extends Controller {
             Preset.createPreset("Nice view", 0, 0.f, 0.f, 0.f, 0.f);
             Preset.createPreset("Dirigent focus", 3, 0.f, 0.f, 0.f, 0.f);
             Preset.createPreset("Violin snare closeup", 2, 0.f, 0.f, 0.f, 0.f);
-            Preset.createPreset("Contrabas player focus", 5, 0.f, 0.f, 0.f, 0.f);
+            Preset.createPreset("Contrabas player", 5, 0.f, 0.f, 0.f, 0.f);
         }
 
         Action a1 = Action.createAction("Go to Trombone", 5, 3, models.Preset.find.byId(1L), null);
