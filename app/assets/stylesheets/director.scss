@@ -37,32 +37,45 @@
 $caption-height: 48px;
 $grid-padding: 4px;
 .preset-list {
-
+  padding-left: 4px;
+  padding-right: 4px;
+  background-color: rgb(0, 153, 0);
+  padding-top: 8px;
+  box-shadow: inset 0px 0px 20px 10px rgba(0,0,0,0.2);
 }
   .preset-list-item {
     padding-left: $grid-padding !important;
     padding-right: $grid-padding !important;
   }
     .preset-list-item .preset-figure {
-      display: flex;
-      justify-content: center;
+      position: relative;
       width: 100%;
       overflow: hidden;
+      height: 200px;
+      margin-bottom: 2 * $grid-padding;
     }
       .preset-list-item .preset-figure img {
-        flex:none;
+        position: absolute;
+        margin: auto;
+        top: -9999px;
+        bottom: -9999px;
+        left: -9999px;
+        right: -9999px;
       }
     .preset-list-item figcaption {
+      position: absolute;
+      top: 0;
       width: 100%;
       height: $caption-height;
       margin-bottom: -$caption-height;
+      z-index: 1;
     }
     .preset-list-item figcaption::before {
       content:"";
       position: absolute;
       top:0;
-      left: $grid-padding;
-      right: $grid-padding;
+      left: 0;
+      right: 2 * $grid-padding;
       height: $caption-height;
       background-color: rgba(0,0,0,0.4);
     }
