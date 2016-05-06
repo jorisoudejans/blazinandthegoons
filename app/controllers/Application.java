@@ -15,10 +15,17 @@ public class Application extends Controller {
         // MOCK SCRIPT AND ACTION DATA
         List<Action> actionlist = new ArrayList<Action>();
 
-        Action a1 = Action.createAction("Go to Trombone", 5, 3, Preset.createPreset("Nice view", 0, 0.f, 0.f, 0.f, 0.f), null);
-        Action a2 = Action.createAction("Go to Dirigent", 4, 2, Preset.createPreset("Dirigent focus", 3, 0.f, 0.f, 0.f, 0.f), null);
-        Action a3 = Action.createAction("Go to Violin", 3, 1, Preset.createPreset("Violin snare closeup", 2, 0.f, 0.f, 0.f, 0.f), null);
-        Action a4 = Action.createAction("Go to Contrabas", 2, 0, Preset.createPreset("Contrabas player focus", 5, 0.f, 0.f, 0.f, 0.f), null);
+        if(models.Preset.find.byId(1L) == null) {
+            Preset.createPreset("Nice view", 0, 0.f, 0.f, 0.f, 0.f);
+            Preset.createPreset("Dirigent focus", 3, 0.f, 0.f, 0.f, 0.f);
+            Preset.createPreset("Violin snare closeup", 2, 0.f, 0.f, 0.f, 0.f);
+            Preset.createPreset("Contrabas player focus", 5, 0.f, 0.f, 0.f, 0.f);
+        }
+
+        Action a1 = Action.createAction("Go to Trombone", 5, 3, models.Preset.find.byId(1L), null);
+        Action a2 = Action.createAction("Go to Dirigent", 4, 2, models.Preset.find.byId(2L), null);
+        Action a3 = Action.createAction("Go to Violin", 3, 1, models.Preset.find.byId(3L), null);
+        Action a4 = Action.createAction("Go to Contrabas", 2, 0, models.Preset.find.byId(4L), null);
         /*Action a1 = new Action();
         a1.description = "Go to Trombone";
         a1.preset = Preset.createPreset("Nice view", 0, 0.f, 0.f, 0.f, 0.f);
@@ -35,10 +42,6 @@ public class Application extends Controller {
         a4.description = "Go to Contrabas";
         a4.preset = Preset.createPreset("Contrabas player focus", 5, 0.f, 0.f, 0.f, 0.f);
         a4.save();*/
-        a1.save();
-        a2.save();
-        a3.save();
-        a4.save();
 
         actionlist.addAll(Arrays.asList(a1,a2,a3,a4));
 
@@ -50,11 +53,20 @@ public class Application extends Controller {
         a3.script = s;
         a4.script = s;
 
+        System.out.println("All ACTIONS");
         for(models.Action ac : models.Action.find.all())
             System.out.println(Json.toJson(ac));
+        System.out.println();
 
+        System.out.println("All SCRIPTS");
         for(models.Script sc : models.Script.find.all())
             System.out.println(Json.toJson(sc));
+        System.out.println();
+
+        System.out.println("All PRESETS");
+        for(models.Preset pr : models.Preset.find.all())
+            System.out.println(Json.toJson(pr));
+        System.out.println();
 
         s.save();
 

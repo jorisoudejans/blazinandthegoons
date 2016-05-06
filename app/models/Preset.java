@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
@@ -48,6 +49,21 @@ public class Preset extends Model {
         pr.zoom = zoom;
         pr.focus = focus;
         pr.save();
+
+        return pr;
+    }
+
+    public static Preset createPresetWithFixedId(Long id, String name, int camera, float pan, float tilt, float zoom, float focus) {
+        Preset pr = new Preset();
+        pr.id = id;
+        pr.name = name;
+        pr.camera = camera;
+        pr.pan = pan;
+        pr.tilt = tilt;
+        pr.zoom = zoom;
+        pr.focus = focus;
+        if(Preset.find.byId(id) == null)
+            pr.save();
 
         return pr;
     }

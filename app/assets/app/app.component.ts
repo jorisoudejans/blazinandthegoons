@@ -5,12 +5,13 @@ import {ScriptService} from "./api/script.service";
 import {Script} from "./api/script";
 import {ScriptListComponent} from "./scriptlist.component";
 import {ActionListComponent} from "./actionlist.component";
+import {PresetListComponent} from "./presetlist.component";
 
 
 @Component({
     selector: "script-dd",
     templateUrl: './assets/app/partials/director-main.component.html',
-    directives: [ScriptListComponent, ActionListComponent],
+    directives: [ScriptListComponent, ActionListComponent, PresetListComponent],
     providers:  [
         HTTP_PROVIDERS,
         ScriptService,

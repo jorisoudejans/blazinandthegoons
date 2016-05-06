@@ -44,7 +44,6 @@ public class Action extends Model {
         act.estTime = estTime;
         act.preset = preset;
         act.script = script;
-        act.preset.save();
 
         act.save();
         return act;
