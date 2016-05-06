@@ -3,8 +3,5 @@ scala:
     - 2.11.2
 script:
     - sbt test
-    - sbt checkstyle
-    - sbt test:checkstyle
-    - sbt findbugs
 jdk:
     - oraclejdk8
