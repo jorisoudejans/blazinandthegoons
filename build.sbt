@@ -23,8 +23,8 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "zone.js" % "0.6.6",
   "org.webjars.npm" % "typescript" % "1.8.10",
   "org.webjars.npm" % "tslint-eslint-rules" % "1.2.0",
-  "org.webjars" % "bootstrap" % "4.0.0-alpha.2",
-  "org.webjars" % "angular-material" % "1.0.7"
+  "org.webjars.npm" % "bootstrap" % "4.0.0-alpha.2",
+  "org.webjars.npm" % "angular-material" % "1.0.7"
 )
 
 import de.johoop.findbugs4sbt.FindBugs._
@@ -32,6 +32,21 @@ import de.johoop.findbugs4sbt.FindBugs._
 findbugsSettings
 
 dependencyOverrides += "org.webjars.npm" % "minimatch" % "2.0.10"
+
+// FindBugs
+import de.johoop.findbugs4sbt.FindBugs._
+import de.johoop.findbugs4sbt.ReportType
+
+findbugsSettings
+findbugsIncludeFilters := Some(<FindBugsFilter> // include controllers
+  <Match>
+    <Package name="controllers" />
+  </Match>
+</FindBugsFilter>)
+findbugsReportType := Some(ReportType.FancyHtml) // generate html
+findbugsReportPath := Some(crossTarget.value / "findbugs" / "report.html") // create html extension so we can open it in our browser
+
+compile <<= (compile in Compile).dependsOn(findbugs) // generate report on every compilation
 
 
 // the typescript typing information is by convention in the typings directory

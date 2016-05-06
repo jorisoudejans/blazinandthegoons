@@ -4,7 +4,11 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /scripts                    controllers.Script.index()
+GET     /api/scripts                    controllers.Script.index()
+GET     /api/scripts/:id                controllers.Script.get(id: Long)
+POST    /api/scripts/create             controllers.Script.create()
+POST    /api/scripts/:id/actions/create     controllers.Script.addAction(id: Long)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file)

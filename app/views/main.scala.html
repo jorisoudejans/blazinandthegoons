@@ -19,6 +19,7 @@
         <script src='@routes.Assets.versioned("lib/systemjs/dist/system.js")'></script>
         <script src='@routes.Assets.versioned("lib/rxjs/bundles/Rx.js")'></script>
         <script src='@routes.Assets.versioned("lib/angular2/bundles/angular2.dev.js")'></script>
+        <script src='@routes.Assets.versioned("lib/angular2/bundles/http.dev.js")'></script>
 
         <script src='@routes.Assets.versioned("lib/bootstrap/dist/js/bootstrap.js")'></script>
         <script src='@routes.Assets.versioned("lib/angular-material/angular-material.js")'></script>
@@ -54,22 +55,23 @@
         <div class="container-fluid">
 
             <!-- Main component for a primary marketing message or call to action -->
-            <div class="jumbotron">
-                <h1>This is our title!</h1>
-                <p>@content</p>
-                <blazin>Loading...</blazin>
-                <md-button class="md-raised"> Click </md-button>
-                <p>
-                    <a class="btn btn-lg btn-primary" href="../../components/navbar" role="button">View navbar docs &raquo;</a>
-                </p>
+            <div class="col-md-8">
+                <script-dd></script-dd>
+                <script-queue></script-queue>
             </div>
-
+            <div class="col-md-4">
+                <camview></camview>
+                <div class="col-md-12"><button type="button" class="btn btn-info">Next camera</button></div>
+            </div>
         </div> <!-- /container -->
 
         <script>    @* javascript is async downloaded by SystemJs *@
                 System.config({
                     packages: {
                         'assets/app': {
+                            defaultExtension: 'js'
+                        },
+                        'assets/app/api': {
                             defaultExtension: 'js'
                         },
                         'assets/lib': {
