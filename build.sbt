@@ -24,7 +24,8 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "typescript" % "1.8.10",
   "org.webjars.npm" % "tslint-eslint-rules" % "1.2.0",
   "org.webjars.npm" % "bootstrap" % "4.0.0-alpha.2",
-  "org.webjars.npm" % "angular-material" % "1.0.7"
+  "org.webjars.npm" % "angular-material" % "1.0.7",
+  "org.webjars.npm" % "jasmine-core" % "2.4.1"
 )
 
 dependencyOverrides += "org.webjars.npm" % "minimatch" % "2.0.10"
@@ -43,7 +44,6 @@ findbugsReportType := Some(ReportType.FancyHtml) // generate html
 findbugsReportPath := Some(crossTarget.value / "findbugs" / "report.html") // create html extension so we can open it in our browser
 
 compile <<= (compile in Compile).dependsOn(findbugs) // generate report on every compilation
-
 
 // the typescript typing information is by convention in the typings directory
 // It provides ES6 implementations. This is required when compiling to ES5.
