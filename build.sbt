@@ -27,6 +27,8 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "angular-material" % "1.0.7"
 )
 
+libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
+
 import de.johoop.findbugs4sbt.FindBugs._
 
 findbugsSettings
