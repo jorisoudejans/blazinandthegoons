@@ -1,0 +1,13 @@
+<div class="list-header"><h2>Camera's</h2></div>
+<ul class="camera-list col-md-12" *ngIf="presets">
+    <li class="main-camera-list-item col-md-12">
+        <figure class="main-camera-figure">
+            <img src="https://i.ytimg.com/vi/LTVReClcI6g/maxresdefault.jpg" alt="Main Cam" width="100%" height="auto">
+        </figure>
+    </li>
+    <li class="camera-list-item col-md-6" *ngFor="#preset of presets">
+        <figure class="camera-figure">
+            <img src="https://i.ytimg.com/vi/LTVReClcI6g/maxresdefault.jpg" alt="{{preset.name}}" width="100%" height="auto">
+        </figure>
+    </li>
+</ul>

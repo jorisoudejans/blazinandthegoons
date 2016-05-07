@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  * Created by hidde on 4/30/16.
@@ -27,6 +28,7 @@ public class Action extends Model {
     @Constraints.Required
     public int estTime;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     public Preset preset;
 
     @ManyToOne(cascade = CascadeType.ALL)

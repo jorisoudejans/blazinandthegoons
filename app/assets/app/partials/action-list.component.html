@@ -1,0 +1,10 @@
+<div class="list-header"><h2>Script</h2></div>
+<ul class="action-list" *ngIf="scriptData">
+    <li class="action-list-item" *ngFor="#action of scriptData.actions">
+        <div class="text-area">
+            <h1>Action description: {{action.description}}</h1>
+            <span>{{action.estTime}} sec</span><br>
+            <span>Preset: {{action.preset.name}}</span>
+        </div>
+    </li>
+</ul>
