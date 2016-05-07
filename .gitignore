@@ -10,8 +10,6 @@ lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
-!conf/evolutions/**/*.sql
-conf/evolutions/
 
 ### Scala template
 # Scala-IDE specific
