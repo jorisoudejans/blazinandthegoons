@@ -1,33 +1,44 @@
 package models;
 
-import models.Preset;
-import org.junit.*;
-import play.test.Helpers;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import play.Application;
+import play.test.Helpers;
 
 import java.util.List;
-import static  org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by Shane on 4-5-2016.
+ * Test presets.
  */
 public class PresetTest {
-    public static Application app;
+    private static Application app;
 
+    /**
+     * Start fake app.
+     */
     @BeforeClass
     public static void startApp() {
         app = Helpers.fakeApplication(Helpers.inMemoryDatabase());
         Helpers.start(app);
     }
 
+    /**
+     * Test creation of a preset.
+     */
     @Test
     public void testCreate() {
-        Preset pr = Preset.createPreset("preset1", 3, 50, 50, 50, 50);
+        Preset pr = Preset.createPreset("preset1", 0, 0, 0, 0, 0);
         List<Preset> out = Preset.find.where().ilike("name", "preset1").findList();
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), pr);
     }
 
+    /**
+     * Stop fake app.
+     */
     @AfterClass
     public static void stopApp() {
         Helpers.stop(app);
