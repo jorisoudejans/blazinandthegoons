@@ -51,19 +51,30 @@ public class Script extends Controller {
         return notFound("Script " + id);
     }
 
+    /**
+     * Get a running script.
+     * @param id script index
+     * @return data of running script
+     */
     public Result status(Long id) {
-        List<ActiveScript> ass = ActiveScript.find.all();
-        if (ass.size() < 1) {
-            ActiveScript a = new ActiveScript();
-            a.runningTime = 0;
-            a.actionIndex = 0;
-            a.script = models.Script.find.byId(id);
-            a.save();
+        models.Script s = models.Script.find.byId(id);
+        if (s != null) {
+            if (s.activeScript == null) {
+                List<ActiveScript> ass = ActiveScript.find.all();
+                for (ActiveScript a : ass) {
+                    a.delete();
+                }
 
-            ass = ActiveScript.find.all();
+                ActiveScript as = new ActiveScript();
+                as.actionIndex = 0;
+                as.runningTime = 0;
+                as.script = s;
+                as.save();
+                return ok(Json.toJson(as));
+            }
+            return ok(Json.toJson(s.activeScript));
         }
-        ActiveScript as = ass.get(0);
-        return ok(Json.toJson(as));
+        return ok("Nah");
     }
 
     @BodyParser.Of(BodyParser.Json.class)
