@@ -75,6 +75,20 @@ public class ScriptControllerTest {
 
     }
 
+    @Test
+    public void testGetStatus() {
+        models.Script s1 = new models.Script();
+        s1.name = "Script One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        Result result = new Script().status(s1.id);
+        assertEquals(OK, result.status());
+        assertEquals("application/json", result.contentType().get());
+        assertTrue(contentAsString(result).contains("Script One"));
+
+    }
+
     /**
      * Tests creation of a script. TODO: Requires application HTTP stack for test
      */
