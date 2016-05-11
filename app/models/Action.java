@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
- * Created by hidde on 4/30/16.
+ * The model class for Actions. This is the representation used for the database.
  */
 @Entity
 public class Action extends Model {

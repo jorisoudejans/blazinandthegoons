@@ -1,17 +1,13 @@
 package models;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
- * Created by Shane on 3-5-2016.
+ * The model class for Presets. This is the representation used for the database.
  */
 @Entity
 public class Preset extends Model {
@@ -37,10 +33,22 @@ public class Preset extends Model {
     @Constraints.Required
     public float focus;
 
-    public static Finder<Long, Preset> find = new Finder<Long,Preset>(Preset.class);
+    public static Finder<Long, Preset> find = new Finder<>(Preset.class);
 
 
-    public static Preset createPreset(String name, int camera, float pan, float tilt, float zoom, float focus) {
+    /**
+     * A static create function which can be called to create a Preset object
+     * with the specified parameters.
+     * @param name  The name of the preset.
+     * @param camera    The camera for which the preset is created.
+     * @param pan   The pan position of the camera.
+     * @param tilt  The tilt position of the camera.
+     * @param zoom  The zoom value of the camera.
+     * @param focus The focus value of the camera.
+     * @return The created Preset object.
+     */
+    public static Preset createPreset(
+            String name, int camera, float pan, float tilt, float zoom, float focus) {
         Preset pr = new Preset();
         pr.name = name;
         pr.camera = camera;
@@ -53,19 +61,5 @@ public class Preset extends Model {
         return pr;
     }
 
-    public static Preset createPresetWithFixedId(Long id, String name, int camera, float pan, float tilt, float zoom, float focus) {
-        Preset pr = new Preset();
-        pr.id = id;
-        pr.name = name;
-        pr.camera = camera;
-        pr.pan = pan;
-        pr.tilt = tilt;
-        pr.zoom = zoom;
-        pr.focus = focus;
-        if(Preset.find.byId(id) == null)
-            pr.save();
-
-        return pr;
-    }
 }
 
