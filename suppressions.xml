@@ -4,6 +4,9 @@
         "-//Puppy Crawl//DTD Suppressions 1.1//EN"
         "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
+<!--For the models package we would like to use public variables.
+    This because the classes are used as objects in a database,
+    so using public variables makes working with them easier.-->
 <suppressions>
     <suppress checks="VisibilityModifier" files="app[\\/]models"/>
 </suppressions>
