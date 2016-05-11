@@ -4,10 +4,24 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+GET     /director                   controllers.Application.directorView()
+
+# Scripts
 GET     /api/scripts                    controllers.Script.index()
+
 GET     /api/scripts/:id                controllers.Script.get(id: Long)
 POST    /api/scripts/create             controllers.Script.create()
 POST    /api/scripts/:id/actions/create     controllers.Script.addAction(id: Long)
+
+# Live script
+GET     /api/scripts/:id/status             controllers.Script.status(id: Long)
+GET     /api/scripts/:id/update             controllers.Script.updateActiveScript(id: Long)
+
+
+#Preset service
+GET     /api/presets                    controllers.Preset.index()
+GET     /api/presets/:id                controllers.Preset.get(id: Long)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file)

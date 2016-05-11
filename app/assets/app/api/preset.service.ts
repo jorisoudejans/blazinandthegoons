@@ -1,28 +1,27 @@
+/**
+ * Created by Floris on 5/5/2016.
+ */
 import {Injectable}     from "angular2/core";
 import {Http, Response, Headers, RequestOptions} from "angular2/http";
-import {Script, ActiveScript}           from "./script";
+import {Preset}           from "./preset";
 import {Observable}     from "rxjs/Observable";
 
 @Injectable()
-export class ScriptService {
+export class PresetService {
     constructor (private http: Http) {}
-    private _heroesUrl = "api/scripts";  // URL to web api
-    getScripts (): Observable<Script[]> {
+    private _heroesUrl = "api/presets";  // URL to web api
+    getPresets (): Observable<Preset[]> {
         return this.http.get(this._heroesUrl)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getScript (id: number): Observable<Script> {
+    getPreset (id: number): Observable<Preset> {
         return this.http.get(this._heroesUrl + "/" + id)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getStatus (id: number): Observable<ActiveScript> {
-        return this.http.get(this._heroesUrl + "/" + id + "/status")
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    createScript (name: string): Observable<Script> {
+    // No functionality to create presets implemented yet.
+    /*createPreset (name: string): Observable<Preset> {
 
         let body = JSON.stringify({ "name": name });
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -31,7 +30,7 @@ export class ScriptService {
         return this.http.post(this._heroesUrl + "/create", body, options)
             .map(this.extractData)
             .catch(this.handleError);
-    }
+    }*/
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);

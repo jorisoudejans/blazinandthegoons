@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.ActiveScript;
 import play.*;
 import play.libs.Json;
 import play.mvc.*;
@@ -47,7 +48,46 @@ public class Script extends Controller {
             script.save();
             return ok(Json.toJson(script));
         }
-        return notFound("Script "+id);
+        return notFound("Script " + id);
+    }
+
+    /**
+     * Get a running script.
+     * @param id script index
+     * @return data of running script
+     */
+    public Result status(Long id) {
+        models.Script s = models.Script.find.byId(id);
+        if (s != null) {
+            if (s.activeScript == null) {
+                List<ActiveScript> ass = ActiveScript.find.all();
+                for (ActiveScript a : ass) {
+                    a.delete();
+                }
+
+                ActiveScript as = new ActiveScript();
+                as.actionIndex = 0;
+                as.runningTime = 0;
+                as.script = s;
+                as.save();
+                return ok(Json.toJson(as));
+            }
+            return ok(Json.toJson(s.activeScript));
+        }
+        return ok("Nah");
+    }
+
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result updateActiveScript(Long id) {
+        models.Script script = models.Script.find.byId(id);
+        if (script != null && script.activeScript != null) {
+            JsonNode json = request().body().asJson();
+            int actionIndex = json.findPath("actionIndex").intValue();
+            script.activeScript.actionIndex = actionIndex;
+            script.save();
+            return ok(Json.toJson(script));
+        }
+        return notFound("Script " + id);
     }
 
 }

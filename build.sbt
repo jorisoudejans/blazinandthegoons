@@ -4,7 +4,7 @@ version := "1.0"
 
 lazy val `blazinandthegoons` = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
-scalaVersion := "2.11.1" // TODO Up version
+scalaVersion := "2.11.7"
 
 incOptions := incOptions.value.withNameHashing(true)
 
@@ -27,6 +27,12 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "angular-material" % "1.0.7",
   "org.webjars.npm" % "jasmine-core" % "2.4.1"
 )
+
+libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
+
+import de.johoop.findbugs4sbt.FindBugs._
+
+findbugsSettings
 
 dependencyOverrides += "org.webjars.npm" % "minimatch" % "2.0.10"
 
