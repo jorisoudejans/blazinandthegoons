@@ -3,7 +3,9 @@ package models;
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 
 /**
@@ -14,15 +16,15 @@ import javax.persistence.*;
 @Entity
 public class ActiveScript extends Model {
 
-    @OneToOne(cascade= CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     public Script script;
 
     @Constraints.Required
-    public int runningTime = 0;
+    public long runningTime = 0;
 
     @Constraints.Required
     public int actionIndex;
 
-    public static Finder<Long, ActiveScript> find = new Finder<Long,ActiveScript>(ActiveScript.class);
+    public static Finder<Long, ActiveScript> find = new Finder<Long, ActiveScript>(ActiveScript.class);
 
 }

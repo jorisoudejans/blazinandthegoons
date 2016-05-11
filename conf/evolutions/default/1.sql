@@ -16,7 +16,7 @@ create sequence action_seq;
 
 create table active_script (
   script_id                     bigint,
-  running_time                  integer,
+  running_time                  bigint,
   action_index                  integer,
   constraint uq_active_script_script_id unique (script_id)
 );

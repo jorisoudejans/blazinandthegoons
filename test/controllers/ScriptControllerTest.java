@@ -43,8 +43,8 @@ public class ScriptControllerTest {
      * Tests basic request of scripts.
      */
     @Test
-    public void testIndexResponse() {
-        Result result = new Script().index();
+    public void testGetAllResponse() {
+        Result result = new Script().getAll();
         assertEquals(Http.Status.OK, result.status());
         assertEquals("application/json", result.contentType().get());
         assertTrue(contentAsString(result).contains("[]"));
@@ -54,7 +54,7 @@ public class ScriptControllerTest {
      * Test script index.
      */
     @Test
-    public void testIndex() {
+    public void testGetAll() {
         models.Script s1 = new models.Script();
         s1.name = "Script One";
         s1.creationDate = new Date();
@@ -65,7 +65,7 @@ public class ScriptControllerTest {
         s2.creationDate = new Date();
         s2.save();
 
-        Result result = new Script().index();
+        Result result = new Script().getAll();
         assertTrue(contentAsString(result).contains("Script One"));
         assertTrue(contentAsString(result).contains("Script Two"));
 
@@ -92,17 +92,18 @@ public class ScriptControllerTest {
      * Test get script status.
      */
     @Test
-    public void testGetStatus() {
+    public void testGetActiveScript() {
         models.Script s1 = new models.Script();
         s1.name = "Script One";
         s1.creationDate = new Date();
         s1.save();
 
-        Result result = new Script().status(s1.id);
+        Script script = new Script();
+        script.startScript((long) 1);
+        Result result = new Script().getActiveScript();
         assertEquals(Http.Status.OK, result.status());
         assertEquals("application/json", result.contentType().get());
         assertTrue(contentAsString(result).contains("Script One"));
-
     }
 
     /**

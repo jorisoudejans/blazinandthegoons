@@ -1,30 +1,44 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.Action;
 import models.ActiveScript;
-import play.*;
 import play.libs.Json;
-import play.mvc.*;
-
-import views.html.*;
+import play.mvc.BodyParser;
+import play.mvc.Controller;
+import play.mvc.Result;
 
 import java.util.Date;
 import java.util.List;
 
-import models.Action;
-
+/**
+ * Controls a script.
+ */
 public class Script extends Controller {
 
-    public Result index() {
+    /**
+     * Get all scripts in the database.
+     * @return the scripts
+     */
+    public Result getAll() {
         List<models.Script> scriptList = models.Script.find.all();
         return ok(Json.toJson(scriptList));
     }
 
+    /**
+     * Get script by id.
+     * @param id script id
+     * @return script
+     */
     public Result get(Long id) {
         models.Script script = models.Script.find.byId(id);
         return ok(Json.toJson(script));
     }
 
+    /**
+     * Create a new script.
+     * @return the created script
+     */
     @BodyParser.Of(BodyParser.Json.class)
     public Result create() {
         JsonNode json = request().body().asJson();
@@ -36,6 +50,11 @@ public class Script extends Controller {
         return ok(Json.toJson(script));
     }
 
+    /**
+     * Add action to a script.
+     * @param id script id
+     * @return script with added action
+     */
     @BodyParser.Of(BodyParser.Json.class)
     public Result addAction(Long id) {
         models.Script script = models.Script.find.byId(id);
@@ -53,39 +72,47 @@ public class Script extends Controller {
 
     /**
      * Get a running script.
-     * @param id script index
      * @return data of running script
      */
-    public Result status(Long id) {
-        models.Script s = models.Script.find.byId(id);
-        if (s != null) {
-            if (s.activeScript == null) {
-                List<ActiveScript> ass = ActiveScript.find.all();
-                for (ActiveScript a : ass) {
-                    a.delete();
-                }
-
-                ActiveScript as = new ActiveScript();
-                as.actionIndex = 0;
-                as.runningTime = 0;
-                as.script = s;
-                as.save();
-                return ok(Json.toJson(as));
-            }
-            return ok(Json.toJson(s.activeScript));
+    public Result getActiveScript() {
+        models.ActiveScript as = models.ActiveScript.find.all().get(0);
+        if (as != null) {
+            return ok(Json.toJson(as));
         }
-        return ok("Nah");
+        return notFound("No active script");
     }
 
+    /**
+     * Run a script. Creates an extension of a Script, i.e. an ActiveScript.
+     * @param id script id
+     * @return activeScript
+     */
+    public Result startScript(Long id) {
+        models.Script s = models.Script.find.byId(id);
+        if (s != null) {
+            ActiveScript as = new ActiveScript();
+            as.actionIndex = 0;
+            as.runningTime = new Date().getTime();
+            as.script = s;
+            as.save();
+            return ok(Json.toJson(as));
+        }
+        return notFound("Script " + id);
+    }
+
+    /**
+     * Update current action index. Sets the action currently being executed.
+     * @param id script id
+     * @return updated script
+     */
     @BodyParser.Of(BodyParser.Json.class)
     public Result updateActiveScript(Long id) {
         models.Script script = models.Script.find.byId(id);
         if (script != null && script.activeScript != null) {
             JsonNode json = request().body().asJson();
-            int actionIndex = json.findPath("actionIndex").intValue();
-            script.activeScript.actionIndex = actionIndex;
+            script.activeScript.actionIndex = json.findPath("actionIndex").intValue();
             script.save();
-            return ok(Json.toJson(script));
+            return ok(Json.toJson(script.activeScript));
         }
         return notFound("Script " + id);
     }
