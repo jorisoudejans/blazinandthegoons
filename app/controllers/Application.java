@@ -12,6 +12,10 @@ import play.libs.Json;
 public class Application extends Controller {
 
     public Result index() {
+        return ok(index.render("First index"));
+    }
+
+    public Result directorView() {
         // MOCK SCRIPT AND ACTION DATA
         List<Action> actionlist = new ArrayList<Action>();
 

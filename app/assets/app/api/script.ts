@@ -10,5 +10,14 @@ export class Script {
         public actions: Action[]
     ) {  }
 
+}
+
+export class ActiveScript {
+
+    constructor(
+        public runningTime: number,
+        public actionIndex: number
+    ) {  }
+
 
 }

@@ -1,6 +1,6 @@
 import {Injectable}     from "angular2/core";
 import {Http, Response, Headers, RequestOptions} from "angular2/http";
-import {Script}           from "./script";
+import {Script, ActiveScript}           from "./script";
 import {Observable}     from "rxjs/Observable";
 
 @Injectable()
@@ -14,6 +14,11 @@ export class ScriptService {
     }
     getScript (id: number): Observable<Script> {
         return this.http.get(this._heroesUrl + "/" + id)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getStatus (): Observable<ActiveScript> {
+        return this.http.get(this._heroesUrl + "/status")
             .map(this.extractData)
             .catch(this.handleError);
     }

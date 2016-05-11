@@ -1,7 +1,7 @@
 /**
  * Created by floris on 04/05/2016.
  */
-import {Script} from "./api/script";
+import {Script, ActiveScript} from "./api/script";
 import {Component, Input} from "angular2/core"
 
 @Component({
@@ -12,5 +12,5 @@ import {Component, Input} from "angular2/core"
 })
 export class ActionListComponent {
     @Input()
-    scriptData: Script;
+    scriptData: ActiveScript;
 }
