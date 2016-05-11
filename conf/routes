@@ -24,7 +24,7 @@ GET     /api/presets/:id                controllers.Preset.get(id: Long)
 POST    /api/presets/create             controllers.Preset.create()
 
 #Action service
-GET     /api/actions                    @controllers.Action.index()
+GET     /api/actions                    @controllers.Action.getAll()
 GET     /api/actions/:id                @controllers.Action.get(id: Long)
 POST    /api/actions/create             @controllers.Action.create()
 

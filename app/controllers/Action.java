@@ -18,7 +18,7 @@ public class Action extends Controller {
      * Get a list of all Action objects in the database.
      * @return The list of all Action objects.
      */
-    public Result index() {
+    public Result getAll() {
         List<models.Action> actionList = models.Action.find.all();
         return ok(Json.toJson(actionList));
     }
