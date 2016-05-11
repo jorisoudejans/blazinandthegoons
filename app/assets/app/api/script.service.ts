@@ -17,8 +17,8 @@ export class ScriptService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getStatus (): Observable<ActiveScript> {
-        return this.http.get(this._heroesUrl + "/status")
+    getStatus (id: number): Observable<ActiveScript> {
+        return this.http.get(this._heroesUrl + "/" + id + "/status")
             .map(this.extractData)
             .catch(this.handleError);
     }
