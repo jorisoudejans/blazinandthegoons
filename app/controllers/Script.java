@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.ActiveScript;
 import play.*;
 import play.libs.Json;
 import play.mvc.*;
@@ -47,7 +48,35 @@ public class Script extends Controller {
             script.save();
             return ok(Json.toJson(script));
         }
-        return notFound("Script "+id);
+        return notFound("Script " + id);
+    }
+
+    public Result status(Long id) {
+        List<ActiveScript> ass = ActiveScript.find.all();
+        if (ass.size() < 1) {
+            ActiveScript a = new ActiveScript();
+            a.runningTime = 0;
+            a.actionIndex = 0;
+            a.script = models.Script.find.byId(id);
+            a.save();
+
+            ass = ActiveScript.find.all();
+        }
+        ActiveScript as = ass.get(0);
+        return ok(Json.toJson(as));
+    }
+
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result updateActiveScript(Long id) {
+        models.Script script = models.Script.find.byId(id);
+        if (script != null && script.activeScript != null) {
+            JsonNode json = request().body().asJson();
+            int actionIndex = json.findPath("actionIndex").intValue();
+            script.activeScript.actionIndex = actionIndex;
+            script.save();
+            return ok(Json.toJson(script));
+        }
+        return notFound("Script " + id);
     }
 
 }

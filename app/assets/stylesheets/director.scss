@@ -38,6 +38,11 @@
       }
     }
   }
+
+  .action-list-item.selected {
+    border: 1px solid #000000;
+    background-color: rgb(147, 250, 161);
+  }
 }
 
 $caption-height: 48px;
