@@ -90,6 +90,7 @@ public class Script extends Controller {
     public Result startScript(Long id) {
         models.Script s = models.Script.find.byId(id);
         if (s != null) {
+            System.out.println("OKLI");
             ActiveScript as = new ActiveScript();
             as.actionIndex = 0;
             as.runningTime = new Date().getTime();

@@ -3,7 +3,6 @@ import {OnInit, Component} from "angular2/core"
 
 import {ScriptService} from "./api/script.service";
 import {Script, ActiveScript} from "./api/script";
-import {ScriptListComponent} from "./scriptlist.component";
 import {ActionListComponent} from "./actionlist.component";
 import {PresetListComponent} from "./presetlist.component";
 import {CameraListComponent} from "./cameralist.component";
@@ -12,7 +11,7 @@ import {CameraListComponent} from "./cameralist.component";
 @Component({
     selector: "script-dd",
     templateUrl: './assets/app/partials/director-main.component.html',
-    directives: [ScriptListComponent, ActionListComponent, PresetListComponent, CameraListComponent],
+    directives: [ActionListComponent, PresetListComponent, CameraListComponent],
     providers:  [
         HTTP_PROVIDERS,
         ScriptService,

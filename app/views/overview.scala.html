@@ -1,13 +1,7 @@
 @(title: String)
 
 @index(title) {
-    <div class="col-md-offset-1 col-md-4">
-        <script-list></script-list>
-    </div>
-    <div class="col-md-offset-2 col-md-4">
-        <a onclick="gotoview('director')" class="btn btn-primary">Open view as director</a>
-        <a onclick="gotoview('operator')" class="btn btn-primary">Open view as operator</a>
-    </div>
+    <overview></overview>
 
     <script>    @* javascript is async downloaded by SystemJs *@
             System.config({
