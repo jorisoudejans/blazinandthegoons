@@ -55,4 +55,9 @@ export class ScriptService {
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
     }
+    private startScript(id: Long) {
+        return this.http.get(this._heroesUrl + "/" + id + "/update")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

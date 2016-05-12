@@ -12,7 +12,7 @@ import play.libs.Json;
 public class Application extends Controller {
 
     public Result index() {
-        return ok(index.render("First index"));
+        return ok(overview.render("Home"));
     }
 
     public Result directorView() {
@@ -74,7 +74,11 @@ public class Application extends Controller {
 
         s.save();
 
-        return ok(index.render("Your new application is ready."));
+        return ok(director.render("Director View"));
+    }
+
+    public Result overviewView() {
+        return ok(overview.render("Script selection"));
     }
 
 }

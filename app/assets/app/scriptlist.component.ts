@@ -1,6 +1,6 @@
-import {Script} from "./api/script";
+import {Script, ActiveScript} from "./api/script";
 import {ScriptService} from "./api/script.service";
-import {OnInit, Component} from "angular2/core"
+import {OnInit, Component} from "angular2/core";
 
 @Component({
     selector:    'script-list',
@@ -13,11 +13,18 @@ export class ScriptListComponent implements OnInit {
     errorMessage: string;
     scripts:Script[];
     scriptData: Script;
-    ngOnInit() { this.getScripts(); }
+    activeScript: ActiveScript;
+    ngOnInit() { this.getScripts(); this.getActive() }
     getScripts() {
         this._heroService.getScripts()
             .subscribe(
                 scripts => this.scripts = scripts,
+                error =>  this.errorMessage = <any>error);
+    }
+    getActive() {
+        this._heroService.getStatus(1)
+            .subscribe(
+                activeScript => this.activeScript = activeScript,
                 error =>  this.errorMessage = <any>error);
     }
     showScript(id: number) {
@@ -25,5 +32,12 @@ export class ScriptListComponent implements OnInit {
             .subscribe(
                 scriptData => this.scriptData = scriptData
         );
+    }
+
+    activateScript(id) {
+        this._heroService.startScript(id)
+            .subscribe(
+                activeScript => this.activeScript = activeScript    ,
+                error =>  this.errorMessage = <any>error);
     }
 }
