@@ -8,13 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 /**
- * Created by hidde on 4/30/16.
+ * The model class for Actions. This is the representation used for the database.
  */
 @Entity
 public class Action extends Model {
+
 
     @Id
     public Long id;
@@ -26,7 +26,7 @@ public class Action extends Model {
     public int timestamp;
 
     @Constraints.Required
-    public int estTime;
+    public int duration;
 
     @ManyToOne(cascade = CascadeType.ALL)
     public Preset preset;
@@ -35,13 +35,26 @@ public class Action extends Model {
     @JsonIgnore
     public Script script;
 
-    public static Finder<Long, Action> find = new Finder<Long,Action>(Action.class);
+    //Finder Object used for finding objects in the database.
+    public static Finder<Long, Action> find = new Finder<>(Action.class);
 
-    public static Action createAction(String des, int timestamp, int estTime, Preset preset, Script script) {
+
+    /**
+     * A static create function which can be called to create an Action object
+     * with the specified parameters.
+     * @param des   Description of the action
+     * @param timestamp Timestamp at which the action begins.
+     * @param duration  The estimated duration the action will take.
+     * @param preset    The preset the action will use.
+     * @param script    The script to which the action belongs.
+     * @return  The created Action object.
+     */
+    public static Action createAction(
+            String des, int timestamp, int duration, Preset preset, Script script) {
         Action act =  new Action();
         act.description = des;
         act.timestamp = timestamp;
-        act.estTime = estTime;
+        act.duration = duration;
         act.preset = preset;
         act.script = script;
 

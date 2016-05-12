@@ -9,18 +9,23 @@ export class ScriptService {
     private _heroesUrl = "api/scripts";  // URL to web api
     getScripts (): Observable<Script[]> {
         return this.http.get(this._heroesUrl)
-            .map(this.extractData)
-            .catch(this.handleError);
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
     }
     getScript (id: number): Observable<Script> {
         return this.http.get(this._heroesUrl + "/" + id)
-            .map(this.extractData)
-            .catch(this.handleError);
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
     }
     getStatus (id: number): Observable<ActiveScript> {
-        return this.http.get(this._heroesUrl + "/" + id + "/status")
-            .map(this.extractData)
-            .catch(this.handleError);
+        return this.http.get(this._heroesUrl + "/status")
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
+    }
+    startScript (id: number): Observable<ActiveScript> {
+        return this.http.get(this._heroesUrl + "/" + id + "/start")
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError)
     }
     createScript (name: string): Observable<Script> {
 
@@ -29,10 +34,10 @@ export class ScriptService {
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(this._heroesUrl + "/create", body, options)
-            .map(this.extractData)
-            .catch(this.handleError);
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
     }
-    private extractData(res: Response) {
+    private static extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
         }
@@ -40,7 +45,7 @@ export class ScriptService {
         console.log(body);
         return body || { };
     }
-    private handleError (error: any) {
+    private static handleError (error: any) {
         // In a real world app, we might send the error to remote logging infrastructure
         let errMsg = error.message || 'Server error';
         console.error(errMsg); // log to console instead

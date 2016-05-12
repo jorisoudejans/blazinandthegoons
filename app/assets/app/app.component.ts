@@ -21,9 +21,15 @@ import {CameraListComponent} from "./cameralist.component";
 export class AppComponent implements OnInit {
     constructor (private _heroService: ScriptService) {}
     currentScript: ActiveScript;
-    ngOnInit() { this.getStatus(1); }
+    ngOnInit() { this.startScript(1); }
     getStatus(id: number) {
         this._heroService.getStatus(id)
+            .subscribe(
+                currentScript => {this.currentScript = currentScript}
+        );
+    }
+    startScript(id: number) {
+        this._heroService.startScript(id)
             .subscribe(
                 currentScript => {this.currentScript = currentScript}
         );

@@ -7,14 +7,15 @@ GET     /                           @controllers.Application.overviewView()
 GET     /director                   @controllers.Application.directorView()
 
 # Scripts
-GET     /api/scripts                    @controllers.Script.index()
+GET     /api/scripts                    @controllers.Script.getAll()
 
 GET     /api/scripts/:id                @controllers.Script.get(id: Long)
 POST    /api/scripts/create             @controllers.Script.create()
 POST    /api/scripts/:id/actions/create     @controllers.Script.addAction(id: Long)
 
 # Live script
-GET     /api/scripts/:id/status             @controllers.Script.status(id: Long)
+GET     /api/scripts/status                 @controllers.Script.getActiveScript()
+GET     /api/scripts/:id/start              @controllers.Script.startScript(id: Long)
 GET     /api/scripts/:id/update             @controllers.Script.updateActiveScript(id: Long)
 
 
@@ -22,6 +23,12 @@ GET     /api/scripts/:id/update             @controllers.Script.updateActiveScri
 GET     /api/presets                    @controllers.Preset.index()
 GET     /api/presets/:id                @controllers.Preset.get(id: Long)
 
+POST    /api/presets/create             @controllers.Preset.create()
+
+#Action service
+GET     /api/actions                    @controllers.Action.getAll()
+GET     /api/actions/:id                @controllers.Action.get(id: Long)
+POST    /api/actions/create             @controllers.Action.create()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               @controllers.Assets.versioned(path="/public", file)
