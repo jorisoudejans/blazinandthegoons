@@ -25,7 +25,8 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "tslint-eslint-rules" % "1.2.0",
   "org.webjars.npm" % "bootstrap" % "4.0.0-alpha.2",
   "org.webjars.npm" % "angular-material" % "1.0.7",
-  "org.webjars.npm" % "jasmine-core" % "2.4.1"
+  "org.webjars.npm" % "jasmine-core" % "2.4.1",
+  "org.mockito" % "mockito-core" % "1.9.5" % "test"
 )
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"

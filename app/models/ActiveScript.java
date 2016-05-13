@@ -25,6 +25,7 @@ public class ActiveScript extends Model {
     @Constraints.Required
     public int actionIndex;
 
-    public static Finder<Long, ActiveScript> find = new Finder<Long, ActiveScript>(ActiveScript.class);
+    public static Finder<Long, ActiveScript> find =
+            new Finder<Long, ActiveScript>(ActiveScript.class);
 
 }
