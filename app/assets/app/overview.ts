@@ -7,6 +7,7 @@ import {bootstrap}    from "angular2/platform/browser"
 import {ScriptListComponent} from "./scriptlist.component"
 import {ScriptService} from "./api/script.service";
 import {Script, ActiveScript} from "./api/script";
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 @Component({
@@ -19,6 +20,7 @@ import 'rxjs/Rx';
     ]
 })
 export class Overview implements OnInit {
+    observable: Observable;
     socket: WebSocket;
     constructor (private _scriptService: ScriptService) {}
     errorMessage: string;
@@ -39,9 +41,27 @@ export class Overview implements OnInit {
     onMessage(ev: MessageEvent) {
         console.log(ev);
         this.activeScript = JSON.parse(ev.data);
+        console.log(this.activeScript);
     }
     connect() {
         this.socket = this._scriptService.connectScript();
+
+        this.observable = Observable.create(observer =>
+            this.socket.onmessage = (msg) => observer.next(msg)
+        );
+
+        this.observable.subscribe(
+            (data) => {
+                this.activeScript = JSON.parse(data.data);
+                console.log(this.currentScript);
+                console.log(this.currentScript.script.actions);
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                console.log('completed');
+            });
         /*let socket = this.socket;
          this.socket.onopen = function(ev) {
          console.log(ev);
