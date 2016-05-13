@@ -1,5 +1,6 @@
 import {Injectable}     from "angular2/core";
 import {Http, Response, Headers, RequestOptions} from "angular2/http";
+import {$WebSocket}     from 'assets/lib/angular2-websocket/angular2-websocket'
 import {Script, ActiveScript}           from "./script";
 import {Observable}     from "rxjs/Observable";
 
@@ -7,6 +8,9 @@ import {Observable}     from "rxjs/Observable";
 export class ScriptService {
     constructor (private http: Http) {}
     private _heroesUrl = "api/scripts";  // URL to web api
+    connectScript (): WebSocket {
+        return new $WebSocket("ws://localhost:9000/" + this._heroesUrl + "/connect");
+    }
     getScripts (): Observable<Script[]> {
         return this.http.get(this._heroesUrl)
             .map(ScriptService.extractData)
