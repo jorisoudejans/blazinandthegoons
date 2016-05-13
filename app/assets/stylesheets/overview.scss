@@ -1,12 +1,10 @@
 .script-list {
 
 
-  .oneRunning:first-child {
-    background-color: #66ff5b;
-  }
-  .oneRunning:not(:first-child) {
-    background-color: rgba(138, 138, 138, 1);
+  .oneRunning {
+    background-color: rgba(138, 138, 138, .3);
   }
   .active {
+    background-color: #66ff5b !important;
   }
 }

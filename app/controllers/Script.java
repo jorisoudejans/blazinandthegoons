@@ -1,12 +1,18 @@
 package controllers;
 
+import akka.actor.ActorRef;
+import akka.stream.OverflowStrategy;
+import akka.stream.javadsl.Source;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Action;
 import models.ActiveScript;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
+import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
+import play.mvc.WebSocket;
+import util.socket.ScriptSocket;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +21,11 @@ import java.util.List;
  * Controls a script.
  */
 public class Script extends Controller {
+
+    /**
+     * List to hold our connected sockets.
+     */
+    private List<LegacyWebSocket> scriptSockets;
 
     /**
      * Get all scripts in the database.
@@ -90,7 +101,11 @@ public class Script extends Controller {
     public Result startScript(Long id) {
         models.Script s = models.Script.find.byId(id);
         if (s != null) {
-            System.out.println("OKLI");
+            List<ActiveScript> allScripts = ActiveScript.find.all();
+            for (ActiveScript as : allScripts) { // remove all scripts
+                as.delete();
+            }
+
             ActiveScript as = new ActiveScript();
             as.actionIndex = 0;
             as.runningTime = new Date().getTime();
@@ -116,6 +131,22 @@ public class Script extends Controller {
             return ok(Json.toJson(script.activeScript));
         }
         return notFound("Script " + id);
+    }
+
+    /**
+     * Get a new websocket instance.
+     * @return websocket for scripts
+     */
+    public LegacyWebSocket<String> socket() {
+        //Source s = Source.actorRef(B, OverflowStrategy.fail());
+
+
+        LegacyWebSocket<String> socket = WebSocket.withActor(ScriptSocket::props); // setup the websocket
+        scriptSockets.add(socket);
+
+        System.out.println(scriptSockets);
+
+        return socket;
     }
 
 }

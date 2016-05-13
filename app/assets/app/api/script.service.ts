@@ -7,11 +7,14 @@ import {Observable}     from "rxjs/Observable";
 export class ScriptService {
     constructor (private http: Http) {}
     private _heroesUrl = "api/scripts";  // URL to web api
+    connectScript (): WebSocket {
+        return new WebSocket("ws://localhost:9000/" + this._heroesUrl + "/connect");
+    }
     getScripts (): Observable<Script[]> {
         return this.http.get(this._heroesUrl)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
-    }
+    }/*
     getScript (id: number): Observable<Script> {
         return this.http.get(this._heroesUrl + "/" + id)
             .map(ScriptService.extractData)
@@ -21,11 +24,12 @@ export class ScriptService {
         return this.http.get(this._heroesUrl + "/status")
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
-    }
-    startScript (id: number): Observable<ActiveScript> {
-        return this.http.get(this._heroesUrl + "/" + id + "/start")
+    }*/
+    static startScript (script: ActiveScript, socket: WebSocket): void {
+        /*return this.http.get(this._heroesUrl + "/" + id + "/start")
             .map(ScriptService.extractData)
-            .catch(ScriptService.handleError)
+            .catch(ScriptService.handleError)*/
+        socket.send(JSON.stringify(script));
     }
     createScript (name: string): Observable<Script> {
 

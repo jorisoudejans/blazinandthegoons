@@ -14,7 +14,13 @@
 </div> <!-- /container -->
 <div id="dock-container">
     <div id="dock-top">
-        <p *ngIf="currentScript">Current time {{ currentScript.runningTime }}
+        <div *ngIf="currentScript">
+            <button (click)="nextAction()">Next</button>
+        </div>
+        <div *ngIf="!currentScript">
+            <button (click)="startScript(1)">Start</button>
+        </div>
+        <p *ngIf="currentScript">Current time {{ currentScript.runningTime }}</p>
     </div>
     <div id="dock" class="container-fluid">
 

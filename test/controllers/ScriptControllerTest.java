@@ -1,10 +1,12 @@
 package controllers;
 
+import com.gargoylesoftware.htmlunit.javascript.host.WebSocket;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import play.Application;
 import play.mvc.Http;
+import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
 import play.test.Helpers;
 
@@ -85,11 +87,10 @@ public class ScriptControllerTest {
         assertEquals(Http.Status.OK, result.status());
         assertEquals("application/json", result.contentType().get());
         assertTrue(contentAsString(result).contains("Script One"));
-
     }
 
     /**
-     * Test get script status.
+     * Test get script status. Should return a websocket
      */
     @Test
     public void testGetActiveScript() {
@@ -100,10 +101,27 @@ public class ScriptControllerTest {
 
         Script script = new Script();
         script.startScript((long) 1);
+
         Result result = new Script().getActiveScript();
         assertEquals(Http.Status.OK, result.status());
         assertEquals("application/json", result.contentType().get());
         assertTrue(contentAsString(result).contains("Script One"));
+    }
+
+    /**
+     * Test get script status. Should return a websocket
+     */
+    @Test
+    public void testGetWebSocketScript() {
+        models.Script s1 = new models.Script();
+        s1.name = "Script One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        Script script = new Script();
+        script.startScript((long) 1);
+
+        assertTrue(new Script().socket() instanceof LegacyWebSocket);
     }
 
     /**
