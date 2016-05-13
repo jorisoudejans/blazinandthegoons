@@ -10,8 +10,9 @@
             {{ script.name }}
         </div>
         <div class="col-md-4">
-            <button type="button" class="btn btn-primary-outline" (click)="editScript(script.id)">Edit script</button>
-            <button type="button" class="btn btn-primary-outline" (click)="activateScript(script.id)">Assign as live script</button>
+            <button type="button" class="btn btn-primary-outline" (click)="editScript(script)">Edit script</button>
+            <button type="button" class="btn btn-primary-outline" (click)="activateScript(script)">Assign as live script</button>
+            <button type="button" class="btn btn-primary-outline" (click)="deactivateScript()">Unassign as live script</button>
         </div>
     </div>
 </div>
