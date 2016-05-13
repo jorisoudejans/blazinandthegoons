@@ -83,14 +83,60 @@ public class CameraApi {
     }
 
     /**
+     * This method will set the zoom position of the camera.
+     * @param cam The camera which will be changed.
+     * @param zoom The zoom value
+     * @throws Exception When the response is not the pan/tilt or getHttp throws one.
+     *          Buffered reader can also throw an exception
+     * @return  the zoom position the camera returns
+     *              This should return the same value as the input
+     */
+    public static int setZoom(LiveCamera cam, int zoom) throws Exception {
+        String url = "http://" + cam.getIp() + "/cgi-bin/aw_ptz?cmd=%23GZ"
+                + Integer.toHexString(zoom) + "&res=1";
+        BufferedReader br = getHttp(url);
+        String msg = br.readLine();
+        String tag = msg.substring(0, 2);
+        if (tag.equals("gz")) {
+            return Integer.parseInt(msg.substring(2, 5), 16);
+        } else {
+            //TODO: Catch possible error message
+            throw new Exception("error");
+        }
+    }
+
+    /**
      * This method will return the zoom position of the camera.
      * @param cam The camera from which the values will be read.
      * @throws Exception When the response is not the pan/tilt or getHttp throws one.
      *          Buffered reader can also throw an exception
-     * @return  the zoom position
+     * @return  the focus value
      */
     public static int getFocus(LiveCamera cam) throws Exception {
         String url = "http://" + cam.getIp() + "/cgi-bin/aw_ptz?cmd=%23GF&res=1";
+        BufferedReader br = getHttp(url);
+        String msg = br.readLine();
+        String tag = msg.substring(0, 2);
+        if (tag.equals("gf")) {
+            return Integer.parseInt(msg.substring(2, 5), 16);
+        } else {
+            //TODO: Catch possible error message
+            throw new Exception("error");
+        }
+    }
+
+    /**
+     * This method will return the zoom position of the camera.
+     * @param cam The camera which will be changed.
+     * @param focus The focus value
+     * @throws Exception When the response is not the pan/tilt or getHttp throws one.
+     *          Buffered reader can also throw an exception
+     * @return  the focus value the camera returns,
+     *             this value should be the same as the input
+     */
+    public static int setFocus(LiveCamera cam, int focus) throws Exception {
+        String url = "http://" + cam.getIp() + "/cgi-bin/aw_ptz?cmd=%23GF"
+                + Integer.toHexString(focus).toUpperCase() + "&res=1";
         BufferedReader br = getHttp(url);
         String msg = br.readLine();
         String tag = msg.substring(0, 2);
@@ -109,14 +155,9 @@ public class CameraApi {
      * @param urlString The url of the HTTP GET
      * @return BufferedReader of the response
      */
-    private static BufferedReader getHttp(String urlString) throws Exception {
-        try {
-            URL url = new URL(urlString);
-            URLConnection conn = url.openConnection();
-            return new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        throw new Exception("couldn't connect");
+    private static BufferedReader getHttp(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        URLConnection conn = url.openConnection();
+        return new BufferedReader(new InputStreamReader(conn.getInputStream()));
     }
 }
