@@ -19,36 +19,48 @@ import 'rxjs/Rx';
     ]
 })
 export class Overview implements OnInit {
-    constructor (private _heroService: ScriptService) {}
+    socket: WebSocket;
+    constructor (private _scriptService: ScriptService) {}
     errorMessage: string;
     scripts:Script[];
     scriptData: Script;
     activeScript: ActiveScript;
-    ngOnInit() { this.getScripts(); this.getActive();}
+    ngOnInit() {
+        this.connect();
+        this.getScripts();
+        this.socket.onmessage = this.onMessage;
+    }
     getScripts() {
-        this._heroService.getScripts()
+        this._scriptService.getScripts()
             .subscribe(
                 scripts => this.scripts = scripts,
                 error =>  this.errorMessage = <any>error);
     }
-    getActive() {
-        this._heroService.getStatus(1)
-            .subscribe(
-                activeScript => this.activeScript = activeScript,
-                error =>  this.errorMessage = <any>error);
+    onMessage(ev: MessageEvent) {
+        console.log(ev);
+        this.activeScript = JSON.parse(ev.data);
     }
-    showScript(id: number) {
-        this._heroService.getScript(id)
-            .subscribe(
-                scriptData => this.scriptData = scriptData
-            );
+    connect() {
+        this.socket = this._scriptService.connectScript();
+        /*let socket = this.socket;
+         this.socket.onopen = function(ev) {
+         console.log(ev);
+         socket.send("hoi");
+         };
+         this.socket.onmessage = function(ev) {
+         console.log(ev);
+         console.log("Received data from websocket: ", ev.data);
+         };
+         this.socket.onerror = function(ev) {
+         console.log("Error from websocket: ", ev.data);
+         };
+         console.log(this.socket);*/
     }
 
-    activateScript(id: number) {
-        this._heroService.startScript(id)
-            .subscribe(
-                activeScript => this.activeScript = activeScript    ,
-                error =>  this.errorMessage = <any>error);
+    makeActive(newscript: Script) {
+        this.activeScript = new ActiveScript();
+        this.activeScript.script = newscript;
+        this.socket.send(JSON.stringify(this.activeScript));
     }
 
     gotoview(which: string) {

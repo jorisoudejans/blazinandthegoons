@@ -1,5 +1,22 @@
 <div class="col-md-offset-1 col-md-4">
-    <script-list [scripts]="scripts" [scriptData]="scriptData" [activeScript]="activeScript"></script-list>
+    <h2>Script List</h2>
+    <p><i>Pick a script from the list</i></p>
+
+    <div class="list-group script-list">
+        <div *ngFor="#script of scripts;" class="col-md-12 list-group-item" [class.oneRunning]="activeScript" [class.active]="activeScript && script.id == activeScript.script.id">
+            <div class="col-md-4">
+                {{ script.id }}
+            </div>
+            <div class="col-md-4">
+                {{ script.name }}
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary-outline" (click)="editScript(script)">Edit script</button>
+                <button type="button" class="btn btn-primary-outline" (click)="makeActive(script)">Assign as live script</button>
+                <button type="button" class="btn btn-primary-outline" (click)="deactivateScript()">Unassign as live script</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="col-md-offset-2 col-md-4">
     <a (click)="gotoview('director')" class="btn btn-primary">Open view as director</a>
