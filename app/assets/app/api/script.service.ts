@@ -5,10 +5,11 @@ import {Observable}     from "rxjs/Observable";
 
 @Injectable()
 export class ScriptService {
-    constructor (private http: Http) {}
+    constructor (private http: Http) {
+    }
     private _heroesUrl = "api/scripts";  // URL to web api
     connectScript (): WebSocket {
-        return new WebSocket("ws://localhost:9000/" + this._heroesUrl + "/connect");
+        return new WebSocket("ws://localhost:9000/" + this._heroesUrl + "/connect")
     }
     getScripts (): Observable<Script[]> {
         return this.http.get(this._heroesUrl)

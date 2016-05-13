@@ -17,7 +17,8 @@ export class ActiveScript {
     constructor(
         public script: Script,
         public runningTime: number,
-        public actionIndex: number
+        public actionIndex: number,
+        public script: Script
     ) {  }
 
 

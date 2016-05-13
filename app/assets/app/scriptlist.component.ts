@@ -7,8 +7,16 @@ import {Component, Input} from "angular2/core";
     directives:  [],
     providers:   []
 })
-export class ScriptListComponent {
-    @Input() scripts:Script[];
-    @Input() scriptData: Script;
-    @Input() activeScript: ActiveScript;
+export class ScriptListComponent implements OnInit {
+    constructor (private _heroService: ScriptService) {}
+    errorMessage: string;
+    scripts:Script[];
+    scriptData: Script;
+    ngOnInit() { this.getScripts(); }
+    getScripts() {
+        this._heroService.getScripts()
+            .subscribe(
+                scripts => this.scripts = scripts,
+                error =>  this.errorMessage = <any>error);
+    }
 }

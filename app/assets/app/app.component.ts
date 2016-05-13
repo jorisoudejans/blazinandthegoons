@@ -1,5 +1,7 @@
 import { HTTP_PROVIDERS }    from "angular2/http";
-import {OnInit, Component} from "angular2/core"
+import {OnInit, Component} from "angular2/core";
+import {Observable} from 'rxjs/Observable';
+
 
 import {ScriptService} from "./api/script.service";
 import {Script, ActiveScript} from "./api/script";
@@ -17,19 +19,39 @@ import {CameraListComponent} from "./cameralist.component";
     ]
 })
 export class AppComponent implements OnInit {
+    observable: Observable;
     socket: WebSocket;
-    constructor (private _scriptService: ScriptService) {}
+    constructor (private _scriptService: ScriptService) { }
     currentScript: ActiveScript;
+
     ngOnInit() {
         this.connect();
-        this.socket.onmessage = this.onMessage;
+
     }
     onMessage(ev: MessageEvent) {
         console.log(ev);
         this.currentScript = JSON.parse(ev.data);
+        console.log(this.currentScript);
     }
     connect() {
         this.socket = this._scriptService.connectScript();
+
+        this.observable = Observable.create(observer =>
+                this.socket.onmessage = (msg) => observer.next(msg)
+        );
+
+        this.observable.subscribe(
+            (data) => {
+                this.currentScript = JSON.parse(data.data);
+                console.log(this.currentScript);
+                console.log(this.currentScript.script.actions);
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                console.log('completed');
+            });
         /*let socket = this.socket;
         this.socket.onopen = function(ev) {
             console.log(ev);

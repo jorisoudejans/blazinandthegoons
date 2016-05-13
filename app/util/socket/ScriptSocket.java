@@ -10,6 +10,7 @@ import play.libs.Json;
 import play.mvc.WebSocket;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,16 +55,31 @@ public class ScriptSocket {
      * @param out outgoing stream
      */
     public void join(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
+        makeAScript();
+
         in.onMessage(jsonNode -> {
             // do nothing yet
             // just return the active script
             System.out.println("This socket: " + jsonNode.toString());
             ActiveScript as = ActiveScript.find.all().get(0);
-
             write(as);
         });
 
+
         subscribers.add(out);
+
+        ActiveScript as = ActiveScript.find.all().get(0);
+        write(as);
+    }
+
+    private void makeAScript() {
+        if (ActiveScript.find.all().isEmpty()) {
+            ActiveScript as = new ActiveScript();
+            as.actionIndex = 0;
+            as.runningTime = new Date().getTime();
+            as.script = models.Script.find.byId(1L);
+            as.save();
+        }
     }
 
     private void write(ActiveScript script) {
