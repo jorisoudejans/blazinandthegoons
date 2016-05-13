@@ -3,7 +3,7 @@
     <p><i>Pick a script from the list</i></p>
 
     <div class="list-group script-list">
-        <div *ngFor="#script of scripts;" class="col-md-12 list-group-item" [class.oneRunning]="activeScript" [class.active]="activeScript && script.id == activeScript.script.id">
+        <div *ngFor="#script of scripts;" class="col-md-12 list-group-item" [class.oneRunning]="activeScript" [class.active]="activeScript && activeScript.script && script.id == activeScript.script.id">
             <div class="col-md-4">
                 {{ script.id }}
             </div>

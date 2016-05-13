@@ -1,5 +1,6 @@
 import {Script, ActiveScript} from "./api/script";
 import {Component, Input, OnInit} from "angular2/core";
+import {ScriptService} from "./api/script.service";
 
 @Component({
     selector:    'script-list',
