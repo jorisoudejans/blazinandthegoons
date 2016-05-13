@@ -1,5 +1,8 @@
 package controllers;
 
+import akka.actor.ActorRef;
+import akka.stream.OverflowStrategy;
+import akka.stream.javadsl.Source;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Action;
 import models.ActiveScript;
@@ -18,6 +21,11 @@ import java.util.List;
  * Controls a script.
  */
 public class Script extends Controller {
+
+    /**
+     * List to hold our connected sockets.
+     */
+    private List<LegacyWebSocket> scriptSockets;
 
     /**
      * Get all scripts in the database.
@@ -130,7 +138,15 @@ public class Script extends Controller {
      * @return websocket for scripts
      */
     public LegacyWebSocket<String> socket() {
-        return WebSocket.withActor(ScriptSocket::props); // setup the websocket
+        //Source s = Source.actorRef(B, OverflowStrategy.fail());
+
+
+        LegacyWebSocket<String> socket = WebSocket.withActor(ScriptSocket::props); // setup the websocket
+        scriptSockets.add(socket);
+
+        System.out.println(scriptSockets);
+
+        return socket;
     }
 
 }
