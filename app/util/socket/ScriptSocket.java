@@ -2,10 +2,8 @@ package util.socket;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import akka.actor.UntypedActor;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.ActiveScript;
-import play.libs.Akka;
 import play.libs.Json;
 import play.mvc.WebSocket;
 
@@ -23,7 +21,7 @@ public class ScriptSocket {
     private List<WebSocket.Out<JsonNode>> subscribers;
 
     /**
-     * Singleton
+     * Singleton.
      * @return singleton instance
      */
     public static ScriptSocket getActive() {
@@ -46,8 +44,7 @@ public class ScriptSocket {
     /**
      * creates a new scriptsocket.
      */
-    public ScriptSocket(){
-    }
+    public ScriptSocket() { }
 
     /**
      * Join a websocket.
@@ -57,16 +54,25 @@ public class ScriptSocket {
     public void join(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
         makeAScript();
 
+        subscribers.add(out);
+
         in.onMessage(jsonNode -> {
             // do nothing yet
             // just return the active script
             System.out.println("This socket: " + jsonNode.toString());
+            System.out.println("Whats oing on " + jsonNode.findPath("actionIndex").asInt());
+
             ActiveScript as = ActiveScript.find.all().get(0);
+
+            if (as != null) {
+                as.actionIndex = jsonNode.findPath("actionIndex").asInt();
+                //as.save();
+            }
+
             write(as);
         });
 
 
-        subscribers.add(out);
 
         ActiveScript as = ActiveScript.find.all().get(0);
         write(as);

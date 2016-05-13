@@ -26,6 +26,13 @@ export class ScriptService {
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
     }*/
+    static putScript(script: ActiveScript, socket: WebSocket): void {
+        var activeData = {
+            "actionIndex": script.actionIndex
+        };
+        socket.send(JSON.stringify(activeData));
+        console.log("sending: "+JSON.stringify(activeData))
+    }
     static startScript (script: ActiveScript, socket: WebSocket): void {
         /*return this.http.get(this._heroesUrl + "/" + id + "/start")
             .map(ScriptService.extractData)
