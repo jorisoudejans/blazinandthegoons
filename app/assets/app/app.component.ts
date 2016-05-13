@@ -23,9 +23,7 @@ export class AppComponent implements OnInit {
     currentScript: ActiveScript;
     ngOnInit() {
         this.connect();
-        this.socket.onmessage = function(ev) {
-            console.log(ev);
-        }
+        this.socket.onmessage = this.onMessage;
     }
     onMessage(ev: MessageEvent) {
         console.log(ev);
