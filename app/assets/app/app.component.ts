@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     socket: WebSocket;
     constructor (private _scriptService: ScriptService) { }
     currentScript: ActiveScript;
+    errorMessage: string
 
     ngOnInit() {
         this.connect();
@@ -37,8 +38,12 @@ export class AppComponent implements OnInit {
     connect() {
         this.socket = this._scriptService.connectScript();
 
-        this.observable = Observable.create((observer: any) =>
-                this.socket.onmessage = (msg) => observer.next(msg)
+        this.observable = Observable.create((observer: any) => {
+
+                    this.socket.onmessage = (msg) => observer.next(msg);
+                    this.socket.onclose = (msg) => observer.error(msg);
+                    this.socket.onerror = (msg) => observer.error(msg);
+            }
         );
 
         this.observable.subscribe(
@@ -47,6 +52,8 @@ export class AppComponent implements OnInit {
                 console.log(this.currentScript);
             },
             (error) => {
+                // show error message
+                this.errorMessage = "Connection to server was lost.";
                 console.log(error);
             },
             () => {
