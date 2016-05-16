@@ -16,7 +16,7 @@
 <div id="dock-container">
     <div id="dock-top">
         <div *ngIf="currentScript">
-            <button (click)="nextAction()">Next</button>
+            <button md-raised-button (click)="nextAction()">Next</button>
         </div>
         <div *ngIf="!currentScript">
             <button (click)="startScript(1)">Start</button>

@@ -1,7 +1,7 @@
 import { HTTP_PROVIDERS }    from "angular2/http";
 import {OnInit, Component} from "angular2/core";
 import {Observable} from 'rxjs/Observable';
-
+import {MdButton} from 'assets/lib/ng2-material/components/button/button';
 
 import {ScriptService} from "./api/script.service";
 import {Script, ActiveScript} from "./api/script";
@@ -13,7 +13,7 @@ import {CameraListComponent} from "./cameralist.component";
 @Component({
     selector: "script-dd",
     templateUrl: './assets/app/partials/director-main.component.html',
-    directives: [ScriptListComponent, ActionListComponent, PresetListComponent, CameraListComponent],
+    directives: [ScriptListComponent, ActionListComponent, PresetListComponent, CameraListComponent, MdButton],
     providers:  [
         HTTP_PROVIDERS,
         ScriptService,
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     socket: WebSocket;
     constructor (private _scriptService: ScriptService) { }
     currentScript: ActiveScript;
-    errorMessage: string
+    errorMessage: string;
 
     ngOnInit() {
         this.connect();
