@@ -15,13 +15,33 @@
 </div> <!-- /container -->
 <div id="dock-container">
     <div id="dock-top">
+        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Back" (click)="advance(-1)">
+                <i class="material-icons">fast_rewind</i>
+            </button>
+            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Pause">
+                <i class="material-icons">pause</i>
+            </button>
+            <button *ngIf="!currentScript" md-button class="md-icon-button" aria-label="Play">
+                <i class="material-icons">play_arrow</i>
+            </button>
+            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Forward" (click)="advance(1)">
+                <i class="material-icons">fast_forward</i>
+            </button>
+        </section>
+        <!--
         <div *ngIf="currentScript">
-            <button md-raised-button (click)="nextAction()">Next</button>
+            <button md-raised-button class="md-icon-button" (click)="advance(-1)"><i class="material-icons">face</i></button>
+        </div>
+        <div *ngIf="currentScript">
+            <button md-raised-button (click)="advance(0)">P/P</button>
+        </div>
+        <div *ngIf="currentScript">
+            <button md-raised-button (click)="advance(1)">Next</button>
         </div>
         <div *ngIf="!currentScript">
-            <button (click)="startScript(1)">Start</button>
-        </div>
-        <p *ngIf="currentScript">Current time {{ currentScript.runningTime }}</p>
+            <button md-raised-button (click)="startScript(1)">Start</button>
+        </div>-->
     </div>
     <div id="dock" class="container-fluid">
 

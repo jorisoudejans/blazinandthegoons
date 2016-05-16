@@ -69,4 +69,8 @@ export class AppComponent implements OnInit {
     startScript(id: number) {
         ScriptService.startScript(this.currentScript, this.socket);
     }
+    advance(c: number) {
+        this.currentScript.actionIndex = this.currentScript.actionIndex + c;
+        ScriptService.putScript(this.currentScript, this.socket);
+    }
 }
