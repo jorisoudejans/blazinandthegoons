@@ -9,6 +9,8 @@
 
 .action-list {
   margin-top: 8px;
+  max-height: 90%;
+  overflow-y: scroll;
 
   .action-list-item {
     padding-left: 5px;

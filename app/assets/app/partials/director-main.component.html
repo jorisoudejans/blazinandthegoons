@@ -1,6 +1,6 @@
 <div class="connection-lost" *ngIf="errorMessage"><h3>{{ errorMessage }}</h3></div>
-<div class="container-fluid">
-    <div class="col-md-4">
+<div class="container-fluid screen-height">
+    <div class="col-md-4 screen-height">
         <action-list [scriptData]="currentScript" [socket]="socket"></action-list>
     </div>
     <div class="col-md-4">
