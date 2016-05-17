@@ -1,6 +1,8 @@
 package util.camera;
 
 
+import javax.imageio.ImageIO;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,7 +50,8 @@ public class CameraApi {
     public static int[] setPanTilt(LiveCamera cam, int pan, int tilt) throws  Exception {
 
         String url = "http://" + cam.getIp() + "/cgi-bin/aw_ptz?cmd=%23APC"
-                + Integer.toHexString(pan) + Integer.toHexString(tilt) + "&res=1";
+                + Integer.toHexString(pan).toUpperCase()
+                + Integer.toHexString(tilt).toUpperCase() + "&res=1";
         BufferedReader br = getHttp(url);
         String msg = br.readLine();
         String tag = msg.substring(0, 3);
@@ -93,7 +96,7 @@ public class CameraApi {
      */
     public static int setZoom(LiveCamera cam, int zoom) throws Exception {
         String url = "http://" + cam.getIp() + "/cgi-bin/aw_ptz?cmd=%23GZ"
-                + Integer.toHexString(zoom) + "&res=1";
+                + Integer.toHexString(zoom).toUpperCase() + "&res=1";
         BufferedReader br = getHttp(url);
         String msg = br.readLine();
         String tag = msg.substring(0, 2);
@@ -106,7 +109,7 @@ public class CameraApi {
     }
 
     /**
-     * This method will return the zoom position of the camera.
+     * This method will return the focus position of the camera.
      * @param cam The camera from which the values will be read.
      * @throws Exception When the response is not the pan/tilt or getHttp throws one.
      *          Buffered reader can also throw an exception
@@ -126,7 +129,7 @@ public class CameraApi {
     }
 
     /**
-     * This method will return the zoom position of the camera.
+     * This method will set the focus of the camera.
      * @param cam The camera which will be changed.
      * @param focus The focus value
      * @throws Exception When the response is not the pan/tilt or getHttp throws one.
@@ -148,6 +151,62 @@ public class CameraApi {
         }
     }
 
+    /**
+     * This method will return the iris position of the camera.
+     * @param cam   The camera of which will be read
+     * @return  The iris position
+     * @throws Exception When response is not the iris position or getHttp throws one.
+     *          Buffered reader can also throw an exception
+     */
+    public static int getIris(LiveCamera cam) throws Exception {
+        String url = "http://" + cam.getIp() + "/cgi-bin/aw_ptz?cmd=%23GI&res=1";
+        BufferedReader br = getHttp(url);
+        String msg = br.readLine();
+        String tag = msg.substring(0, 2);
+        if (tag.equals("gi")) {
+            //There is also data about auto-iris being on or off
+            return Integer.parseInt(msg.substring(2, 5), 16);
+        } else {
+            //TODO: Catch possible error message
+            throw new Exception("error");
+        }
+    }
+
+    /**
+     * This method will set the iris position of the camera.
+     * @param cam   The camera of which will be read
+     * @param iris The iris position the camera will be set to
+     * @return  The iris position the camera returns,
+     *              this should be the same as the input.
+     * @throws Exception When response is not the iris position or getHttp throws one.
+     *          Buffered reader can also throw an exception
+     */
+    public static int setIris(LiveCamera cam, int iris) throws Exception {
+        String url = "http://" + cam.getIp() + "/cgi-bin/aw_ptz?cmd=%23AXI"
+                + Integer.toHexString(iris).toUpperCase() + "&res=1";
+        BufferedReader br = getHttp(url);
+        String msg = br.readLine();
+        String tag = msg.substring(0, 3);
+        if (tag.equals("axi")) {
+            //There is also data about auto-iris being on or off
+            return Integer.parseInt(msg.substring(3, 6), 16);
+        } else {
+            //TODO: Catch possible error message
+            throw new Exception("error");
+        }
+    }
+
+    /**
+     * Requests a snapshot from the camera at the current time.
+     * @param cam   Camera which takes the snapshot
+     * @return     The image of the snapshot
+     * @throws Exception    Exceptions could be thrown when retrieving jpeg
+     */
+    public static Image getJpegSnapshot(LiveCamera cam)throws Exception {
+        String urlString = "http://" + cam.getIp() + "/cgi-bin/camera?resolution=1280";
+        URL url = new URL(urlString);
+        return ImageIO.read(url);
+    }
 
 
     /**
