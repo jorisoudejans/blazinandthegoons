@@ -10,7 +10,7 @@ import com.avaje.ebean.event.ServerConfigStartup;
 // id generation
 
 /**
- * Configuration for postgres
+ * Configuration for postgres on heroku instances.
  */
 public class MyServerConfigStartup implements ServerConfigStartup {
     @Override

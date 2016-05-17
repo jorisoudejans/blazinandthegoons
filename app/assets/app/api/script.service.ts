@@ -9,7 +9,8 @@ export class ScriptService {
     }
     private _heroesUrl = "api/scripts";  // URL to web api
     connectScript (): WebSocket {
-        return new WebSocket("ws://localhost:9000/" + this._heroesUrl + "/connect")
+        var base = location.hostname + (location.port ? ':'+location.port: '');
+        return new WebSocket("ws://" + base +"/" + this._heroesUrl + "/connect")
     }
     getScripts (): Observable<Script[]> {
         return this.http.get(this._heroesUrl)
