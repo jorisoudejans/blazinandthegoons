@@ -15,11 +15,15 @@ import com.avaje.ebean.event.ServerConfigStartup;
 public class MyServerConfigStartup implements ServerConfigStartup {
     @Override
     public void onStart(ServerConfig serverConfig) {
-        PostgresPlatform postgresPlatform = new PostgresPlatform();
+        //System.out.println("Platform: " + serverConfig.get());
+
+        /*PostgresPlatform postgresPlatform = new PostgresPlatform();
         DbIdentity dbIdentity = postgresPlatform.getDbIdentity();
         dbIdentity.setSupportsGetGeneratedKeys(false);
         dbIdentity.setSupportsSequence(true);
         dbIdentity.setIdType(IdType.GENERATOR);
-        serverConfig.setDatabasePlatform(postgresPlatform);
+        serverConfig.setDatabasePlatform(postgresPlatform);*/
+
+        serverConfig.setDatabaseSequenceBatchSize(1); // for postgres id sequencing
     }
 }
