@@ -19,13 +19,13 @@
             <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Back" (click)="advance(-1)">
                 <i class="material-icons">fast_rewind</i>
             </button>
-            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Pause">
-                <i class="material-icons">pause</i>
+            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Pause" (click)="advance(1)">
+                <i class="material-icons">skip_next</i>
             </button>
             <button *ngIf="!currentScript" md-button class="md-icon-button" aria-label="Play">
                 <i class="material-icons">play_arrow</i>
             </button>
-            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Forward" (click)="advance(1)">
+            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Forward">
                 <i class="material-icons">fast_forward</i>
             </button>
         </section>
