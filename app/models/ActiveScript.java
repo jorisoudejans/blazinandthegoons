@@ -10,8 +10,6 @@ import javax.persistence.OneToOne;
 
 /**
  * Class to represent an active script.
- *
- * Created by hidde on 5/10/16.
  */
 @Entity
 public class ActiveScript extends Model {
