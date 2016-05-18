@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by hidde on 4/28/16.
+ * Model for scripts.
  */
 @Entity
 public class Script extends Model {

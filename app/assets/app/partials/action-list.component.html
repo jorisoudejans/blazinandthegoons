@@ -1,10 +1,16 @@
 <div class="list-header"><h2>Script</h2></div>
-<ul class="action-list" *ngIf="scriptData">
-    <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index" [class.selected]="i == scriptData.actionIndex" (click)="clickAction(i)">
-        <div class="text-area">
-            <h1>Action description: {{action.description}}</h1>
-            <span>{{action.estTime}} sec</span><br>
-            <span>Preset: {{action.preset.name}}</span>
-        </div>
-    </li>
-</ul>
+<div class="action-list-container">
+    <ul class="action-list" *ngIf="scriptData">
+        <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index" [class.done]="i < scriptData.actionIndex" [class.selected]="i == scriptData.actionIndex" (click)="clickAction(i)">
+            <div class="text-area">
+                <h1 class="action-title">Action description: {{action.description}}</h1>
+                <span class="action-est-time">{{action.duration}} sec</span><br>
+                <span *ngIf="i == scriptData.actionIndex">Preset: {{action.preset.name}}</span>
+            </div>
+            <div class="slider"
+                 [style.animation-duration]="action.duration + 's'"
+                 *ngIf="i == scriptData.actionIndex"></div>
+        </li>
+    </ul>
+    <div class="shadow"></div>
+</div>

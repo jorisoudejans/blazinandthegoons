@@ -22,8 +22,7 @@ import static org.mockito.Mockito.when;
 import static play.test.Helpers.fakeApplication;
 
 /**
- * Class to test ScriptSocket class
- * Created by hidde on 5/12/16.
+ * Class to test ScriptSocket class.
  */
 public class ScriptSocketTest {
 

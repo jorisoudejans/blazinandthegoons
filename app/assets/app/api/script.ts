@@ -1,5 +1,4 @@
-import {Action} from "./api/action";
-import {Preset} from "./api/preset";
+import {Action} from "./action";
 
 export class Script {
 
@@ -15,9 +14,10 @@ export class Script {
 export class ActiveScript {
 
     constructor(
-        public script: Script,
         public runningTime: number,
-        public actionIndex: number
+        public percentage: string,
+        public actionIndex: number,
+        public script: Script
     ) {  }
 
 

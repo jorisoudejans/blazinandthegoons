@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * WebSocket (ws) for streaming script data.
  */
-public class ScriptSocket {
+public final class ScriptSocket {
 
     private static ScriptSocket singleton;
 
@@ -44,7 +44,7 @@ public class ScriptSocket {
     /**
      * creates a new scriptsocket.
      */
-    public ScriptSocket() { }
+    private ScriptSocket() { }
 
     /**
      * Join a websocket.
@@ -71,8 +71,6 @@ public class ScriptSocket {
 
             write(as);
         });
-
-
 
         ActiveScript as = ActiveScript.find.all().get(0);
         write(as);
