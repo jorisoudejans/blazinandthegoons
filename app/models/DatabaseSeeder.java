@@ -40,7 +40,7 @@ public class DatabaseSeeder {
         for (int i = 0; i < 20; i++) { // create some more actions
             Action a = Action.createAction("Action " + i, i, i * 2, models.Preset.find.byId(1L), s);
         }
-        printall(); // for debug
+        //printall(); // for debug
     }
 
     /**

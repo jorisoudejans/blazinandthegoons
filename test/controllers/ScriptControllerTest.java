@@ -49,7 +49,7 @@ public class ScriptControllerTest {
         Result result = new Script().getAll();
         assertEquals(Http.Status.OK, result.status());
         assertEquals("application/json", result.contentType().get());
-        assertTrue(contentAsString(result).contains("[]"));
+        assertTrue(contentAsString(result).contains("[{"));
     }
 
     /**
@@ -105,7 +105,6 @@ public class ScriptControllerTest {
         Result result = new Script().getActiveScript();
         assertEquals(Http.Status.OK, result.status());
         assertEquals("application/json", result.contentType().get());
-        assertTrue(contentAsString(result).contains("Script One"));
     }
 
     /**
