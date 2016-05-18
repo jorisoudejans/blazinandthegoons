@@ -1,6 +1,3 @@
-/**
- * Created by Floris on 5/5/2016.
- */
 import {Injectable}     from "angular2/core";
 import {Http, Response, Headers, RequestOptions} from "angular2/http";
 import {Preset}           from "./preset";

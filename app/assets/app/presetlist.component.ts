@@ -1,6 +1,3 @@
-/**
- * Created by floris on 04/05/2016.
- */
 import {Preset} from "./api/preset";
 import {Component, Input, OnInit} from "angular2/core"
 
