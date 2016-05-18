@@ -17,7 +17,6 @@ public class Application extends Controller {
 
     public Result directorView() {
 
-
         return ok(index.render("Your new application is ready."));
     }
 

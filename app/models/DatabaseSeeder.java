@@ -18,18 +18,19 @@ public class DatabaseSeeder {
     @Inject
     public DatabaseSeeder(EbeanConfig config, DynamicEvolutions evolutions) {
 
-        if (Preset.find.byId(1L) == null) {
+        if (Preset.find.byId(1L) == null) { // create presets if not present
             Preset.createPreset("Nice view", 0, 0.f, 0.f, 0.f, 0.f);
             Preset.createPreset("Dirigent focus", 3, 0.f, 0.f, 0.f, 0.f);
             Preset.createPreset("Violin snare closeup", 2, 0.f, 0.f, 0.f, 0.f);
             Preset.createPreset("Contrabas player", 5, 0.f, 0.f, 0.f, 0.f);
         }
 
-        Script s = new Script();
+        Script s = new Script(); // create new script
         s.name = "Mock script";
         //s.actions = actionlist;
         s.save();
 
+        // create actions
         Action a1 = Action.createAction("Go to Trombone", 5, 3, models.Preset.find.byId(1L), s);
         Action a2 = Action.createAction("Go to Dirigent", 4, 2, models.Preset.find.byId(2L), s);
         Action a3 = Action.createAction("Go to Violin", 3, 1, models.Preset.find.byId(3L), s);
@@ -39,7 +40,7 @@ public class DatabaseSeeder {
         for (int i = 0; i < 20; i++) { // create some more actions
             Action a = Action.createAction("Action " + i, i, i * 2, models.Preset.find.byId(1L), s);
         }
-        printall();
+        printall(); // for debug
     }
 
     /**
