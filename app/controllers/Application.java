@@ -81,4 +81,8 @@ public class Application extends Controller {
         return ok(overview.render("Script selection"));
     }
 
+    public Result editView(Long id) {
+        return ok(edit.render("Edit script", id));
+    }
+
 }

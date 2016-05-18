@@ -15,12 +15,17 @@ export class ScriptService {
         return this.http.get(this._heroesUrl)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
-    }/*
+    }
+    getScriptWithPrefix (id: number, prefix: String): Observable<Script> {
+        return this.http.get(prefix + this._heroesUrl + "/" + id)
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
+    }
     getScript (id: number): Observable<Script> {
         return this.http.get(this._heroesUrl + "/" + id)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
-    }
+    }/*
     getStatus (id: number): Observable<ActiveScript> {
         return this.http.get(this._heroesUrl + "/status")
             .map(ScriptService.extractData)

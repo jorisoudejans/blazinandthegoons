@@ -5,6 +5,7 @@
 # Home page
 GET     /                           @controllers.Application.overviewView()
 GET     /director                   @controllers.Application.directorView()
+GET     /edit/:id                   @controllers.Application.editView(id: Long)
 
 # Scripts
 GET     /api/scripts                    @controllers.Script.getAll()

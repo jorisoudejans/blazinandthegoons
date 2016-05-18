@@ -71,6 +71,9 @@ export class Overview implements OnInit {
         console.log(JSON.stringify(scr));
         this.socket.send(JSON.stringify(scr));
     }
+    editScript(script: Script) {
+        document.location.href = './edit/'+script.id;
+    }
 
     gotoview(which: string) {
         if(this.activeScript == null) {
