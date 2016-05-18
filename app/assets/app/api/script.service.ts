@@ -26,6 +26,14 @@ export class ScriptService {
         return this.http.get(this._heroesUrl + "/" + id)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
+    }
+    updateScript(script: Script): Observable<Script> {
+        console.log(this._heroesUrl + "/" + script.id)
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post('../' + this._heroesUrl + "/" + script.id, JSON.stringify(script), options)
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
     }/*
     getStatus (id: number): Observable<ActiveScript> {
         return this.http.get(this._heroesUrl + "/status")

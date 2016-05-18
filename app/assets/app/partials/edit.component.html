@@ -1,15 +1,33 @@
-<div class="list-header"><h2 *ngIf="scriptData">{{scriptData.name}}</h2></div>
-<ul class="action-list" *ngIf="scriptData">
-    <li class="action-list-item" *ngFor="#action of scriptData.actions; #i=index" [class.selected]="i == scriptData.actionIndex" (click)="activateForm(this)">
-        <div class="text-area">
-            <h1>Action description: {{action.description}}</h1>
-            <span>{{action.estTime}} sec</span><br>
-            <span>Preset: {{action.preset.name}}</span>
+<div class="container-fluid screen-height">
+    <div class="list-header col-xs-12">
+        <div class="col-xs-2 nopadding">
+            <input class="form-control" *ngIf="scriptData" [(ngModel)]="scriptData.name" placeholder="name">
         </div>
-        <div class="text-area">
-            <h1>Action description: {{action.description}}</h1>
-            <span>{{action.estTime}} sec</span><br>
-            <span>Preset: {{action.preset.name}}</span>
-        </div>
-    </li>
-</ul>
+    </div>
+    <div class="col-md-6">
+        <ul class="editable-list list-group" *ngIf="scriptData">
+            <li class="editable-list-item list-group-item" *ngFor="#action of scriptData.actions; #i=index" [class.selected]="i == scriptData.actionIndex">
+                <div [class.active-item]="action.active" [class.inactive-item]="action.active" class="text-area" (click)="action.active = !action.active">
+                    <h1 class="text-area-header">Action description: {{action.description}}</h1>
+                    <span class="text-area-detail">{{action.duration}} sec</span><br>
+                    <span class="text-area-detail">Preset: {{action.preset.name}}</span>
+                </div>
+                <div [class.inactive-item]="!action.active" [class.active-item]="action.active"  class="text-area input-area form-inline">
+                    <label class="text-area-header">Action description: </label><input class="form-control" [(ngModel)]="action.description" placeholder="description"><br>
+                    <input type="number" class="form-control" [(ngModel)]="action.duration" placeholder="duration"> <label class="text-area-detail">sec</label><br>
+                    <span class="text-area-detail">Preset:</span>
+                    <select class="form-control" (change)="updateAction(action, $event.target.value)">
+                        <option *ngFor="#preset of presets" [value]="preset">{{preset.name}}</option>
+                    </select><br>
+                    <button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-offset-1 col-md-4">
+        <preset-list></preset-list>
+    </div>
+    <div class="col-md-offset-1 col-md-12">
+        <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>
+    </div>
+</div>

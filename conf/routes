@@ -12,7 +12,7 @@ GET     /api/scripts                    @controllers.Script.getAll()
 
 GET     /api/scripts/connect                 @controllers.Script.socket()
 GET     /api/scripts/:id                @controllers.Script.get(id: Long)
-PUT     /api/scripts/:id                @controllers.Script.update(id: Long)
+POST    /api/scripts/:id                @controllers.Script.update(id: Long)
 POST    /api/scripts/create             @controllers.Script.create()
 POST    /api/scripts/:id/actions/create     @controllers.Script.addAction(id: Long)
 DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.Script.removeAction(scriptId: Long, actionId: Long)
