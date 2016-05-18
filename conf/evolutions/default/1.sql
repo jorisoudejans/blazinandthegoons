@@ -7,7 +7,7 @@ create table action (
   id                            bigint not null,
   description                   varchar(255),
   timestamp                     integer,
-  est_time                      integer,
+  duration                      integer,
   preset_id                     bigint,
   script_id                     bigint,
   constraint pk_action primary key (id)
@@ -25,10 +25,10 @@ create table preset (
   id                            bigint not null,
   name                          varchar(255),
   camera                        integer,
-  pan                           float,
-  tilt                          float,
-  zoom                          float,
-  focus                         float,
+  pan                           integer,
+  tilt                          integer,
+  zoom                          integer,
+  focus                         integer,
   constraint pk_preset primary key (id)
 );
 create sequence preset_seq;

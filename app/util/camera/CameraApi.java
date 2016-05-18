@@ -3,6 +3,7 @@ package util.camera;
 
 import javax.imageio.ImageIO;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -202,7 +203,7 @@ public class CameraApi {
      * @return     The image of the snapshot
      * @throws Exception    Exceptions could be thrown when retrieving jpeg
      */
-    public static Image getJpegSnapshot(LiveCamera cam)throws Exception {
+    public static BufferedImage getJpegSnapshot(LiveCamera cam)throws Exception {
         String urlString = "http://" + cam.getIp() + "/cgi-bin/camera?resolution=1280";
         URL url = new URL(urlString);
         return ImageIO.read(url);

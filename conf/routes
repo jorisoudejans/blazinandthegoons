@@ -13,6 +13,9 @@ GET     /api/scripts/:id                @controllers.Script.get(id: Long)
 POST    /api/scripts/create             @controllers.Script.create()
 POST    /api/scripts/:id/actions/create     @controllers.Script.addAction(id: Long)
 
+# For now put snapshot of default cam in ScriptController
+GET     /api/camera/image              @controllers.Script.getCameraImage()
+
 # Live script
 GET     /api/scripts/status                 @controllers.Script.getActiveScript()
 GET     /api/scripts/:id/start              @controllers.Script.startScript(id: Long)

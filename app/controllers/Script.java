@@ -7,7 +7,13 @@ import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import util.camera.CameraApi;
+import util.camera.LiveCamera;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -115,6 +121,26 @@ public class Script extends Controller {
             return ok(Json.toJson(script.activeScript));
         }
         return notFound("Script " + id);
+    }
+
+    /**
+     * Gives an image of the test camera via VPN
+     * @return the jpeg snapshot
+     */
+    public Result getCameraImage() {
+        // just to show an image for now
+        try {
+            BufferedImage i = CameraApi.getJpegSnapshot(new LiveCamera("192.168.10.101"));
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(i, "jpg", baos);
+
+            return ok(baos.toByteArray()).as("image/jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return notFound();
     }
 
 }
