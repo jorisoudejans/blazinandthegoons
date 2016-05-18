@@ -5,13 +5,18 @@ import {Observable}     from "rxjs/Observable";
 
 @Injectable()
 export class ScriptService {
-    constructor (private http: Http) {}
+    constructor (private http: Http) {
+    }
     private _heroesUrl = "api/scripts";  // URL to web api
+    connectScript (): WebSocket {
+        var base = location.hostname + (location.port ? ':'+location.port: '');
+        return new WebSocket("ws://" + base +"/" + this._heroesUrl + "/connect")
+    }
     getScripts (): Observable<Script[]> {
         return this.http.get(this._heroesUrl)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
-    }
+    }/*
     getScript (id: number): Observable<Script> {
         return this.http.get(this._heroesUrl + "/" + id)
             .map(ScriptService.extractData)
@@ -21,11 +26,19 @@ export class ScriptService {
         return this.http.get(this._heroesUrl + "/status")
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
+    }*/
+    static putScript(script: ActiveScript, socket: WebSocket): void {
+        var activeData = {
+            "actionIndex": script.actionIndex
+        };
+        socket.send(JSON.stringify(activeData));
+        console.log("sending: "+JSON.stringify(activeData))
     }
-    startScript (id: number): Observable<ActiveScript> {
-        return this.http.get(this._heroesUrl + "/" + id + "/start")
+    static startScript (script: ActiveScript, socket: WebSocket): void {
+        /*return this.http.get(this._heroesUrl + "/" + id + "/start")
             .map(ScriptService.extractData)
-            .catch(ScriptService.handleError)
+            .catch(ScriptService.handleError)*/
+        socket.send(JSON.stringify(script));
     }
     createScript (name: string): Observable<Script> {
 

@@ -20,10 +20,4 @@ export class ScriptListComponent implements OnInit {
                 scripts => this.scripts = scripts,
                 error =>  this.errorMessage = <any>error);
     }
-    showScript(id: number) {
-        this._heroService.getScript(id)
-            .subscribe(
-                scriptData => this.scriptData = scriptData
-        );
-    }
 }

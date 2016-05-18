@@ -6,7 +6,10 @@ import models.ActiveScript;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
+import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
+import play.mvc.WebSocket;
+import util.socket.ScriptSocket;
 
 import java.util.Date;
 import java.util.List;
@@ -90,6 +93,11 @@ public class Script extends Controller {
     public Result startScript(Long id) {
         models.Script s = models.Script.find.byId(id);
         if (s != null) {
+            List<ActiveScript> allScripts = ActiveScript.find.all();
+            for (ActiveScript as : allScripts) { // remove all scripts
+                as.delete();
+            }
+
             ActiveScript as = new ActiveScript();
             as.actionIndex = 0;
             as.runningTime = new Date().getTime();
@@ -115,6 +123,20 @@ public class Script extends Controller {
             return ok(Json.toJson(script.activeScript));
         }
         return notFound("Script " + id);
+    }
+
+    /**
+     * Get a new websocket instance.
+     * @return websocket for scripts
+     */
+    public LegacyWebSocket<JsonNode> socket() {
+
+        return new LegacyWebSocket<JsonNode>() {
+            @Override
+            public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
+                ScriptSocket.getActive().join(in, out);
+            }
+        };
     }
 
 }
