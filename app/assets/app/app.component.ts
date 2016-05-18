@@ -8,11 +8,12 @@ import {ScriptListComponent} from "./scriptlist.component";
 import {ActionListComponent} from "./actionlist.component";
 import {PresetListComponent} from "./presetlist.component";
 import {CameraListComponent} from "./cameralist.component";
+import {TimelineComponent} from "./timeline.component";
 
 @Component({
     selector: "script-dd",
     templateUrl: './assets/app/partials/director-main.component.html',
-    directives: [ScriptListComponent, ActionListComponent, PresetListComponent, CameraListComponent],
+    directives: [ScriptListComponent, ActionListComponent, PresetListComponent, CameraListComponent, TimelineComponent],
     providers:  [
         HTTP_PROVIDERS,
         ScriptService,

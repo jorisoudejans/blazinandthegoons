@@ -22,8 +22,22 @@
   .action-list-item {
     height: 50px;
     background-color: #eeeeee;
+    position: relative;
     overflow: hidden;
     padding: 16px 16px 20px 16px;
+
+    .slider {
+      width: 2px;
+      height: 100%;
+      position: absolute;
+      left: 100%;
+      margin-left: -2px;
+      top: 0;
+      background: #090;
+      animation-name: slider;
+      animation-duration: 3s;
+      animation-timing-function: linear;
+    }
 
     .active {
       background-color: #fafafa;
@@ -172,6 +186,38 @@ $grid-padding: 4px;
     background-color: #f5f5f5;
     height: 50px;
     box-shadow: 0 0 5px rgba(0,0,0,0.35);
+  }
+
+  #timeline {
+    height: 20px;
+    background: #009900;
+    top: 15px;
+    width: 100%;
+    position: relative;
+
+    .action {
+      height: 20px;
+      float: left;
+      width: 20px;
+      position: relative;
+    }
+
+    @keyframes slider {
+      0% {left: 0}
+      100% {left: 100%}
+    }
+
+    .slider {
+      width: 2px;
+      height: 20px;
+      position: absolute;
+      left: 100%;
+      margin-left: -2px;
+      background: white;
+      animation-name: slider;
+      animation-duration: 3s;
+      animation-timing-function: linear;
+    }
   }
 }
 
