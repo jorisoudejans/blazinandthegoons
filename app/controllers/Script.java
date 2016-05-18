@@ -54,6 +54,23 @@ public class Script extends Controller {
     }
 
     /**
+     * Update a script.
+     * @param id the script to update
+     * @return the created script
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result update(Long id) {
+        models.Script script = models.Script.find.byId(id); // find the script
+        if (script != null) {
+            JsonNode json = request().body().asJson(); // get the JSON payload
+            script.name = json.findPath("name").textValue(); // get the name
+            script.save();
+            return ok(Json.toJson(script)); // report back the updated script
+        }
+        return notFound();
+    }
+
+    /**
      * Add action to a script.
      * @param id script id
      * @return script with added action
@@ -71,6 +88,26 @@ public class Script extends Controller {
             return ok(Json.toJson(script));
         }
         return notFound("Script " + id);
+    }
+
+    /**
+     * Remove action from a script.
+     * @param scriptId the script which the action belongs to
+     * @param actionId the action id in the script
+     * @return script with added action
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result removeAction(Long scriptId, Long actionId) {
+        models.Script script = models.Script.find.byId(scriptId); // retrieve the script
+        if (script != null) {
+            Action action = Action.find.byId(actionId); // retrieve the action
+            if (action != null) {
+                action.delete(); // retrieve the action
+                return ok(Json.toJson(script));
+            }
+            return notFound("Action " + actionId);
+        }
+        return notFound("Script " + scriptId);
     }
 
     /**
