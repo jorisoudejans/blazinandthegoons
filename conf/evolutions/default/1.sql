@@ -7,7 +7,7 @@ create table action (
   id                            bigint not null,
   description                   varchar(255),
   timestamp                     integer,
-  est_time                      integer,
+  duration                      integer,
   preset_id                     bigint,
   script_id                     bigint,
   constraint pk_action primary key (id)
