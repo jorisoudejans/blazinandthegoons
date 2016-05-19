@@ -1,0 +1,22 @@
+@(title: String)
+
+@index(title) {
+    <script-dd></script-dd>
+    <script>    @* javascript is async downloaded by SystemJs *@
+            System.config({
+                packages: {
+                    'assets/app': {
+                        defaultExtension: 'js'
+                    },
+                    'assets/app/api': {
+                        defaultExtension: 'js'
+                    },
+                    'assets/lib': {
+                        defaultExtension: 'js'
+                    }
+                }
+            });
+        System.import('assets/app/main')
+                .then(null, console.error.bind(console));
+    </script>
+}

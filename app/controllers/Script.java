@@ -69,8 +69,8 @@ public class Script extends Controller {
         models.Script script = models.Script.find.byId(id); // find the script
         if (script != null) {
             JsonNode json = request().body().asJson(); // get the JSON payload
-            script.name = json.findPath("name").textValue(); // get the name
-            script.save();
+            script = Json.fromJson(json, models.Script.class);
+            script.update();
             return ok(Json.toJson(script)); // report back the updated script
         }
         return notFound();

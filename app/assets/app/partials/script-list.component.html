@@ -1,25 +1,18 @@
 <h2>Script List</h2>
 <p><i>Pick a script from the list</i></p>
-<table class="table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Script name</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="#script of scripts">
-        <td>{{script.id}}</td>
-        <td>{{script.name}}</td>
-        <td>
-            <button (click)="showScript(script.id)">
-                Manage
-            </button>
-            <p>{{ scriptData }}</p>
-        </td>
-    </tr>
-    </tbody>
 
-
-</table>
+<div class="list-group script-list">
+    <div *ngFor="#script of scripts;" class="col-md-12 list-group-item" [class.oneRunning]="activeScript" [class.active]="activeScript && script.id == activeScript.script.id">
+        <div class="col-md-4">
+            {{ script.id }}
+        </div>
+        <div class="col-md-4">
+            {{ script.name }}
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary-outline" (click)="editScript(script)">Edit script</button>
+            <button type="button" class="btn btn-primary-outline" (click)="makeActive(script)">Assign as live script</button>
+            <button type="button" class="btn btn-primary-outline" (click)="deactivateScript()">Unassign as live script</button>
+        </div>
+    </div>
+</div>

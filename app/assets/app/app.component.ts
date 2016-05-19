@@ -4,8 +4,8 @@ import {Observable} from 'rxjs/Observable';
 
 import {ScriptService} from "./api/script.service";
 import {Script, ActiveScript} from "./api/script";
-import {ScriptListComponent} from "./scriptlist.component";
 import {ActionListComponent} from "./actionlist.component";
+import {ScriptListComponent} from "./scriptlist.component";
 import {PresetListComponent} from "./presetlist.component";
 import {CameraListComponent} from "./cameralist.component";
 import {TimelineComponent} from "./timeline.component";
