@@ -66,7 +66,7 @@ export class Overview implements OnInit {
     }
 
     makeActive(newscript: Script) {
-        var scr = new ActiveScript(newscript, 0, 0);
+        var scr = new ActiveScript(2, '2%', 0, newscript);
         console.log("MAKE NEW ACTIONSCRIPT:");
         console.log(JSON.stringify(scr));
         this.socket.send(JSON.stringify(scr));
