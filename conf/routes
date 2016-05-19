@@ -17,6 +17,9 @@ POST    /api/scripts/:id/actions/create     @controllers.Script.addAction(id: Lo
 DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.Script.removeAction(scriptId: Long, actionId: Long)
 
 
+# For now put snapshot of default cam in ScriptController
+GET     /api/camera/image              @controllers.Script.getCameraImage()
+
 # Live script
 GET     /api/scripts/:id/start              @controllers.Script.startScript(id: Long)
 GET     /api/scripts/:id/update             @controllers.Script.updateActiveScript(id: Long)

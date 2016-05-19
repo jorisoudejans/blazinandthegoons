@@ -22,16 +22,16 @@ public class Preset extends Model {
     public int camera;
 
     @Constraints.Required
-    public float pan;
+    public int pan;
 
     @Constraints.Required
-    public float tilt;
+    public int tilt;
 
     @Constraints.Required
-    public float zoom;
+    public int zoom;
 
     @Constraints.Required
-    public float focus;
+    public int focus;
 
     public static Finder<Long, Preset> find = new Finder<>(Preset.class);
 
@@ -48,7 +48,7 @@ public class Preset extends Model {
      * @return The created Preset object.
      */
     public static Preset createPreset(
-            String name, int camera, float pan, float tilt, float zoom, float focus) {
+            String name, int camera, int pan, int tilt, int zoom, int focus) {
         Preset pr = new Preset();
         pr.name = name;
         pr.camera = camera;

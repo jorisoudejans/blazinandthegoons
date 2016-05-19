@@ -25,10 +25,10 @@ create table preset (
   id                            bigint not null,
   name                          varchar(255),
   camera                        integer,
-  pan                           float,
-  tilt                          float,
-  zoom                          float,
-  focus                         float,
+  pan                           integer,
+  tilt                          integer,
+  zoom                          integer,
+  focus                         integer,
   constraint pk_preset primary key (id)
 );
 create sequence preset_seq;

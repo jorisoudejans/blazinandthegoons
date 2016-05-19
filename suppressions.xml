@@ -6,8 +6,14 @@
 
 <!--For the models package we would like to use public variables.
     This because the classes are used as objects in a database,
-    so using public variables makes working with them easier.-->
+    so using public variables makes working with them easier.
+
+    In the CameraApi class we need to be able to parse the http-response
+    from the camera. Since these messages have a specified format,
+    MagicNumbers will throw errors when using substring to dissect
+    the message.-->
 <suppressions>
     <suppress checks="VisibilityModifier" files="app[\\/]models"/>
+    <suppress checks="MagicNumber" files="app[\\/]util[\\/]camera[\\/]CameraApi.java"/>
 </suppressions>
 
