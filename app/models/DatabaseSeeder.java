@@ -19,10 +19,10 @@ public class DatabaseSeeder {
     public DatabaseSeeder(EbeanConfig config, DynamicEvolutions evolutions) {
 
         if (Preset.find.byId(1L) == null) { // create presets if not present
-            Preset.createPreset("Nice view", 0, 0.f, 0.f, 0.f, 0.f);
-            Preset.createPreset("Dirigent focus", 3, 0.f, 0.f, 0.f, 0.f);
-            Preset.createPreset("Violin snare closeup", 2, 0.f, 0.f, 0.f, 0.f);
-            Preset.createPreset("Contrabas player", 5, 0.f, 0.f, 0.f, 0.f);
+            Preset.createPreset("Nice view", 0, 0, 0, 0, 0);
+            Preset.createPreset("Dirigent focus", 3, 0, 0, 0, 0);
+            Preset.createPreset("Violin snare closeup", 2, 0, 0, 0, 0);
+            Preset.createPreset("Contrabas player", 5, 0, 0, 0, 0);
         }
 
         Script s = new Script(); // create new script
