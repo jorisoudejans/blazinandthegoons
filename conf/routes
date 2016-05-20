@@ -3,18 +3,25 @@
 # ~~~~
 
 # Home page
-GET     /                           @controllers.Application.index()
+GET     /                           @controllers.Application.overviewView()
 GET     /director                   @controllers.Application.directorView()
+GET     /edit/:id                   @controllers.Application.editView(id: Long)
 
 # Scripts
 GET     /api/scripts                    @controllers.Script.getAll()
 
+GET     /api/scripts/connect                 @controllers.Script.socket()
 GET     /api/scripts/:id                @controllers.Script.get(id: Long)
+POST    /api/scripts/:id                @controllers.Script.update(id: Long)
 POST    /api/scripts/create             @controllers.Script.create()
 POST    /api/scripts/:id/actions/create     @controllers.Script.addAction(id: Long)
+DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.Script.removeAction(scriptId: Long, actionId: Long)
+
+
+# For now put snapshot of default cam in ScriptController
+GET     /api/camera/image              @controllers.Script.getCameraImage()
 
 # Live script
-GET     /api/scripts/status                 @controllers.Script.getActiveScript()
 GET     /api/scripts/:id/start              @controllers.Script.startScript(id: Long)
 GET     /api/scripts/:id/update             @controllers.Script.updateActiveScript(id: Long)
 
@@ -22,6 +29,7 @@ GET     /api/scripts/:id/update             @controllers.Script.updateActiveScri
 #Preset service
 GET     /api/presets                    @controllers.Preset.index()
 GET     /api/presets/:id                @controllers.Preset.get(id: Long)
+
 POST    /api/presets/create             @controllers.Preset.create()
 
 #Action service
@@ -30,5 +38,5 @@ GET     /api/actions/:id                @controllers.Action.get(id: Long)
 POST    /api/actions/create             @controllers.Action.create()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file)
+GET     /assets/*file               @controllers.Assets.versioned(path="/public", file)
     

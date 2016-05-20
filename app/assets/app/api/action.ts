@@ -1,18 +1,17 @@
-/**
- * Created by floris on 04/05/2016.
- */
 import {Script} from "./api/script";
-import {Preset} from "./api/preset";
+import {Preset} from "./preset";
 
 export class Action {
 
     constructor(
         public id: number,
         public description: string,
-        public estTime: number,
+        public duration: number,
         public preset: Preset,
-        public active: boolean
-    ) { active = false; }
+        public active: boolean = false,
+        public percentage: string = "2%",
+        public color: string = "rgb(0, 153, 0)"
+    ) {  }
 
 
 }

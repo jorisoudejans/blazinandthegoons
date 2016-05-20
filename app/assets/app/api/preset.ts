@@ -1,6 +1,3 @@
-/**
- * Created by floris on 04/05/2016.
- */
 import {Script} from "./api/script";
 
 export class Preset {

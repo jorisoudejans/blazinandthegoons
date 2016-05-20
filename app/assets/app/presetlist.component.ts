@@ -1,8 +1,7 @@
-/**
- * Created by floris on 04/05/2016.
- */
 import {Preset} from "./api/preset";
-import {Component, Input, OnInit} from "angular2/core"
+import {Component, Input, OnInit} from "angular2/core";/*
+import {Dragula} from 'ng2-dragula/src/app/directives/dragula.directive';
+import {DragulaService} from 'ng2-dragula/src/app/providers/dragula.provider';*/
 
 import {PresetService} from "./api/preset.service";
 
@@ -10,6 +9,7 @@ import {PresetService} from "./api/preset.service";
     selector:    'preset-list',
     templateUrl: './assets/app/partials/preset-list.component.html',
     directives:  [],
+    viewProviders: [],
     providers:   [PresetService]
 })
 export class PresetListComponent implements OnInit {

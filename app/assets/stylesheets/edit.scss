@@ -1,0 +1,46 @@
+.editable-list {
+  position: relative;
+  max-height: 700px;
+  overflow-y: scroll;
+
+  .editable-list-item {
+    background-color: #FFF;
+
+    .active-item {
+      display: initial;
+    }
+    .inactive-item {
+      display: none;
+    }
+
+    .active {
+      background-color: #fafafa;
+    }
+
+    .text-area {
+      font-family: Open Sans, sans-serif;
+      padding-left: 5px;
+
+      .text-area-header {
+        font-size: 110%;
+        float: none;
+        color: #000000;
+        opacity: .87;
+        line-height: 28px;
+      }
+
+      .text-area-detail {
+        font-size: 100%;
+        color: #000000;
+        opacity: .54;
+      }
+    }
+  }
+}
+
+.list-header input {
+  line-height: 60px;
+  padding: 6px;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}

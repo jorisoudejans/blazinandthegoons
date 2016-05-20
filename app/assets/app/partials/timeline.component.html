@@ -1,0 +1,13 @@
+<div>
+    <ul *ngIf="scriptData">
+        <div id="timeline">
+            <div class="action" *ngFor="#action of scriptData.script.actions; #i=index"
+                 [style.background]="action.color"
+                 [style.width]="action.percentage">
+                <div class="slider"
+                     [style.animation-duration]="action.duration + 's'"
+                     *ngIf="i == scriptData.actionIndex"></div>
+            </div>
+        </div>
+    </ul>
+</div>

@@ -10,8 +10,6 @@ import javax.persistence.OneToOne;
 
 /**
  * Class to represent an active script.
- *
- * Created by hidde on 5/10/16.
  */
 @Entity
 public class ActiveScript extends Model {
@@ -25,6 +23,7 @@ public class ActiveScript extends Model {
     @Constraints.Required
     public int actionIndex;
 
-    public static Finder<Long, ActiveScript> find = new Finder<Long, ActiveScript>(ActiveScript.class);
+    public static Finder<Long, ActiveScript> find =
+            new Finder<Long, ActiveScript>(ActiveScript.class);
 
 }

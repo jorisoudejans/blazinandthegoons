@@ -41,10 +41,10 @@ public class Preset extends Controller {
         JsonNode json = request().body().asJson();
         String name = json.findPath("name").textValue();
         int camera = json.findPath("camera").intValue();
-        float pan = json.findPath("pan").floatValue();
-        float tilt = json.findPath("pan").floatValue();
-        float zoom = json.findPath("pan").floatValue();
-        float focus = json.findPath("pan").floatValue();
+        int pan = json.findPath("pan").intValue();
+        int tilt = json.findPath("pan").intValue();
+        int zoom = json.findPath("pan").intValue();
+        int focus = json.findPath("pan").intValue();
 
         models.Preset preset = models.Preset.createPreset(name, camera, pan, tilt, zoom, focus);
 
