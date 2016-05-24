@@ -47,11 +47,11 @@ export class ScriptService {
         socket.send(JSON.stringify(activeData));
         console.log("sending: "+JSON.stringify(activeData))
     }
-    static startScript (script: ActiveScript, socket: WebSocket): void {
-        /*return this.http.get(this._heroesUrl + "/" + id + "/start")
-            .map(ScriptService.extractData)
-            .catch(ScriptService.handleError)*/
-        socket.send(JSON.stringify(script));
+    static startScript (activeScriptId: number, socket: WebSocket): void {
+        socket.send(JSON.stringify({"start": activeScriptId}));
+    }
+    static stopScript (socket: WebSocket): void {
+        socket.send(JSON.stringify({"stop": 0}));
     }
     createScript (name: string): Observable<Script> {
 

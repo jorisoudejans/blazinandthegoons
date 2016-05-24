@@ -5,6 +5,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 
@@ -14,7 +15,10 @@ import javax.persistence.OneToOne;
 @Entity
 public class ActiveScript extends Model {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Id
+    public int id;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     public Script script;
 
     @Constraints.Required

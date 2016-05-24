@@ -1,14 +1,14 @@
 .script-list {
 
-  .oneRunning {
-    background-color: rgba(138, 138, 138, .3);
+  .list-group-item {
+    background-color: rgba(63, 63, 63, 0.3);
   }
   .active {
     background-color: #090 !important;
   }
 
-  button {
-    border-color: white;
+  a i.material-icons {
     color: white;
+    cursor: pointer;
   }
 }
