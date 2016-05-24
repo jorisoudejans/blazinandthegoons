@@ -99,7 +99,7 @@ public final class ScriptSocket {
         if (!aslist.isEmpty()) { // we have an active script
             ActiveScript as = aslist.get(0);
             as.actionIndex = jsonNode.findPath("actionIndex").asInt();
-            //as.save();
+            as.save();
             write(as);
         } else {
             write(Json.toJson(new ArrayList<>()));
