@@ -20,8 +20,8 @@ public class DatabaseSeeder {
 
         if (Preset.find.byId(1L) == null) { // create presets if not present
             Preset.createPreset("Nice view", 0, 10000, 10000, 0, 0);
-            Preset.createPreset("Dirigent focus", 3, 20000, 20000, 0, 0);
-            Preset.createPreset("Violin snare closeup", 2, 30000, 30000, 0, 0);
+            Preset.createPreset("Dirigent focus", 3, 15000, 10000, 0, 0);
+            Preset.createPreset("Violin snare closeup", 2, 8000, 6000, 0, 0);
             Preset.createPreset("Contrabas player", 5, 500, 800, 0, 0);
         }
 

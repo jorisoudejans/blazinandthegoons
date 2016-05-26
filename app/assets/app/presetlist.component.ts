@@ -1,3 +1,4 @@
+/// <reference path="../../../typings/jquery.d.ts" />
 import {Preset} from "./api/preset";
 import {Component, Input, OnInit} from "angular2/core";/*
 import {Dragula} from 'ng2-dragula/src/app/directives/dragula.directive';
