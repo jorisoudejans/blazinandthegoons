@@ -17,6 +17,16 @@ import java.net.URLConnection;
 public class CameraApi {
 
     /**
+     * Performs some magical hocus pocus to retrieve the current camera.
+     * TODO: Should be refactored after refactoring this class
+     * @param camera the camera index
+     * @return the camera object
+     */
+    public static LiveCamera getCamera(int camera) {
+        return new LiveCamera("192.168.10.101");
+    }
+
+    /**
      * This method will return the absolute pan and tilt position respectively.
      * @param cam The camera from which the values will be read.
      * @throws Exception When the response is not the pan/tilt or getHttp throws one.

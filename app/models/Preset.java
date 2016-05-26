@@ -2,9 +2,13 @@ package models;
 
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
+import play.mvc.Result;
+import util.camera.CameraApi;
+import util.camera.LiveCamera;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.concurrent.CompletionStage;
 
 /**
  * The model class for Presets. This is the representation used for the database.
@@ -32,6 +36,36 @@ public class Preset extends Model {
 
     @Constraints.Required
     public int focus;
+
+    /**
+     * Apply this preset
+     * @throws Exception when the preset values could not be applied
+     */
+    public void apply() throws Exception {
+        LiveCamera camera = CameraApi.getCamera(this.camera);
+        CameraApi.setPanTilt(camera, this.pan, this.tilt);
+        CameraApi.setFocus(camera, this.focus);
+        CameraApi.setZoom(camera, this.zoom);
+    }
+
+    /**
+     * Get the thumbnail for this preset. May take some time to load due to moving the camera in the right position
+     * @return a thumbnail image
+     */
+    public CompletionStage<Result> getThumbnail() {
+        // apply this preset
+        try {
+            this.apply();
+
+            // take a screenshow
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
     public static Finder<Long, Preset> find = new Finder<>(Preset.class);
 
