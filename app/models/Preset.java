@@ -1,14 +1,23 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 import play.mvc.Result;
 import util.camera.CameraApi;
 import util.camera.LiveCamera;
+import util.camera.commands.PanTiltCommand;
 
+import javax.imageio.ImageIO;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.function.Supplier;
+
+import static play.mvc.Results.ok;
 
 /**
  * The model class for Presets. This is the representation used for the database.
@@ -38,33 +47,44 @@ public class Preset extends Model {
     public int focus;
 
     /**
-     * Apply this preset
-     * @throws Exception when the preset values could not be applied
+     * Apply this preset.
      */
-    public void apply() throws Exception {
+    @JsonIgnore
+    public boolean apply() {
         LiveCamera camera = CameraApi.getCamera(this.camera);
-        CameraApi.setPanTilt(camera, this.pan, this.tilt);
-        CameraApi.setFocus(camera, this.focus);
-        CameraApi.setZoom(camera, this.zoom);
+        return new PanTiltCommand(tilt, pan).execute(camera);
     }
 
     /**
      * Get the thumbnail for this preset. May take some time to load due to moving the camera in the right position
      * @return a thumbnail image
      */
+    @JsonIgnore
     public CompletionStage<Result> getThumbnail() {
         // apply this preset
-        try {
-            this.apply();
+        this.apply();
 
-            // take a screenshow
+        return CompletableFuture.supplyAsync(new Supplier<byte[]>() {
 
+            @Override
+            public byte[] get() {
+                // sleep this thread
+                try {
+                    Thread.sleep(3000);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+                    BufferedImage i = CameraApi.getJpegSnapshot(new LiveCamera("192.168.10.101"));
 
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(i, "jpg", baos);
+
+                    return baos.toByteArray();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+
+            }
+        }).thenApply(image -> ok(image).as("image/jpeg"));
     }
 
     public static Finder<Long, Preset> find = new Finder<>(Preset.class);

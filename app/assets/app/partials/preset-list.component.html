@@ -1,11 +1,11 @@
 <div class="list-header"><h2>Presets</h2></div>
 <ul class="preset-list col-md-12" *ngIf="presets">
-    <li class="preset-list-item col-md-4" *ngFor="#preset of presets">
+    <li class="preset-list-item col-md-4" *ngFor="#preset of presets" (click)="activatePreset(preset.id)">
         <figcaption>
             <h1>{{preset.name}}</h1>
         </figcaption>
         <figure class="preset-figure">
-            <img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" alt="{{preset.name}}">
+            <img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" [attr.id]="'preset-image-' + preset.id" alt="{{preset.name}}">
         </figure>
     </li>
 </ul>

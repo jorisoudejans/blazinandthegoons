@@ -22,4 +22,13 @@ export class PresetListComponent implements OnInit {
                 presets => this.presets = presets
             );
     }
+    activatePreset(id: number) {
+        this._heroService.activatePreset(id)
+            .subscribe(
+                res => console.log("Activation result: " + res)
+            );
+
+        // save thumbnail to image
+        $('#preset-image-'+id).attr("src", "api/presets/" + id + "/thumbnail?" + (new Date()).getTime());
+    }
 }
