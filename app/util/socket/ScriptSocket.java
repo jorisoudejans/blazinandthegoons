@@ -55,13 +55,7 @@ public final class ScriptSocket {
     public void join(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
         subscribers.add(out);
 
-        in.onMessage(jsonNode -> {
-            // do nothing yet
-            // just return the active script
-            System.out.println("This socket: " + jsonNode.toString());
-
-            processInput(jsonNode);
-        });
+        in.onMessage(jsonNode -> processInput(in, jsonNode));
 
         List<ActiveScript> as = ActiveScript.find.all();
         if (!as.isEmpty()) {
@@ -72,10 +66,12 @@ public final class ScriptSocket {
     }
 
     /**
-     * Processes possible inputs from a client.
+     * Processes inputs from any client.
+     * @param inputSocket the socket that sent this data
      * @param jsonNode the input data decoded in a JSON object
      */
-    private void processInput(JsonNode jsonNode) {
+    void processInput(WebSocket.In<JsonNode> inputSocket, JsonNode jsonNode) {
+        //System.out.println("This socket: " + jsonNode.toString()); // DEBUG
         if (jsonNode.has("start")) {
             // start the script
             Long scriptId = jsonNode.findPath("start").asLong();
@@ -94,7 +90,6 @@ public final class ScriptSocket {
                 as.delete();
             }
         }
-
         List<ActiveScript> aslist = ActiveScript.find.all();
         if (!aslist.isEmpty()) { // we have an active script
             ActiveScript as = aslist.get(0);
