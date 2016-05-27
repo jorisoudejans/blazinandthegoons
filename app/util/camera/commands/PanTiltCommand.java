@@ -25,7 +25,8 @@ public class PanTiltCommand extends CameraCommand {
 
     @Override
     protected String getParameters() {
-        return Integer.toHexString(pan).toUpperCase() + Integer.toHexString(tilt).toUpperCase();
+        return addZerosHex(Integer.toHexString(pan).toUpperCase(), 4) +
+                addZerosHex(Integer.toHexString(tilt).toUpperCase(), 4);
     }
 
 

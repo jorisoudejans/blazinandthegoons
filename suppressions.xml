@@ -15,5 +15,6 @@
 <suppressions>
     <suppress checks="VisibilityModifier" files="app[\\/]models"/>
     <suppress checks="MagicNumber" files="app[\\/]util[\\/]camera[\\/]CameraApi.java"/>
+    <suppress checks="MagicNumber" files="app[\\/]util[\\/]camera[\\/]commands"/>
 </suppressions>
 

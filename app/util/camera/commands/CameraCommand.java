@@ -55,4 +55,18 @@ public abstract class CameraCommand {
         return new BufferedReader(new InputStreamReader(conn.getInputStream()));
     }
 
+    /**
+     * If a message requires a length of eg. 4, but the actual hex is
+     * only 2 characters long, we need to add the additional zeros ourselves.
+     * @param msg   The hex message
+     * @param length    The required length
+     * @return  The message with the required length
+     */
+    public static String addZerosHex(String msg, int length) {
+        if (msg.length() >= length) {
+            return msg;
+        }
+        return addZerosHex("0" + msg, length);
+    }
+
 }
