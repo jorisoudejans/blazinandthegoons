@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.ActiveScript;
+import models.Script;
 import play.libs.Json;
 import play.mvc.WebSocket;
 
@@ -52,37 +53,56 @@ public final class ScriptSocket {
      * @param out outgoing stream
      */
     public void join(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) {
-        makeAScript();
-
         subscribers.add(out);
 
         in.onMessage(jsonNode -> {
             // do nothing yet
             // just return the active script
             System.out.println("This socket: " + jsonNode.toString());
-            System.out.println("Whats oing on " + jsonNode.findPath("actionIndex").asInt());
 
-            ActiveScript as = ActiveScript.find.all().get(0);
-
-            if (as != null) {
-                as.actionIndex = jsonNode.findPath("actionIndex").asInt();
-                //as.save();
-            }
-
-            write(as);
+            processInput(jsonNode);
         });
 
-        ActiveScript as = ActiveScript.find.all().get(0);
-        write(as);
+        List<ActiveScript> as = ActiveScript.find.all();
+        if (!as.isEmpty()) {
+            write(as.get(0));
+        } else {
+            write(Json.toJson(new ArrayList<>()));
+        }
     }
 
-    private void makeAScript() {
-        if (ActiveScript.find.all().isEmpty()) {
-            ActiveScript as = new ActiveScript();
-            as.actionIndex = 0;
-            as.runningTime = new Date().getTime();
-            as.script = models.Script.find.byId(1L);
+    /**
+     * Processes possible inputs from a client.
+     * @param jsonNode the input data decoded in a JSON object
+     */
+    private void processInput(JsonNode jsonNode) {
+        if (jsonNode.has("start")) {
+            // start the script
+            Long scriptId = jsonNode.findPath("start").asLong();
+            Script toStart = Script.find.byId(scriptId);
+            if (toStart != null) {
+                ActiveScript as = new ActiveScript();
+                as.actionIndex = 0;
+                as.runningTime = new Date().getTime();
+                as.script = models.Script.find.byId(toStart.id);
+                as.save();
+            }
+        } else if (jsonNode.has("stop")) {
+            List<ActiveScript> aslist = ActiveScript.find.all();
+            if (!aslist.isEmpty()) { // we have an active script
+                ActiveScript as = aslist.get(0);
+                as.delete();
+            }
+        }
+
+        List<ActiveScript> aslist = ActiveScript.find.all();
+        if (!aslist.isEmpty()) { // we have an active script
+            ActiveScript as = aslist.get(0);
+            as.actionIndex = jsonNode.findPath("actionIndex").asInt();
             as.save();
+            write(as);
+        } else {
+            write(Json.toJson(new ArrayList<>()));
         }
     }
 
