@@ -7,6 +7,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Api controller for handling the json calls from the client.
@@ -49,6 +50,36 @@ public class PresetController extends Controller {
         models.Preset preset = models.Preset.createPreset(name, camera, pan, tilt, zoom, focus);
 
         return ok(Json.toJson(preset));
+    }
+
+    /**
+     * Applies a preset.
+     * @param id preset id
+     * @return whether it worked
+     */
+    public Result apply(Long id) {
+        models.Preset preset = models.Preset.find.byId(id); // find preset
+        if (preset != null) {
+            if (preset.apply()) { // apply preset
+                return ok("Applied");
+            }
+            return internalServerError(); // return error
+        }
+        return notFound();
+    }
+
+    /**
+     * Get thumbnail for this preset. takes at least some seconds to complete.
+     * We should cache this in the future
+     * @param id the preset
+     * @return the image after sometime
+     */
+    public CompletionStage<Result> thumbnail(Long id) {
+        models.Preset preset = models.Preset.find.byId(id); // find preset
+        if (preset != null) {
+            return preset.getThumbnail();
+        }
+        return null;
     }
 
 }

@@ -18,12 +18,16 @@ public class DatabaseSeeder {
     @Inject
     public DatabaseSeeder(EbeanConfig config, DynamicEvolutions evolutions) {
 
+        System.out.println("Seeding database: " + config + " " + evolutions);
+
         if (Preset.find.byId(1L) == null) { // create presets if not present
-            Preset.createPreset("Nice view", 0, 0, 0, 0, 0);
-            Preset.createPreset("Dirigent focus", 3, 0, 0, 0, 0);
-            Preset.createPreset("Violin snare closeup", 2, 0, 0, 0, 0);
-            Preset.createPreset("Contrabas player", 5, 0, 0, 0, 0);
+            Preset.createPreset("Nice view", 0, 10000, 10000, 0, 0);
+            Preset.createPreset("Dirigent focus", 3, 15000, 10000, 0, 0);
+            Preset.createPreset("Violin snare closeup", 2, 8000, 6000, 0, 0);
+            Preset.createPreset("Contrabas player", 5, 500, 800, 0, 0);
         }
+
+        System.out.println("Seeding database");
 
         Script s = new Script(); // create new script
         s.name = "Mock script";

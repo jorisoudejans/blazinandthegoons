@@ -9,8 +9,8 @@ import play.mvc.Controller;
 import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
 import play.mvc.WebSocket;
-import util.camera.CameraApi;
 import util.camera.LiveCamera;
+import util.camera.commands.SnapshotCommand;
 import util.socket.ScriptSocket;
 
 import javax.imageio.ImageIO;
@@ -188,7 +188,7 @@ public class ScriptController extends Controller {
     public Result getCameraImage() {
         // just to show an image for now
         try {
-            BufferedImage i = CameraApi.getJpegSnapshot(new LiveCamera("192.168.10.101"));
+            BufferedImage i = new SnapshotCommand().get(new LiveCamera("192.168.10.101"), SnapshotCommand.RES_1280);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(i, "jpg", baos);
