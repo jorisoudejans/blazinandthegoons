@@ -18,6 +18,8 @@ public class DatabaseSeeder {
     @Inject
     public DatabaseSeeder(EbeanConfig config, DynamicEvolutions evolutions) {
 
+        System.out.println("Seeding database: " + config + " " + evolutions);
+
         if (Preset.find.byId(1L) == null) { // create presets if not present
             Preset.createPreset("Nice view", 0, 10000, 10000, 0, 0);
             Preset.createPreset("Dirigent focus", 3, 15000, 10000, 0, 0);
