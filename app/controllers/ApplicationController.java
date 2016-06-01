@@ -9,7 +9,7 @@ import play.*;
 import play.mvc.*;
 import play.libs.Json;
 
-public class Application extends Controller {
+public class ApplicationController extends Controller {
 
     public Result index() {
         return ok(overview.render("Home"));
@@ -21,7 +21,7 @@ public class Application extends Controller {
     }
 
     public Result overviewView() {
-        return ok(overview.render("Script selection"));
+        return ok(overview.render("ScriptController selection"));
     }
 
     public Result editView(Long id) {

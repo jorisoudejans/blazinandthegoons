@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Controls a script.
  */
-public class Script extends Controller {
+public class ScriptController extends Controller {
 
     /**
      * Get all scripts in the database.
@@ -92,7 +92,7 @@ public class Script extends Controller {
             script.save();
             return ok(Json.toJson(script));
         }
-        return notFound("Script " + id);
+        return notFound("ScriptController " + id);
     }
 
     /**
@@ -110,9 +110,9 @@ public class Script extends Controller {
                 action.delete(); // retrieve the action
                 return ok(Json.toJson(script));
             }
-            return notFound("Action " + actionId);
+            return notFound("ActionController " + actionId);
         }
-        return notFound("Script " + scriptId);
+        return notFound("ScriptController " + scriptId);
     }
 
     /**
@@ -128,7 +128,7 @@ public class Script extends Controller {
     }
 
     /**
-     * Run a script. Creates an extension of a Script, i.e. an ActiveScript.
+     * Run a script. Creates an extension of a ScriptController, i.e. an ActiveScript.
      * @param id script id
      * @return activeScript
      */
@@ -147,11 +147,11 @@ public class Script extends Controller {
             as.save();
             return ok(Json.toJson(as));
         }
-        return notFound("Script " + id);
+        return notFound("ScriptController " + id);
     }
 
     /**
-     * Update current action index. Sets the action currently being executed.
+     * Update current action getAll. Sets the action currently being executed.
      * @param id script id
      * @return updated script
      */
@@ -164,7 +164,7 @@ public class Script extends Controller {
             script.save();
             return ok(Json.toJson(script.activeScript));
         }
-        return notFound("Script " + id);
+        return notFound("ScriptController " + id);
     }
 
     /**

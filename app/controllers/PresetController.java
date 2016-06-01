@@ -11,20 +11,20 @@ import java.util.List;
 /**
  * Api controller for handling the json calls from the client.
  */
-public class Preset extends Controller {
+public class PresetController extends Controller {
 
     /**
-     * Get a list of all Preset objects in the database.
-     * @return The list of all Preset objects.
+     * Get a list of all PresetController objects in the database.
+     * @return The list of all PresetController objects.
      */
-    public Result index() {
+    public Result getAll() {
         List<models.Preset> presetList = models.Preset.find.all();
         return ok(Json.toJson(presetList));
     }
 
     /**
-     * Looks in the database to find the Preset object with id.
-     * @param id    The id of the Preset object to be found.
+     * Looks in the database to find the PresetController object with id.
+     * @param id    The id of the PresetController object to be found.
      * @return  ok with the found object.
      */
     public Result get(Long id) {
@@ -33,7 +33,7 @@ public class Preset extends Controller {
     }
 
     /**
-     * Method that uses the json body to create and save a Preset object.
+     * Method that uses the json body to create and save a PresetController object.
      * @return  ok with the created object.
      */
     @BodyParser.Of(BodyParser.Json.class)
