@@ -35,7 +35,10 @@ export class Edit implements OnInit {
     ngOnInit() {
         var urlarr = window.location.href.split('/');
         this.scriptid = parseInt(urlarr[urlarr.length - 1]);
-        this.getScript(this.scriptid);
+        if(urlarr[urlarr.length - 1] !== 'edit')
+            this.getScript(this.scriptid);
+        else
+            this.buildNewScript();
         this.getPresets();
     }
     getScript(id: number) {
@@ -53,7 +56,7 @@ export class Edit implements OnInit {
                 error =>  this.errorMessage = <any>error);
     }
     saveScript() {
-        this._scriptService.updateScript(this.scriptData)
+        this._scriptService.saveScript(this.scriptData)
             .subscribe(
                 scriptData => this.scriptData = scriptData,
                 error =>  this.errorMessage = <any>error);
@@ -73,6 +76,9 @@ export class Edit implements OnInit {
                 corrPreset = preset;
         })
         action.preset = corrPreset;
+    }
+    buildNewScript() {
+        this.scriptData = new Script(-1, "new Script", (new Date()).toString(), null);
     }
 }
 

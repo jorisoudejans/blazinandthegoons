@@ -5,6 +5,7 @@
 # Home page
 GET     /                           @controllers.Application.overviewView()
 GET     /director                   @controllers.Application.directorView()
+GET     /edit                       @controllers.Application.editNewView()
 GET     /edit/:id                   @controllers.Application.editView(id: Long)
 
 # Scripts
@@ -12,7 +13,7 @@ GET     /api/scripts                    @controllers.Script.getAll()
 
 GET     /api/scripts/connect                 @controllers.Script.socket()
 GET     /api/scripts/:id                @controllers.Script.get(id: Long)
-POST    /api/scripts/:id                @controllers.Script.update(id: Long)
+POST    /api/scripts/:id                @controllers.Script.save(id: Long)
 POST    /api/scripts/create             @controllers.Script.create()
 POST    /api/scripts/:id/actions/create     @controllers.Script.addAction(id: Long)
 DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.Script.removeAction(scriptId: Long, actionId: Long)

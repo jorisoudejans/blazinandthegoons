@@ -27,7 +27,7 @@ export class ScriptService {
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
     }
-    updateScript(script: Script): Observable<Script> {
+    saveScript(script: Script): Observable<Script> {
         console.log(this._heroesUrl + "/" + script.id)
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });

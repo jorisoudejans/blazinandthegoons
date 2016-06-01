@@ -27,5 +27,8 @@ public class Application extends Controller {
     public Result editView(Long id) {
         return ok(edit.render("Edit script", id));
     }
+    public Result editNewView() {
+        return ok(edit.render("Edit script", (long) -1));
+    }
 
 }

@@ -51,10 +51,10 @@ public class Script extends Controller {
     public Result create() {
         JsonNode json = request().body().asJson();
         String name = json.findPath("name").textValue();
-        models.Script script = new models.Script();
-        script.name = name;
-        script.creationDate = new Date(); // now
+        models.Script script = Json.fromJson(json, models.Script.class);
+        script.id = null;
         script.save();
+        System.out.println(script);
         return ok(Json.toJson(script));
     }
 
@@ -64,15 +64,13 @@ public class Script extends Controller {
      * @return the created script
      */
     @BodyParser.Of(BodyParser.Json.class)
-    public Result update(Long id) {
-        models.Script script = models.Script.find.byId(id); // find the script
-        if (script != null) {
-            JsonNode json = request().body().asJson(); // get the JSON payload
-            script.name = json.findPath("name").textValue(); // get the name
-            script.save();
-            return ok(Json.toJson(script)); // report back the updated script
-        }
-        return notFound();
+    public Result save(Long id) {
+        JsonNode json = request().body().asJson(); // get the JSON payload
+        models.Script script = Json.fromJson(json, models.Script.class); // find the script
+        if(script.id == -1)
+            script.id = null;
+        script.save();
+        return ok(Json.toJson(script)); // report back the updated script
     }
 
     /**
