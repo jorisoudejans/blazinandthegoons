@@ -9,14 +9,14 @@ import play.mvc.Result;
 import java.util.List;
 
 /**
- * Controller for the Action class. This controller is used to handle
+ * Controller for the ActionController class. This controller is used to handle
  * the json requests from the client.
  */
-public class Action extends Controller {
+public class ActionController extends Controller {
 
     /**
-     * Get a list of all Action objects in the database.
-     * @return The list of all Action objects.
+     * Get a list of all ActionController objects in the database.
+     * @return The list of all ActionController objects.
      */
     public Result getAll() {
         List<models.Action> actionList = models.Action.find.all();
@@ -24,8 +24,8 @@ public class Action extends Controller {
     }
 
     /**
-     * Looks in the database to find the Action object with id.
-     * @param id    The id of the Action object to be found.
+     * Looks in the database to find the ActionController object with id.
+     * @param id    The id of the ActionController object to be found.
      * @return  ok with the found object.
      */
     public Result get(Long id) {
@@ -35,7 +35,7 @@ public class Action extends Controller {
 
 
     /**
-     * Method that uses the json body to create and save an Action object.
+     * Method that uses the json body to create and save an ActionController object.
      * @return  ok with the created object.
      */
     @BodyParser.Of(BodyParser.Json.class)
