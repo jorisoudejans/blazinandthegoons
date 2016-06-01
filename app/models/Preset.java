@@ -4,14 +4,12 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 import play.mvc.Result;
-import util.camera.CameraApi;
 import util.camera.LiveCamera;
 import util.camera.commands.PanTiltCommand;
+import util.camera.commands.SnapshotCommand;
 
 import javax.imageio.ImageIO;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -53,7 +51,7 @@ public class Preset extends Model {
      */
     @JsonIgnore
     public boolean apply() {
-        LiveCamera camera = CameraApi.getCamera(this.camera);
+        LiveCamera camera = new LiveCamera("192.168.10.101"); // TODO: should be changed, not hardcoded
         return new PanTiltCommand(tilt, pan).execute(camera);
     }
 
@@ -74,7 +72,7 @@ public class Preset extends Model {
                 try {
                     Thread.sleep(3000);
 
-                    BufferedImage i = CameraApi.getJpegSnapshot(new LiveCamera("192.168.10.101"));
+                    BufferedImage i = new SnapshotCommand().get(new LiveCamera("192.168.10.101"), SnapshotCommand.RES_1280);
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(i, "jpg", baos);

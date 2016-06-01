@@ -47,6 +47,7 @@ public abstract class CameraCommand {
      * Method for getting the sending and getting the http response.
      * @param urlString The url of the HTTP GET
      * @return BufferedReader of the response
+     * @throws IOException exception that can occur for invalid url
      */
     private BufferedReader getHttp(String urlString) throws IOException {
         URL url = new URL(urlString);
