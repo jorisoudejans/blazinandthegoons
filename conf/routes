@@ -29,6 +29,9 @@ GET     /api/scripts/:id/update             @controllers.Script.updateActiveScri
 #Preset service
 GET     /api/presets                    @controllers.Preset.index()
 GET     /api/presets/:id                @controllers.Preset.get(id: Long)
+GET     /api/presets/:id/activate       @controllers.Preset.apply(id: Long)
+GET     /api/presets/:id/thumbnail      @controllers.Preset.thumbnail(id: Long)
+
 
 POST    /api/presets/create             @controllers.Preset.create()
 

@@ -33,7 +33,7 @@ export class Overview implements OnInit {
     getScripts() {
         this._scriptService.getScripts()
             .subscribe(
-                scripts => this.scripts = scripts,
+                scripts => {this.scripts = scripts; console.log("list " + scripts) },
                 error =>  this.errorMessage = <any>error);
     }
     connect() {
