@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.concurrent.CompletionStage;
 
 /**
  * Abstract implementation of a command to send to a camera.
@@ -56,17 +55,27 @@ public abstract class CameraCommand {
     }
 
     /**
+     * Convert an int to its hex representation for the camera
+     * @param value the value
+     * @param minLength the minimum hex length (to pad with zeros)
+     * @return hex string
+     */
+    protected String toHex(int value, int minLength) {
+        return pad(Integer.toHexString(value).toUpperCase(), minLength);
+    }
+
+    /**
      * If a message requires a length of eg. 4, but the actual hex is
      * only 2 characters long, we need to add the additional zeros ourselves.
      * @param msg   The hex message
-     * @param length    The required length
+     * @param minLength    The required length
      * @return  The message with the required length
      */
-    public static String addZerosHex(String msg, int length) {
-        if (msg.length() >= length) {
+    private String pad(String msg, int minLength) {
+        if (msg.length() >= minLength) {
             return msg;
         }
-        return addZerosHex("0" + msg, length);
+        return pad("0" + msg, minLength);
     }
 
 }

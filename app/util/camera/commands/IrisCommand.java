@@ -22,7 +22,7 @@ public class IrisCommand extends CameraCommand {
 
     @Override
     protected String getParameters() {
-        return addZerosHex(Integer.toHexString(iris).toUpperCase(), 3);
+        return toHex(iris, 3);
     }
 
 

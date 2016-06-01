@@ -22,7 +22,7 @@ public class FocusCommand extends CameraCommand {
 
     @Override
     protected String getParameters() {
-        return addZerosHex(Integer.toHexString(focus).toUpperCase(), 3);
+        return toHex(focus, 3);
     }
 
 

@@ -22,7 +22,7 @@ public class ZoomCommand extends CameraCommand {
 
     @Override
     protected String getParameters() {
-        return addZerosHex(Integer.toHexString(zoom).toUpperCase(), 3);
+        return toHex(zoom, 3);
     }
 
 
