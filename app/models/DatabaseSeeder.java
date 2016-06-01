@@ -31,10 +31,13 @@ public class DatabaseSeeder {
         s.save();
 
         // create actions
-        Action a1 = Action.createAction("Go to Trombone", 5, 3, models.Preset.find.byId(1L), s);
-        Action a2 = Action.createAction("Go to Dirigent", 4, 2, models.Preset.find.byId(2L), s);
-        Action a3 = Action.createAction("Go to Violin", 3, 1, models.Preset.find.byId(3L), s);
-        Action a4 = Action.createAction("Go to Contrabas", 2, 0, models.Preset.find.byId(4L), s);
+        Action a1 = Action.createAction("Open on dirigent", 5, 8, models.Preset.find.byId(1L), s);
+        Action a2 = Action.createAction("Clarinets", 2, 8, models.Preset.find.byId(4L), s);
+        Action a3 = Action.createAction("Static on strings", 4, 12, models.Preset.find.byId(2L), s);
+        Action a4 = Action.createAction("Static on violins", 3, 12, models.Preset.find.byId(3L), s);
+        Action a5 = Action.createAction("Dirigent still", 2, 18, models.Preset.find.byId(4L), s);
+        Action a6 = Action.createAction("Flutes close-up", 2, 6, models.Preset.find.byId(1L), s);
+        Action a7 = Action.createAction("Harp", 2, 5, models.Preset.find.byId(3L), s);
         //actionlist.addAll(Arrays.asList(a1,a2,a3,a4));
 
         for (int i = 0; i < 20; i++) { // create some more actions
