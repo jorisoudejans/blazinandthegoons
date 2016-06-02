@@ -58,8 +58,7 @@ export class Edit implements OnInit {
                 scriptData => this.scriptData = scriptData,
                 error =>  this.errorMessage = <any>error);
     }
-    saveScript(event) {
-        event.preventDefault();
+    saveScript() {
         this._scriptService.saveScript(this.scriptData)
             .subscribe(
                 scriptData => this.scriptData = scriptData,
