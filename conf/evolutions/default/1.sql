@@ -5,6 +5,7 @@
 
 create table action (
   id                            bigint not null,
+  index                         integer,
   description                   varchar(255),
   timestamp                     integer,
   duration                      integer,
