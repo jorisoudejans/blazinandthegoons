@@ -6,8 +6,6 @@ import {Observable} from 'rxjs/Observable';
 import { HTTP_PROVIDERS }    from "angular2/http";
 import {bootstrap}    from "angular2/platform/browser"
 
-
-import {ScriptListComponent} from "./scriptlist.component"
 import {ScriptService} from "./api/script.service";
 import {Script, ActiveScript} from "./api/script";
 import 'rxjs/Rx';
@@ -15,7 +13,7 @@ import 'rxjs/Rx';
 @Component({
     selector: "overview",
     templateUrl: './assets/app/partials/overview.component.html',
-    directives: [ScriptListComponent],
+    directives: [],
     providers:  [
         HTTP_PROVIDERS,
         ScriptService
@@ -27,7 +25,6 @@ export class Overview implements OnInit {
     constructor (private _scriptService: ScriptService) {}
     errorMessage: string;
     scripts:Script[];
-    scriptData: Script;
     activeScript: ActiveScript;
     ngOnInit() {
         this.connect();
@@ -36,13 +33,8 @@ export class Overview implements OnInit {
     getScripts() {
         this._scriptService.getScripts()
             .subscribe(
-                scripts => this.scripts = scripts,
+                scripts => {this.scripts = scripts; console.log("list " + scripts) },
                 error =>  this.errorMessage = <any>error);
-    }
-    onMessage(ev: MessageEvent) {
-        console.log(ev);
-        this.activeScript = JSON.parse(ev.data);
-        console.log(this.activeScript);
     }
     connect() {
         this.socket = this._scriptService.connectScript();
@@ -53,8 +45,13 @@ export class Overview implements OnInit {
 
         this.observable.subscribe(
             (data) => {
-                this.activeScript = JSON.parse(data.data);
-                console.log(data.data);
+                var response = JSON.parse(data.data);
+                if (Object.prototype.toString.call( response ) !== '[object Array]') {
+                    this.activeScript = response;
+                } else {
+                    this.activeScript = null;
+                }
+                console.log("Data: " + data.data);
                 console.log(this.activeScript);
             },
             (error) => {
@@ -66,15 +63,11 @@ export class Overview implements OnInit {
     }
 
     makeActive(newscript: Script) {
-        var scr = new ActiveScript(2, '2%', 0, newscript);
-        console.log("MAKE NEW ACTIONSCRIPT:");
-        console.log(JSON.stringify(scr));
-        this.socket.send(JSON.stringify(scr));
+        ScriptService.startScript(newscript.id, this.socket);
     }
-    editScript(script: Script) {
-        document.location.href = './edit/'+script.id;
+    deactivateScript() {
+        ScriptService.stopScript(this.socket);
     }
-
     gotoview(which: string) {
         if(this.activeScript == null) {
             document.location.href = './'+which;

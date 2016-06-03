@@ -53,7 +53,12 @@ export class AppComponent implements OnInit {
             (data) => {
                 this.connectionTries = 0;
                 this.errorMessage = null;
-                this.currentScript = JSON.parse(data.data);
+                var response = JSON.parse(data.data);
+                if (Object.prototype.toString.call( response ) !== '[object Array]') {
+                    this.currentScript = response;
+                } else {
+                    this.currentScript = null;
+                }
                 console.log(this.currentScript);
             },
             (error) => {
@@ -76,9 +81,6 @@ export class AppComponent implements OnInit {
         if (this.connectionTimeout > 0) {
             setTimeout(() => this.setErrorMessage(), 1000);
         }
-    }
-    startScript(id: number) {
-        ScriptService.startScript(this.currentScript, this.socket);
     }
     advance(c: number) {
         this.currentScript.actionIndex = this.currentScript.actionIndex + c;

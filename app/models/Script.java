@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -32,6 +33,7 @@ public class Script extends Model {
     public List<Action> actions = new ArrayList<Action>();
 
     @OneToOne(mappedBy = "script", cascade = CascadeType.ALL)
+    @JsonIgnore
     public ActiveScript activeScript;
 
     public static Finder<Long, Script> find

@@ -1,7 +1,11 @@
-<div>
+<div id="testtimeline">
     <ul *ngIf="scriptData">
         <div id="timeline">
             <div class="action" *ngFor="#action of scriptData.script.actions; #i=index"
+                 data-toggle="tooltip"
+                 data-placement="top"
+                 [title]="action.description"
+                 (click)="clickAction(i)"
                  [style.background]="action.color"
                  [style.width]="action.percentage">
                 <div class="slider"

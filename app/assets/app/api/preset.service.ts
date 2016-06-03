@@ -17,8 +17,13 @@ export class PresetService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    activatePreset (id: number): Observable<string> {
+        return this.http.get(this._heroesUrl + "/" + id + "/activate")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     // No functionality to create presets implemented yet.
-    /*createPreset (name: string): Observable<Preset> {
+    /*createPreset (name: string): Observable<PresetController> {
 
         let body = JSON.stringify({ "name": name });
         let headers = new Headers({ 'Content-Type': 'application/json' });

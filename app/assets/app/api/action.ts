@@ -1,10 +1,10 @@
-import {Script} from "./api/script";
 import {Preset} from "./preset";
 
 export class Action {
 
     constructor(
         public id: number,
+        public index: number,
         public description: string,
         public duration: number,
         public preset: Preset,

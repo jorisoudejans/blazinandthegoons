@@ -64,3 +64,12 @@ resolveFromWebjarsNodeModulesDir := true
 routesGenerator := InjectedRoutesGenerator
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
+
+// code coverage
+jacoco.settings
+parallelExecution in jacoco.Config := false
+
+// Exclude generated classes, routes and views
+jacoco.excludes in jacoco.Config := Seq("views*", "*Routes*", "controllers*routes*", "controllers*Reverse*", "controllers*javascript*", "controller*ref*")
+
+

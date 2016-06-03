@@ -4,23 +4,30 @@
         <p><i>Pick a script from the list</i></p>
 
         <div class="list-group script-list">
-            <div *ngFor="#script of scripts;" class="col-md-12 list-group-item" [class.oneRunning]="activeScript" [class.active]="activeScript && activeScript.script && script.id == activeScript.script.id">
+            <div *ngFor="#script of scripts;" class="col-md-12 list-group-item" [class.active]="activeScript && activeScript.script && script.id == activeScript.script.id">
                 <div class="col-md-4">
                     {{ script.id }}
                 </div>
                 <div class="col-md-4">
                     {{ script.name }}
                 </div>
-                <div class="col-md-4">
-                    <button type="button" class="btn btn-primary-outline" (click)="editScript(script)">Edit script</button>
-                    <button type="button" class="btn btn-primary-outline" (click)="makeActive(script)">Assign as live script</button>
-                    <button type="button" class="btn btn-primary-outline" (click)="deactivateScript()">Unassign as live script</button>
+                <div class="col-md-4 pull-right">
+                    <a aria-label="Edit" href="/edit/{{ script.id }}">
+                        <i class="material-icons">mode_edit</i>
+                    </a>
+                    <a *ngIf="!activeScript" aria-label="Play" (click)="makeActive(script)">
+                        <i class="material-icons">play_arrow</i>
+                    </a>
+                    <a *ngIf="activeScript && script.id == activeScript.script.id" aria-label="Deactivate" (click)="deactivateScript()">
+                        <i class="material-icons">stop</i>
+                    </a>
+                    <a *ngIf="activeScript && script.id == activeScript.script.id" aria-label="View" href="/director">
+                        <i class="material-icons">visibility</i>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-offset-2 col-md-3">
-        <a (click)="gotoview('director')" class="btn btn-primary">Open view as director</a>
-        <a (click)="gotoview('operator')" class="btn btn-primary">Open view as operator</a>
+    <div class="col-md-offset-1 col-md-4">
+        <a class="btn btn-info" href="/edit">Create new script</a>
     </div>
-</div>

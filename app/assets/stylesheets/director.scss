@@ -109,6 +109,8 @@ $grid-padding: 4px;
         bottom: -9999px;
         left: -9999px;
         right: -9999px;
+        width: 100%;
+        height: 100%;
       }
     }
 
@@ -146,6 +148,22 @@ $grid-padding: 4px;
   padding-right: 0;
   background-color: rgb(0,153,0);
   box-shadow: inset 0 0 5px rgba(0,0,0,0.35);
+
+  .main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .next {
+    width: 50%;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+  }
 
   .main-camera-list-item {
     padding-left: 0;

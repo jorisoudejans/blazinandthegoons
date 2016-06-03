@@ -18,12 +18,16 @@ public class DatabaseSeeder {
     @Inject
     public DatabaseSeeder(EbeanConfig config, DynamicEvolutions evolutions) {
 
+        System.out.println("Seeding database: " + config + " " + evolutions);
+
         if (Preset.find.byId(1L) == null) { // create presets if not present
-            Preset.createPreset("Nice view", 0, 0, 0, 0, 0);
-            Preset.createPreset("Dirigent focus", 3, 0, 0, 0, 0);
-            Preset.createPreset("Violin snare closeup", 2, 0, 0, 0, 0);
-            Preset.createPreset("Contrabas player", 5, 0, 0, 0, 0);
+            Preset.createPreset("Nice view", 0, 10000, 10000, 0, 0);
+            Preset.createPreset("Dirigent focus", 3, 15000, 10000, 0, 0);
+            Preset.createPreset("Violin snare closeup", 2, 8000, 6000, 0, 0);
+            Preset.createPreset("Contrabas player", 5, 500, 800, 0, 0);
         }
+
+        System.out.println("Seeding database");
 
         Script s = new Script(); // create new script
         s.name = "Mock script";
@@ -31,14 +35,17 @@ public class DatabaseSeeder {
         s.save();
 
         // create actions
-        Action a1 = Action.createAction("Go to Trombone", 5, 3, models.Preset.find.byId(1L), s);
-        Action a2 = Action.createAction("Go to Dirigent", 4, 2, models.Preset.find.byId(2L), s);
-        Action a3 = Action.createAction("Go to Violin", 3, 1, models.Preset.find.byId(3L), s);
-        Action a4 = Action.createAction("Go to Contrabas", 2, 0, models.Preset.find.byId(4L), s);
+        Action a1 = Action.createAction(0,"Open on dirigent", 5, 8, models.Preset.find.byId(1L), s);
+        Action a2 = Action.createAction(1,"Clarinets", 2, 8, models.Preset.find.byId(4L), s);
+        Action a3 = Action.createAction(2,"Static on strings", 4, 12, models.Preset.find.byId(2L), s);
+        Action a4 = Action.createAction(3,"Static on violins", 3, 12, models.Preset.find.byId(3L), s);
+        Action a5 = Action.createAction(4,"Dirigent still", 2, 18, models.Preset.find.byId(4L), s);
+        Action a6 = Action.createAction(5,"Flutes close-up", 2, 6, models.Preset.find.byId(1L), s);
+        Action a7 = Action.createAction(6,"Harp", 2, 5, models.Preset.find.byId(3L), s);
         //actionlist.addAll(Arrays.asList(a1,a2,a3,a4));
 
         for (int i = 0; i < 20; i++) { // create some more actions
-            Action a = Action.createAction("Action " + i, i, i * 2, models.Preset.find.byId(1L), s);
+            Action a = Action.createAction(6 + i, "Action " + i, i, i * 2, models.Preset.find.byId(1L), s);
         }
         //printall(); // for debug
     }

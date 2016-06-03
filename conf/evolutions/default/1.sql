@@ -5,6 +5,7 @@
 
 create table action (
   id                            bigint not null,
+  index                         integer,
   description                   varchar(255),
   timestamp                     integer,
   duration                      integer,
@@ -15,11 +16,14 @@ create table action (
 create sequence action_seq;
 
 create table active_script (
+  id                            integer not null,
   script_id                     bigint,
   running_time                  bigint,
   action_index                  integer,
-  constraint uq_active_script_script_id unique (script_id)
+  constraint uq_active_script_script_id unique (script_id),
+  constraint pk_active_script primary key (id)
 );
+create sequence active_script_seq;
 
 create table preset (
   id                            bigint not null,
@@ -64,6 +68,7 @@ drop table if exists action;
 drop sequence if exists action_seq;
 
 drop table if exists active_script;
+drop sequence if exists active_script_seq;
 
 drop table if exists preset;
 drop sequence if exists preset_seq;

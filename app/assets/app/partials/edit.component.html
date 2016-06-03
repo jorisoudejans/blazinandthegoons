@@ -6,6 +6,11 @@
     </div>
     <div class="col-md-6">
         <ul class="editable-list list-group" *ngIf="scriptData">
+            <li class="editable-list-item list-group-item" style="height: 0; padding: 0;border-top: none;">
+                <div style="margin-top: -20px" class="addnew" data-toggle="modal" data-target="#actionModal" (click)="selectInsertPos(0);">
+                    <img src="assets/images/plus.png" width="100%">
+                </div>
+            </li>
             <li class="editable-list-item list-group-item" *ngFor="#action of scriptData.actions; #i=index" [class.selected]="i == scriptData.actionIndex">
                 <div [class.active-item]="action.active" [class.inactive-item]="action.active" class="text-area" (click)="action.active = !action.active">
                     <h1 class="text-area-header">Action description: {{action.description}}</h1>
@@ -20,6 +25,10 @@
                         <option *ngFor="#preset of presets" [value]="preset">{{preset.name}}</option>
                     </select><br>
                     <button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button>
+                    <button type="button" class="btn btn-danger center-block" (click)="action.active = !action.active; deleteAction(i);">Delete this action</button>
+                </div>
+                <div class="addnew" data-toggle="modal" data-target="#actionModal" (click)="selectInsertPos(i);">
+                    <img src="assets/images/plus.png" width="100%">
                 </div>
             </li>
         </ul>
@@ -31,3 +40,28 @@
         <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>
     </div>
 </div>
+
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add a new Action</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-area input-area form-inline">
+                    <label class="text-area-header">Action description: </label><input class="form-control description" placeholder="description"><br>
+                    <input type="number" class="form-control duration" placeholder="duration"> <label class="text-area-detail">sec</label><br>
+                    <span class="text-area-detail">Preset:</span>
+                    <select class="form-control preset">
+                        <option *ngFor="#preset of presets" [value]="preset">{{preset.name}}</option>
+                    </select><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cleanUpModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addAction()">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

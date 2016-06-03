@@ -2,9 +2,11 @@
   position: relative;
   max-height: 700px;
   overflow-y: scroll;
+  padding-top: 20px;
 
   .editable-list-item {
     background-color: #FFF;
+    width: 95%;
 
     .active-item {
       display: initial;
@@ -34,6 +36,14 @@
         color: #000000;
         opacity: .54;
       }
+    }
+
+    .addnew {
+      position: absolute;
+      left: 100%;
+      width: 5%;
+      margin-top: -8px;
+      cursor: pointer;
     }
   }
 }

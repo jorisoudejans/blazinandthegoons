@@ -13,11 +13,14 @@ import javax.persistence.ManyToOne;
  * The model class for Actions. This is the representation used for the database.
  */
 @Entity
-public class Action extends Model {
+public class Action extends Model implements Comparable {
 
 
     @Id
     public Long id;
+
+    @Constraints.Required
+    public int index;
 
     @Constraints.Required
     public String description;
@@ -50,8 +53,9 @@ public class Action extends Model {
      * @return  The created Action object.
      */
     public static Action createAction(
-            String des, int timestamp, int duration, Preset preset, Script script) {
+            int ind, String des, int timestamp, int duration, Preset preset, Script script) {
         Action act =  new Action();
+        act.index = ind;
         act.description = des;
         act.timestamp = timestamp;
         act.duration = duration;
@@ -62,4 +66,9 @@ public class Action extends Model {
         return act;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        Action act = (Action) o;
+        return this.index-act.index;
+    }
 }
