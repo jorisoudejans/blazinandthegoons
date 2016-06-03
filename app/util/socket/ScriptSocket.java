@@ -11,6 +11,7 @@ import play.mvc.WebSocket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * WebSocket (ws) for streaming script data.
@@ -59,6 +60,7 @@ public final class ScriptSocket {
 
         List<ActiveScript> as = ActiveScript.find.all();
         if (!as.isEmpty()) {
+            Collections.sort(as.get(0).script.actions);
             write(as.get(0));
         } else {
             write(Json.toJson(new ArrayList<>()));
@@ -77,21 +79,24 @@ public final class ScriptSocket {
             Long scriptId = jsonNode.findPath("start").asLong();
             Script toStart = Script.find.byId(scriptId);
             if (toStart != null) {
+                Collections.sort(toStart.actions);
                 ActiveScript as = new ActiveScript();
                 as.actionIndex = 0;
                 as.runningTime = new Date().getTime();
-                as.script = models.Script.find.byId(toStart.id);
+                as.script = toStart;
                 as.save();
             }
         } else if (jsonNode.has("stop")) {
             List<ActiveScript> aslist = ActiveScript.find.all();
             if (!aslist.isEmpty()) { // we have an active script
+                Collections.sort(aslist.get(0).script.actions);
                 ActiveScript as = aslist.get(0);
                 as.delete();
             }
         }
         List<ActiveScript> aslist = ActiveScript.find.all();
         if (!aslist.isEmpty()) { // we have an active script
+            Collections.sort(aslist.get(0).script.actions);
             ActiveScript as = aslist.get(0);
             as.actionIndex = jsonNode.findPath("actionIndex").asInt();
             as.save();
@@ -102,6 +107,7 @@ public final class ScriptSocket {
     }
 
     private void write(ActiveScript script) {
+        Collections.sort(script.script.actions);
         JsonNode v = Json.toJson(script);
         write(v);
     }

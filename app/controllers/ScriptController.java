@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * Controls a script.
@@ -30,6 +31,10 @@ public class ScriptController extends Controller {
      */
     public Result getAll() {
         List<models.Script> scriptList = models.Script.find.all();
+        for(models.Script scr : scriptList) {
+            Collections.sort(scr.actions);
+            System.out.println();
+        }
         return ok(Json.toJson(scriptList));
     }
 
@@ -40,6 +45,7 @@ public class ScriptController extends Controller {
      */
     public Result get(Long id) {
         models.Script script = models.Script.find.byId(id);
+        Collections.sort(script.actions);
         return ok(Json.toJson(script));
     }
 
@@ -51,10 +57,10 @@ public class ScriptController extends Controller {
     public Result create() {
         JsonNode json = request().body().asJson();
         String name = json.findPath("name").textValue();
-        models.Script script = new models.Script();
-        script.name = name;
-        script.creationDate = new Date(); // now
+        models.Script script = Json.fromJson(json, models.Script.class);
+        script.id = null;
         script.save();
+        System.out.println(script);
         return ok(Json.toJson(script));
     }
 
@@ -64,15 +70,28 @@ public class ScriptController extends Controller {
      * @return the created script
      */
     @BodyParser.Of(BodyParser.Json.class)
-    public Result update(Long id) {
-        models.Script script = models.Script.find.byId(id); // find the script
-        if (script != null) {
-            JsonNode json = request().body().asJson(); // get the JSON payload
-            script.name = json.findPath("name").textValue(); // get the name
-            script.save();
-            return ok(Json.toJson(script)); // report back the updated script
+    public Result save(Long id) {
+        JsonNode json = request().body().asJson(); // get the JSON payload
+        models.Script script = Json.fromJson(json, models.Script.class); // find the script
+        if(script.id == -1) {
+            models.Script actScript = new models.Script();
+            actScript.name = script.name;
+            actScript.save();
+            for(models.Action action : script.actions) {
+                Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), actScript);
+            }
+        } else {
+            for(models.Action action : script.actions) {
+                if (action.id == null)
+                    Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), models.Script.find.byId(script.id));
+                action.update();
+            }
+            models.Script actScript = models.Script.find.byId(script.id);
+            script.actions = actScript.actions;
+            script.update();
         }
-        return notFound();
+        Collections.sort(script.actions);
+        return ok(Json.toJson(script)); // report back the updated script
     }
 
     /**
@@ -122,6 +141,7 @@ public class ScriptController extends Controller {
     public Result getActiveScript() {
         models.ActiveScript as = models.ActiveScript.find.all().get(0);
         if (as != null) {
+            Collections.sort(as.script.actions);
             return ok(Json.toJson(as));
         }
         return notFound("No active script");
@@ -135,6 +155,7 @@ public class ScriptController extends Controller {
     public Result startScript(Long id) {
         models.Script s = models.Script.find.byId(id);
         if (s != null) {
+            Collections.sort(s.actions);
             List<ActiveScript> allScripts = ActiveScript.find.all();
             for (ActiveScript as : allScripts) { // remove all scripts
                 as.delete();
@@ -159,6 +180,7 @@ public class ScriptController extends Controller {
     public Result updateActiveScript(Long id) {
         models.Script script = models.Script.find.byId(id);
         if (script != null && script.activeScript != null) {
+            Collections.sort(script.actions);
             JsonNode json = request().body().asJson();
             script.activeScript.actionIndex = json.findPath("actionIndex").intValue();
             script.save();

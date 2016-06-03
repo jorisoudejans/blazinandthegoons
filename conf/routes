@@ -5,14 +5,14 @@
 # Home page
 GET     /                           @controllers.ApplicationController.overviewView()
 GET     /director                   @controllers.ApplicationController.directorView()
+GET     /edit                       @controllers.ApplicationController.editNewView()
 GET     /edit/:id                   @controllers.ApplicationController.editView(id: Long)
 
 # Scripts
 GET     /api/scripts                    @controllers.ScriptController.getAll()
-
 GET     /api/scripts/connect                 @controllers.ScriptController.socket()
 GET     /api/scripts/:id                @controllers.ScriptController.get(id: Long)
-POST    /api/scripts/:id                @controllers.ScriptController.update(id: Long)
+POST    /api/scripts/:id                @controllers.ScriptController.save(id: Long)
 POST    /api/scripts/create             @controllers.ScriptController.create()
 POST    /api/scripts/:id/actions/create     @controllers.ScriptController.addAction(id: Long)
 DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.ScriptController.removeAction(scriptId: Long, actionId: Long)
