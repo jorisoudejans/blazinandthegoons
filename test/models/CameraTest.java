@@ -56,7 +56,10 @@ public class CameraTest {
         l.cameras = Collections.singletonList(c);
         l.save();
 
-        assertEquals(1, Location.find.all().get(0).cameras.size());
+        c.location = l;
+        c.save();
+
+        assertEquals(1, Location.find.byId(l.id).cameras.size());
     }
 
     /**
