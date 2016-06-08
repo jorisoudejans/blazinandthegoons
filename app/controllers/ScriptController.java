@@ -58,7 +58,7 @@ public class ScriptController extends Controller {
         JsonNode json = request().body().asJson();
         String name = json.findPath("name").textValue();
         models.Script script = Json.fromJson(json, models.Script.class);
-        script.id = null;
+        script.name = name;
         script.save();
         System.out.println(script);
         return ok(Json.toJson(script));
@@ -73,15 +73,15 @@ public class ScriptController extends Controller {
     public Result save(Long id) {
         JsonNode json = request().body().asJson(); // get the JSON payload
         models.Script script = Json.fromJson(json, models.Script.class); // find the script
-        if(script.id == -1) {
+        if (script.id == -1) {
             models.Script actScript = new models.Script();
             actScript.name = script.name;
             actScript.save();
-            for(models.Action action : script.actions) {
+            for (models.Action action : script.actions) {
                 Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), actScript);
             }
         } else {
-            for(models.Action action : script.actions) {
+            for (models.Action action : script.actions) {
                 if (action.id == null)
                     Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), models.Script.find.byId(script.id));
                 action.update();

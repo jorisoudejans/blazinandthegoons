@@ -7,7 +7,7 @@ import { HTTP_PROVIDERS }    from "angular2/http";
 import {bootstrap}    from "angular2/platform/browser"
 
 import {ScriptService} from "./api/script.service";
-import {Script, ActiveScript} from "./api/script";
+import {Script, ActiveScript, Location} from "./api/script";
 import 'rxjs/Rx';
 
 @Component({
@@ -25,15 +25,21 @@ export class Overview implements OnInit {
     constructor (private _scriptService: ScriptService) {}
     errorMessage: string;
     scripts:Script[];
+    locations: Location[];
     activeScript: ActiveScript;
     ngOnInit() {
         this.connect();
-        this.getScripts();
+        this.getData();
     }
-    getScripts() {
+    getData() {
+        // Get the script and location data
         this._scriptService.getScripts()
             .subscribe(
-                scripts => {this.scripts = scripts; console.log("list " + scripts) },
+                scripts => {this.scripts = scripts; },
+                error =>  this.errorMessage = <any>error);
+        this._scriptService.getLocations()
+            .subscribe(
+                locations => {this.locations = locations; },
                 error =>  this.errorMessage = <any>error);
     }
     connect() {
@@ -74,6 +80,14 @@ export class Overview implements OnInit {
         } else {
             alert('An active script is needed in order to perfom this action.');
         }
+    }
+    addLocation() {
+        name = prompt("Location name", "Location1");
+        this._scriptService.addLocation(name).subscribe(
+                location => document.location.href = '/locations/' + location.id,
+                error =>  this.errorMessage = <any>error
+        );
+
     }
 }
 

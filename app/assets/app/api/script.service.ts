@@ -12,7 +12,7 @@ export class ScriptService {
         var base = location.hostname + (location.port ? ':'+location.port: '');
         return new WebSocket("ws://" + base +"/" + this._heroesUrl + "/connect")
     }
-    getScripts (): Observable<Script[]> {
+    getScripts (): Observable<Script[]> { // returns all scripts
         return this.http.get(this._heroesUrl)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
@@ -28,18 +28,24 @@ export class ScriptService {
             .catch(ScriptService.handleError);
     }
     saveScript(script: Script): Observable<Script> {
-        console.log(this._heroesUrl + "/" + script.id)
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post('../' + this._heroesUrl + "/" + script.id, JSON.stringify(script), options)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
-    }/*
-    getStatus (id: number): Observable<ActiveScript> {
-        return this.http.get(this._heroesUrl + "/status")
+    }
+    getLocations (): Observable<Location[]> { // returns all scripts
+        return this.http.get("api/locations")
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
-    }*/
+    }
+    addLocation (name: String): Observable<Location> { // adds a new location
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post("api/locations/create", JSON.stringify({ "name": name}), options)
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
+    }
     static putScript(script: ActiveScript, socket: WebSocket): void {
         var activeData = {
             "actionIndex": script.actionIndex
