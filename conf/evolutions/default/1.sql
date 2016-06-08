@@ -57,6 +57,7 @@ create table script (
   id                            bigint not null,
   name                          varchar(255),
   creation_date                 timestamp,
+  location_id                   bigint,
   constraint pk_script primary key (id)
 );
 create sequence script_seq;
@@ -72,6 +73,9 @@ alter table active_script add constraint fk_active_script_script_id foreign key 
 alter table camera add constraint fk_camera_location_id foreign key (location_id) references location (id) on delete restrict on update restrict;
 create index ix_camera_location_id on camera (location_id);
 
+alter table script add constraint fk_script_location_id foreign key (location_id) references location (id) on delete restrict on update restrict;
+create index ix_script_location_id on script (location_id);
+
 
 # --- !Downs
 
@@ -85,6 +89,9 @@ alter table active_script drop constraint if exists fk_active_script_script_id;
 
 alter table camera drop constraint if exists fk_camera_location_id;
 drop index if exists ix_camera_location_id;
+
+alter table script drop constraint if exists fk_script_location_id;
+drop index if exists ix_script_location_id;
 
 drop table if exists action;
 drop sequence if exists action_seq;

@@ -3,13 +3,13 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Action;
 import models.ActiveScript;
+import models.Camera;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
 import play.mvc.WebSocket;
-import util.camera.LiveCamera;
 import util.camera.commands.SnapshotCommand;
 import util.socket.ScriptSocket;
 
@@ -210,7 +210,7 @@ public class ScriptController extends Controller {
     public Result getCameraImage() {
         // just to show an image for now
         try {
-            BufferedImage i = new SnapshotCommand().get(new LiveCamera("192.168.10.101"), SnapshotCommand.RES_1280);
+            BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(i, "jpg", baos);

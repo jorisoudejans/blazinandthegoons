@@ -1,10 +1,9 @@
 package util.camera.commands;
 
-import util.camera.LiveCamera;
+import models.Camera;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
 
@@ -33,7 +32,7 @@ public class SnapshotCommand extends CameraCommand {
      * @param res wanted resolution const, see: RES_*
      * @return the image or null on failure
      */
-    public BufferedImage get(LiveCamera camera, int res) {
+    public BufferedImage get(Camera camera, int res) {
         String urlString = "http://" + camera.getIp() + "/cgi-bin/camera?resolution=" + res;
         try {
             URL url = new URL(urlString);
