@@ -7,7 +7,7 @@ import { HTTP_PROVIDERS }    from "angular2/http";
 import {bootstrap}    from "angular2/platform/browser"
 
 import {ScriptService} from "./api/script.service";
-import {Script, ActiveScript, Location} from "./api/script";
+import {Script, ActiveScript, Location, Camera} from "./api/script";
 import 'rxjs/Rx';
 
 @Component({

@@ -1,6 +1,6 @@
 import {Injectable}     from "angular2/core";
 import {Http, Response, Headers, RequestOptions} from "angular2/http";
-import {Script, ActiveScript}           from "./script";
+import {Script, ActiveScript, Location}           from "./script";
 import {Observable}     from "rxjs/Observable";
 
 @Injectable()
