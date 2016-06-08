@@ -1,4 +1,13 @@
 <div class="connection-lost" *ngIf="errorMessage"><h3>{{ errorMessage }}</h3></div>
+<div class="no-activescript" *ngIf="!currentScript">
+    <div class="no-activescript-inner">
+        <i id="icon" class="material-icons">error</i>
+        <h1>There is no active script at this time.</h1>
+        <p>
+            <a href="/">Activate</a> a script or wait until one becomes active
+        </p>
+    </div>
+</div>
 <div class="container-fluid screen-height">
     <div class="col-md-4 screen-height">
         <action-list [scriptData]="currentScript" [socket]="socket"></action-list>
