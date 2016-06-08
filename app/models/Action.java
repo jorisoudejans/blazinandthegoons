@@ -69,6 +69,6 @@ public class Action extends Model implements Comparable {
     @Override
     public int compareTo(Object o) {
         Action act = (Action) o;
-        return this.index-act.index;
+        return this.index - act.index;
     }
 }
