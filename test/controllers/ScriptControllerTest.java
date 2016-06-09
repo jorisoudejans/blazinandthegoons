@@ -1,5 +1,6 @@
 package controllers;
 
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,11 +103,21 @@ public class ScriptControllerTest {
         s1.save();
 
         ScriptController scriptController = new ScriptController();
+
+        Result r1 = scriptController.getActiveScript();
+        assertEquals(Http.Status.NOT_FOUND, r1.status());
+
         scriptController.startScript((long) 1);
 
-        Result result = new ScriptController().getActiveScript();
-        assertEquals(Http.Status.OK, result.status());
-        assertEquals("application/json", result.contentType().get());
+        Result r2 = scriptController.getActiveScript();
+        assertEquals(Http.Status.OK, r2.status());
+        assertEquals("application/json", r2.contentType().get());
+    }
+
+    @Test
+    public void testStartScript() {
+        Result r = new ScriptController().startScript((long) -1234);
+        assertEquals(Http.Status.NOT_FOUND, r.status());
     }
 
     /**
@@ -237,6 +248,34 @@ public class ScriptControllerTest {
 
         r = new ScriptController().removeAction((long) -300, (long) -300);
         assertEquals(Http.Status.NOT_FOUND, r.status());
+    }
+
+    @Test
+    public void testUpdateActiveScript() {
+        models.Script s1 = new models.Script();
+        s1.name = "ScriptController One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        ScriptController scriptController = new ScriptController();
+
+        Result r1 = scriptController.updateActiveScript(s1.id);
+        assertEquals(Http.Status.NOT_FOUND, r1.status());
+
+        scriptController.startScript(s1.id);
+
+        Http.RequestBuilder builder = fakeRequest("GET", "/api/scripts/" + s1.id + "/update");
+        builder.header("Content-Type", "application/json");
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("actionIndex", 8);
+
+        builder.bodyJson(Json.toJson(maps));
+        Result r = route(ScriptControllerTest.app, builder);
+
+        System.out.println("UPdate Result: " + contentAsString(r));
+        assertEquals(Http.Status.OK, r.status());
+        assertTrue(contentAsString(r).contains("\"actionIndex\":8"));
     }
 
 

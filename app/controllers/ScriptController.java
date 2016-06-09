@@ -142,10 +142,10 @@ public class ScriptController extends Controller {
      * @return data of running script
      */
     public Result getActiveScript() {
-        models.ActiveScript as = models.ActiveScript.find.all().get(0);
-        if (as != null) {
-            Collections.sort(as.script.actions);
-            return ok(Json.toJson(as));
+        if (models.ActiveScript.find.all().size() != 0) {
+            models.ActiveScript as = models.ActiveScript.find.all().get(0);
+             Collections.sort(as.script.actions);
+             return ok(Json.toJson(as));
         }
         return notFound("No active script");
     }
