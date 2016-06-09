@@ -162,5 +162,82 @@ public class ScriptControllerTest {
         assertTrue(contentAsString(r).contains("New script"));
     }
 
+    /**
+     * Tests adding an action to a script.
+     */
+    @Test
+    public void testAddAction1() {
+        models.Script s1 = new models.Script();
+        s1.name = "ScriptController One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/scripts/" + s1.id + "/actions/create");
+        builder.header("Content-Type", "application/json");
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("description", "great desc");
+
+        builder.bodyJson(Json.toJson(maps));
+        Result r = route(ScriptControllerTest.app, builder);
+        System.out.println("addAction Result: " + contentAsString(r));
+        assertTrue(contentAsString(r).contains("great desc"));
+    }
+
+    /**
+     * Test right response of adding an action to a non-existing script.
+     */
+    @Test
+    public void testAddAction2() {
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/scripts/546547/actions/create");
+        builder.header("Content-Type", "application/json");
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("description", "great desc");
+
+        builder.bodyJson(Json.toJson(maps));
+        Result r = route(ScriptControllerTest.app, builder);
+        assertEquals(Http.Status.NOT_FOUND, r.status());
+    }
+
+    /**
+     * Tests removing an action from a script.
+     */
+    @Test
+    public void testRemoveAction1() {
+        models.Action a1 = new models.Action();
+        a1.description = "simple desc";
+
+        models.Script s1 = new models.Script();
+        s1.name = "ScriptController One";
+        s1.creationDate = new Date();
+        s1.actions.add(a1);
+        s1.save();
+
+        Result r = new ScriptController().removeAction(s1.id, a1.id);
+
+        System.out.println("removeAction Result: " + contentAsString(r));
+
+        assertTrue(!contentAsString(r).contains("simple desc"));
+        assertTrue(contentAsString(r).contains("\"actions\":[]"));
+    }
+
+    /**
+     * Test right response of removing action with non-existing script or action.
+     */
+    @Test
+    public void testRemoveAction2() {
+        models.Script s1 = new models.Script();
+        s1.name = "ScriptController One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        Result r = new ScriptController().removeAction(s1.id, (long) -300);
+        assertEquals(Http.Status.NOT_FOUND, r.status());
+
+        r = new ScriptController().removeAction((long) -300, (long) -300);
+        assertEquals(Http.Status.NOT_FOUND, r.status());
+    }
+
 
 }

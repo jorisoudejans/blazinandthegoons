@@ -120,13 +120,16 @@ public class ScriptController extends Controller {
      * @param actionId the action id in the script
      * @return script with added action
      */
-    @BodyParser.Of(BodyParser.Json.class)
     public Result removeAction(Long scriptId, Long actionId) {
         models.Script script = models.Script.find.byId(scriptId); // retrieve the script
         if (script != null) {
             Action action = Action.find.byId(actionId); // retrieve the action
             if (action != null) {
-                action.delete(); // retrieve the action
+                //TODO: If the action is not in the action-list
+                // of the script it will still delete it in the db
+                script.actions.remove(action);
+                script.save();
+                action.delete(); // delete the action
                 return ok(Json.toJson(script));
             }
             return notFound("ActionController " + actionId);
