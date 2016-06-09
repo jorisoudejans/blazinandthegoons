@@ -6,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import { HTTP_PROVIDERS }    from "angular2/http";
 import {bootstrap}    from "angular2/platform/browser"
 import {Router, ROUTER_PROVIDERS}     from "angular2/router"
+import {Dragula, DragulaService}     from "ng2-dragula/ng2-dragula"
 
 
 import {ScriptService} from "./api/script.service";
@@ -20,13 +21,14 @@ import 'rxjs/Rx';
 @Component({
     selector: "edit",
     templateUrl: '../../assets/app/partials/edit.component.html',
-    directives: [PresetListComponent],
+    directives: [PresetListComponent, Dragula],
     providers:  [
         HTTP_PROVIDERS,
         ScriptService,
         PresetService,
-        ROUTER_PROVIDERS
-    ]
+        ROUTER_PROVIDERS,
+    ],
+    viewProviders: [DragulaService]
 })
 export class Edit implements OnInit {
     constructor (private _scriptService: ScriptService, private _presetService: PresetService, private router: Router) {}
@@ -65,9 +67,8 @@ export class Edit implements OnInit {
                 error =>  this.errorMessage = <any>error);
         console.log("BINNENGEKOMEN DATA");
         console.log(this.scriptData);
-        // var base = location.hostname + (location.port ? ':'+location.port: '')
-        // location.href = 'localhost:9000';
-        this.router.navigateByUrl('localhost:9000/');
+        var base = 'http://' + location.hostname + (location.port ? ':'+location.port: '')
+        window.location.href = base;
     }
     getPresets() {
         this._presetService.getPresets()
