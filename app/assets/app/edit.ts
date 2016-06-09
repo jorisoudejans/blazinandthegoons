@@ -6,7 +6,6 @@ import {Observable} from 'rxjs/Observable';
 import { HTTP_PROVIDERS }    from "angular2/http";
 import {bootstrap}    from "angular2/platform/browser"
 import {Router, ROUTER_PROVIDERS}     from "angular2/router"
-import {Dragula, DragulaService}     from "ng2-dragula/ng2-dragula"
 
 
 import {ScriptService} from "./api/script.service";
@@ -18,17 +17,19 @@ import {PresetService} from "./api/preset.service";
 
 import 'rxjs/Rx';
 
+declare var jQuery:any;
+
 @Component({
     selector: "edit",
     templateUrl: '../../assets/app/partials/edit.component.html',
-    directives: [PresetListComponent, Dragula],
+    directives: [PresetListComponent],
     providers:  [
         HTTP_PROVIDERS,
         ScriptService,
         PresetService,
         ROUTER_PROVIDERS,
     ],
-    viewProviders: [DragulaService]
+    viewProviders: []
 })
 export class Edit implements OnInit {
     constructor (private _scriptService: ScriptService, private _presetService: PresetService, private router: Router) {}
@@ -38,6 +39,7 @@ export class Edit implements OnInit {
     errorMessage: string;
     actionInsertPos: number;
     ngOnInit() {
+        var self = this;
         var urlarr = window.location.href.split('/');
         this.scriptid = parseInt(urlarr[urlarr.length - 1]);
         if(urlarr[urlarr.length - 1] !== 'edit')
@@ -45,6 +47,26 @@ export class Edit implements OnInit {
         else
             this.buildNewScript();
         this.getPresets();
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                jQuery('.script-action').droppable( {
+                    drop: function(event:any, ui:any) {
+                        console.log(self.scriptData[parseInt(jQuery(event.target).data('index'))]);
+                        console.log(self);
+                        self.scriptData.actions[parseInt(jQuery(event.target).data('index'))].preset = self.presets[parseInt(jQuery(ui.helper).data('index'))];
+                    }
+                })
+            }, 1000)
+        })
+    }
+    refreshDroppable() {
+        jQuery('.script-action').droppable( {
+            drop: function(event:any, ui:any) {
+                console.log(self.scriptData[parseInt(jQuery(event.target).data('index'))]);
+                console.log(self);
+                self.scriptData.actions[parseInt(jQuery(event.target).data('index'))].preset = self.presets[parseInt(jQuery(ui.helper).data('index'))];
+            }
+        })
     }
     getScript(id: number) {
         this._scriptService.getScriptWithPrefix(id, '../')
@@ -94,6 +116,7 @@ export class Edit implements OnInit {
         this.scriptData.actions.splice(this.actionInsertPos+1, 0, act);
         this.fixActionIndices();
         this.cleanUpModal();
+        this.refreshDroppable();
     }
     deleteAction(index: number) {
         console.log('ja');

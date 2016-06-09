@@ -11,7 +11,7 @@
                     <img src="assets/images/plus.png" width="100%">
                 </div>
             </li>
-            <li class="editable-list-item list-group-item" *ngFor="#action of scriptData.actions; #i=index" [class.selected]="i == scriptData.actionIndex">
+            <li class="editable-list-item list-group-item script-action" [attr.data-index]="i" *ngFor="#action of scriptData.actions; #i=index" [class.selected]="i == scriptData.actionIndex">
                 <div [class.active-item]="action.active" [class.inactive-item]="action.active" class="text-area" (click)="action.active = !action.active">
                     <h1 class="text-area-header">Action description: {{action.description}}</h1>
                     <span class="text-area-detail">{{action.duration}} sec</span><br>
@@ -34,7 +34,7 @@
         </ul>
     </div>
     <div class="col-md-offset-1 col-md-4">
-        <preset-list></preset-list>
+        <preset-list scriptData="scriptData"></preset-list>
     </div>
     <div class="col-md-offset-1 col-md-12">
         <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>

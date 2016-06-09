@@ -48,9 +48,15 @@
   }
 }
 
-.list-header input {
-  line-height: 60px;
-  padding: 6px;
-  font-size: 2rem;
-  margin-bottom: 8px;
+.list-header {
+  padding-top: 40px;
+  padding-left: 40px;
+  margin-bottom: 20px;
+
+  input {
+    line-height: 60px;
+    padding: 6px;
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
 }

@@ -1,10 +1,11 @@
 /// <reference path="../../../typings/jquery.d.ts" />
 import {Preset} from "./api/preset";
-import {Component, Input, OnInit} from "angular2/core";/*
-import {Dragula} from 'ng2-dragula/src/app/directives/dragula.directive';
-import {DragulaService} from 'ng2-dragula/src/app/providers/dragula.provider';*/
+import {Script} from "./api/script";
+import {Component, Input, OnInit} from "angular2/core";
 
 import {PresetService} from "./api/preset.service";
+
+declare var jQuery:any;
 
 @Component({
     selector:    'preset-list',
@@ -15,8 +16,23 @@ import {PresetService} from "./api/preset.service";
 })
 export class PresetListComponent implements OnInit {
     constructor (private _heroService: PresetService) {}
+    @Input() scriptData: Script;
+    pageX: number;
+    pageY: number;
+    draggin: boolean;
     presets: Preset[];
-    ngOnInit() { this.getPresets(); }
+    ngOnInit() {
+        this.getPresets();
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                jQuery('.preset-list-item').draggable( {
+                    cursor: 'move',
+                    containment: 'document',
+                    helper: "clone"
+                })
+            }, 1000)
+        })
+    }
     getPresets() {
         this._heroService.getPresets()
             .subscribe(

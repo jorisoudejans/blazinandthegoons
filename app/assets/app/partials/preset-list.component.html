@@ -1,6 +1,6 @@
 <div class="list-header"><h2>Presets</h2></div>
 <ul class="preset-list col-md-12" *ngIf="presets">
-    <li class="preset-list-item col-md-4" *ngFor="#preset of presets" (click)="activatePreset(preset.id)">
+    <li class="preset-list-item col-md-4" *ngFor="#preset of presets; #i=index" [attr.data-index]="i" (click)="activatePreset(preset.id)">
         <figcaption>
             <h1>{{preset.name}}</h1>
         </figcaption>
