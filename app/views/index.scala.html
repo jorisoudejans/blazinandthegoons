@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/bootstrap/dist/css/bootstrap.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/angular-material/angular-material.min.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/ng2-material/all.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/director.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/opensans.css")">
@@ -32,11 +32,50 @@
 
         <script src='@routes.Assets.versioned("lib/bootstrap/dist/js/bootstrap.js")'></script>
         <script src='@routes.Assets.versioned("lib/ng2-material/all.js")'></script>
-        <script src='@routes.Assets.versioned("lib/ng2-dragula/bundles/ng2-dragula.js")'></script>
+        <script src='@routes.Assets.versioned("lib/ng2-dragula/ng2-dragula.js")'></script>
     </head>
     <body>
+<div id="wrap">
 
-    @content
+            <!-- Static navbar -->
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Blazin and the Goons</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">Scripts</a></li>
+                        <li><a href="/director">Record</a></li>
+                        <li><a href="/locations">Locations</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/account">Account</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        @content
+</div>
+
+        <footer id="footer" class="footer">
+            <div class="container">
+                <p class="text-muted">App developed by team Blazin and the Goons in the TI2806 Contextproject.</p>
+            </div>
+        </footer>
 
     </body>
 </html>

@@ -4,7 +4,6 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 import play.mvc.Result;
-import util.camera.LiveCamera;
 import util.camera.commands.PanTiltCommand;
 import util.camera.commands.SnapshotCommand;
 
@@ -51,7 +50,7 @@ public class Preset extends Model {
      */
     @JsonIgnore
     public boolean apply() {
-        LiveCamera camera = new LiveCamera("192.168.10.101"); // TODO: should be changed, not hardcoded
+        Camera camera = Camera.make("Boilerplate camera", "192.168.10.101"); // TODO: should be changed, not hardcoded
         return new PanTiltCommand(tilt, pan).execute(camera);
     }
 
@@ -72,7 +71,7 @@ public class Preset extends Model {
                 try {
                     Thread.sleep(3000);
 
-                    BufferedImage i = new SnapshotCommand().get(new LiveCamera("192.168.10.101"), SnapshotCommand.RES_1280);
+                    BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(i, "jpg", baos);
