@@ -1,6 +1,6 @@
 import {Injectable}     from "angular2/core";
 import {Http, Response, Headers, RequestOptions} from "angular2/http";
-import {Script, ActiveScript, Location}           from "./script";
+import {Script, ActiveScript, Location, Camera}           from "./script";
 import {Observable}     from "rxjs/Observable";
 
 @Injectable()
@@ -39,10 +39,29 @@ export class ScriptService {
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
     }
+    getLocation (id: number): Observable<Location> { // returns all scripts
+        return this.http.get("api/locations/" + id)
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
+    }
     addLocation (name: String): Observable<Location> { // adds a new location
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post("api/locations/create", JSON.stringify({ "name": name}), options)
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
+    }
+    addCamera (camera: Camera, locationId: number): Observable<Location> { // adds a new location
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post("api/locations/" + locationId + "/add", JSON.stringify(camera), options)
+            .map(ScriptService.extractData)
+            .catch(ScriptService.handleError);
+    }
+    removeCamera (camera: Camera, locationId: number): Observable<Location> { // adds a new location
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        return this.http.delete("api/locations/" + locationId + "/" + camera.id + "/remove", options)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
     }

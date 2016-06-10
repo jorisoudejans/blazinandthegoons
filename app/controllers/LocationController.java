@@ -25,6 +25,19 @@ public class LocationController extends Controller {
     }
 
     /**
+     * Get a single location.
+     * @param id the id of the location
+     * @return location or 404 not found
+     */
+    public Result get(Long id) {
+        Location location = Location.find.byId(id);
+        if (location != null) {
+            return ok(Json.toJson(location));
+        }
+        return notFound();
+    }
+
+    /**
      * Create a new location.
      * @return new location
      */

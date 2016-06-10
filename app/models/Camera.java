@@ -24,7 +24,7 @@ public class Camera extends Model {
     @Constraints.Required
     public String ip;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JsonIgnore
     public Location location;
 

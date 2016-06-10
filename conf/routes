@@ -7,6 +7,7 @@ GET     /                           @controllers.ApplicationController.overviewV
 GET     /director                   @controllers.ApplicationController.directorView()
 GET     /edit                       @controllers.ApplicationController.editNewView()
 GET     /edit/:id                   @controllers.ApplicationController.editView(id: Long)
+GET     /locations/:id              @controllers.ApplicationController.locationView(id: Long)
 
 # Scripts
 GET     /api/scripts                    @controllers.ScriptController.getAll()
@@ -22,6 +23,7 @@ DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.ScriptControll
 GET     /api/camera/image              @controllers.ScriptController.getCameraImage()
 
 GET     /api/locations                  @controllers.LocationController.getAll()
+GET     /api/locations/:id              @controllers.LocationController.get(id: Long)
 POST    /api/locations/create           @controllers.LocationController.create()
 POST     /api/locations/:id/add              @controllers.LocationController.addCamera(id: Long)
 DELETE  /api/locations/:id/:camera/remove       @controllers.LocationController.removeCamera(id: Long, camera: Long)

@@ -119,3 +119,18 @@ span {
     }
   }
 }
+
+#cameras-list {
+  li {
+    vertical-align: middle;
+
+    .material-icons {
+      font-size: 30px;
+    }
+
+    button {
+      float: right;
+    }
+
+  }
+}
