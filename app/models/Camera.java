@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.List;
 
 /**
  * Represents a camera to record with.
@@ -27,6 +28,9 @@ public class Camera extends Model {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JsonIgnore
     public Location location;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    public List<Preset> presets;
 
     /**
      * Returns the camera's ip address.
