@@ -1,4 +1,9 @@
 <div class="list-header"><h2>Presets</h2></div>
+<div class="col-md-12 cameras">
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="#camera of cameras; #i = index;" (click)="toggleCamera(i)"><input type="checkbox" [(ngModel)]="selectedCameras[i]" /><label>{{ camera.name }}</label></li>
+    </ul>
+</div>
 <ul class="preset-list col-md-12" *ngIf="presets">
     <li class="preset-list-item col-md-4" *ngFor="#preset of presets" (click)="activatePreset(preset.id)">
         <figcaption>

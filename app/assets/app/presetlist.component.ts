@@ -5,6 +5,7 @@ import {Dragula} from 'ng2-dragula/src/app/directives/dragula.directive';
 import {DragulaService} from 'ng2-dragula/src/app/providers/dragula.provider';*/
 
 import {PresetService} from "./api/preset.service";
+import {ActiveScript, Script, Location, Camera} from "./api/script";
 
 @Component({
     selector:    'preset-list',
@@ -13,10 +14,46 @@ import {PresetService} from "./api/preset.service";
     viewProviders: [],
     providers:   [PresetService]
 })
-export class PresetListComponent implements OnInit {
+export class PresetListComponent {
+    @Input() scriptData: ActiveScript;
+    cameras: Camera[] = [];
     constructor (private _heroService: PresetService) {}
     presets: Preset[];
-    ngOnInit() { this.getPresets(); }
+    selectedCameras: boolean[] = [];
+    ngOnChanges(item: any) {
+        this.preparePresets();
+        this.prepareCameras();
+    }
+    preparePresets() {
+        if (!this.scriptData) {
+            return;
+        }
+        var p: Preset[] = [];
+        for (var a of this.scriptData.script.actions) {
+            if (!this.findPreset(p, a.preset)) {
+                p.push(a.preset);
+            }
+        }
+        this.presets = p;
+        console.log(this.presets);
+    }
+    prepareCameras() {
+        if (!this.scriptData) {
+            return;
+        }
+        this.cameras = this.scriptData.script.location.cameras;
+    }
+    toggleCamera(i: number) {
+        this.selectedCameras[i] = !this.selectedCameras[i];
+    }
+    findPreset(array: Preset[], needle: Preset): boolean {
+        for (var a of array) {
+            if (a.id === needle.id) {
+                return true;
+            }
+        }
+        return false;
+    }
     getPresets() {
         this._heroService.getPresets()
             .subscribe(

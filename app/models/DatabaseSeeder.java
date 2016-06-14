@@ -5,6 +5,7 @@ import play.api.db.evolutions.DynamicEvolutions;
 import play.db.ebean.EbeanConfig;
 import play.libs.Json;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -21,18 +22,29 @@ public class DatabaseSeeder {
     @Inject
     public DatabaseSeeder(EbeanConfig config, DynamicEvolutions evolutions) {
 
-        Camera camera = Camera.make("Camera One", "192.166.10.101");
-        camera.save();
-
         Location location = new Location();
         location.name = "Mola";
-        location.cameras = Collections.singletonList(camera);
         location.save();
 
-        Preset.createPreset("Nice view", camera, 10000, 10000, 0, 0);
-        Preset.createPreset("Dirigent focus", camera, 15000, 10000, 0, 0);
-        Preset.createPreset("Violin snare closeup", camera, 8000, 6000, 0, 0);
-        Preset.createPreset("Contrabas player", camera, 500, 800, 0, 0);
+        Camera camera = Camera.make("Camera One", "192.166.10.101");
+        camera.location = location;
+        camera.presets = new ArrayList<>();
+        camera.save();
+
+        Camera camera2 = Camera.make("Camera Two", "192.166.10.101");
+        camera2.location = location;
+        camera2.presets = new ArrayList<>();
+        camera2.save();
+
+        location.cameras = Arrays.asList(camera, camera2);
+        location.save();
+
+        camera.presets.add(Preset.createPreset("Nice view", camera, 10000, 10000, 0, 0));
+        camera.presets.add(Preset.createPreset("Dirigent focus", camera, 15000, 10000, 0, 0));
+        camera.presets.add(Preset.createPreset("Violin snare closeup", camera, 8000, 6000, 0, 0));
+        camera2.presets.add(Preset.createPreset("Contrabas player", camera2, 500, 800, 0, 0));
+        camera.save();
+        camera2.save();
 
         System.out.println("Seeding database");
 
