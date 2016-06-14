@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.Camera;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -41,13 +42,14 @@ public class PresetController extends Controller {
     public Result create() {
         JsonNode json = request().body().asJson();
         String name = json.findPath("name").textValue();
-        int camera = json.findPath("camera").intValue();
+        Long cameraId = json.findPath("camera").longValue();
+        Camera c = Camera.find.byId(cameraId);
         int pan = json.findPath("pan").intValue();
-        int tilt = json.findPath("pan").intValue();
-        int zoom = json.findPath("pan").intValue();
-        int focus = json.findPath("pan").intValue();
+        int tilt = json.findPath("tilt").intValue();
+        int zoom = json.findPath("zoom").intValue();
+        int focus = json.findPath("focus").intValue();
 
-        models.Preset preset = models.Preset.createPreset(name, camera, pan, tilt, zoom, focus);
+        models.Preset preset = models.Preset.createPreset(name, c, pan, tilt, zoom, focus);
 
         return ok(Json.toJson(preset));
     }

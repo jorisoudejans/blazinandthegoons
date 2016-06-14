@@ -55,12 +55,12 @@ public class PresetControllerTest {
     public void testGetAll() {
         models.Preset p1 = new models.Preset();
         p1.name = "PresetController One";
-        p1.camera = 1;
+        p1.camera = null;
         p1.save();
 
         models.Preset p2 = new models.Preset();
         p2.name = "PresetController Two";
-        p2.camera = 0;
+        p2.camera = null;
         p2.save();
 
         Result result = new PresetController().getAll();
@@ -76,7 +76,7 @@ public class PresetControllerTest {
     public void testGet() {
         models.Preset p1 = new models.Preset();
         p1.name = "PresetController One";
-        p1.camera = 1;
+        p1.camera = null;
         p1.save();
 
         Result result = new PresetController().get(p1.id);

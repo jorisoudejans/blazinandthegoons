@@ -5,6 +5,7 @@ import {Dragula} from 'ng2-dragula/src/app/directives/dragula.directive';
 import {DragulaService} from 'ng2-dragula/src/app/providers/dragula.provider';*/
 
 import {PresetService} from "./api/preset.service";
+import {ActiveScript, Script, Location, Camera} from "./api/script";
 
 @Component({
     selector:    'preset-list',
@@ -13,10 +14,47 @@ import {PresetService} from "./api/preset.service";
     viewProviders: [],
     providers:   [PresetService]
 })
-export class PresetListComponent implements OnInit {
+export class PresetListComponent {
+    @Input() scriptData: ActiveScript;
+    cameras: Camera[] = [];
     constructor (private _heroService: PresetService) {}
     presets: Preset[];
-    ngOnInit() { this.getPresets(); }
+    // init to true so all cameras will be shown in the beginning
+    selectedCameras: boolean[] = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
+    ngOnChanges(item: any) {
+        this.preparePresets();
+        this.prepareCameras();
+    }
+    preparePresets() {
+        if (!this.scriptData) {
+            return;
+        }
+        var p: Preset[] = [];
+        for (var a of this.scriptData.script.actions) {
+            if (!this.findPreset(p, a.preset)) {
+                p.push(a.preset);
+            }
+        }
+        this.presets = p;
+        console.log(this.presets);
+    }
+    prepareCameras() {
+        if (!this.scriptData) {
+            return;
+        }
+        this.cameras = this.scriptData.script.location.cameras;
+    }
+    toggleCamera(i: number) {
+        this.selectedCameras[i] = !this.selectedCameras[i];
+    }
+    findPreset(array: Preset[], needle: Preset): boolean {
+        for (var a of array) {
+            if (a.id === needle.id) {
+                return true;
+            }
+        }
+        return false;
+    }
     getPresets() {
         this._heroService.getPresets()
             .subscribe(
@@ -31,5 +69,13 @@ export class PresetListComponent implements OnInit {
 
         // save thumbnail to image
         $('#preset-image-'+id).attr("src", "api/presets/" + id + "/thumbnail?" + (new Date()).getTime());
+    }
+    getCameraIndex(id: number): number {
+        for (var i = 0; i < this.cameras.length; i++) {
+            if (this.cameras[i].id === id) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
