@@ -19,7 +19,8 @@ export class PresetListComponent {
     cameras: Camera[] = [];
     constructor (private _heroService: PresetService) {}
     presets: Preset[];
-    selectedCameras: boolean[] = [];
+    // init to true so all cameras will be shown in the beginning
+    selectedCameras: boolean[] = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
     ngOnChanges(item: any) {
         this.preparePresets();
         this.prepareCameras();
@@ -68,5 +69,13 @@ export class PresetListComponent {
 
         // save thumbnail to image
         $('#preset-image-'+id).attr("src", "api/presets/" + id + "/thumbnail?" + (new Date()).getTime());
+    }
+    getCameraIndex(id: number): number {
+        for (var i = 0; i < this.cameras.length; i++) {
+            if (this.cameras[i].id === id) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
