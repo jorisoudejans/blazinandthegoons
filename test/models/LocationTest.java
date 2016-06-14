@@ -34,7 +34,8 @@ public class LocationTest {
         l.name = "First location";
         l.save();
 
-        assertEquals(1, Location.find.all().size());
+        // 1 + 1 due to database seeding
+        assertEquals(2, Location.find.all().size());
     }
 
     /**

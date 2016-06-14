@@ -1,29 +1,25 @@
 package models;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import play.Application;
 import play.test.Helpers;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Test cameras.
  */
 public class CameraTest {
-    private static Application app;
+    private Application app;
 
     /**
      * Start fake app.
      */
-    @BeforeClass
-    public static void startApp() {
+    @Before
+    public void startApp() {
         app = Helpers.fakeApplication(Helpers.inMemoryDatabase());
         Helpers.start(app);
     }
@@ -36,9 +32,12 @@ public class CameraTest {
         Camera c = new Camera();
         c.name = "Camera 1";
         c.ip = "0.0.0.0";
+        c.location = null;
+        c.presets = new ArrayList<>();
         c.save();
 
-        assertEquals(1, Camera.find.all().size());
+        // 1 + 2, 2 pre - seeded
+        assertEquals(1 + 2, Camera.find.all().size());
     }
 
     /**
@@ -65,8 +64,8 @@ public class CameraTest {
     /**
      * Stop fake app.
      */
-    @AfterClass
-    public static void stopApp() {
+    @After
+    public void stopApp() {
         Helpers.stop(app);
     }
 
