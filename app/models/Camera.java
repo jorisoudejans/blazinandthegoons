@@ -4,10 +4,8 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Represents a camera to record with.
@@ -27,6 +25,9 @@ public class Camera extends Model {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JsonIgnore
     public Location location;
+
+    @OneToMany(mappedBy = "camera", cascade = CascadeType.ALL)
+    public List<Preset> presets;
 
     /**
      * Returns the camera's ip address.

@@ -2,14 +2,17 @@ package models;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import play.data.validation.Constraints;
 import play.mvc.Result;
 import util.camera.commands.PanTiltCommand;
 import util.camera.commands.SnapshotCommand;
 
 import javax.imageio.ImageIO;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CompletableFuture;
@@ -30,8 +33,9 @@ public class Preset extends Model {
     @Constraints.Required
     public String name;
 
-    @Constraints.Required
-    public int camera;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    public Camera camera;
 
     @Constraints.Required
     public int pan;
@@ -44,6 +48,14 @@ public class Preset extends Model {
 
     @Constraints.Required
     public int focus;
+
+    /**
+     * Returns the camera id to which this preset belongs. Used on client side
+     * @return camera id if or 0
+     */
+    public Long getCameraId() {
+        return camera != null ? camera.id : 0;
+    }
 
     /**
      * Apply this preset.
@@ -101,7 +113,7 @@ public class Preset extends Model {
      * @return The created Preset object.
      */
     public static Preset createPreset(
-            String name, int camera, int pan, int tilt, int zoom, int focus) {
+            String name, Camera camera, int pan, int tilt, int zoom, int focus) {
         Preset pr = new Preset();
         pr.name = name;
         pr.camera = camera;

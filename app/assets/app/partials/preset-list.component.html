@@ -1,12 +1,20 @@
 <div class="list-header"><h2>Presets</h2></div>
+<div class="col-md-12 cameras">
+    <button class="btn btn-info" id="toggle-camera-list" data-target="#camera-list" data-toggle="collapse">Show/hide cameras</button>
+    <ul class="list-group row collapse in" id="camera-list">
+        <li class="list-group-item col-md-4" *ngFor="#camera of cameras; #i = index" (click)="toggleCamera(i)"><input type="checkbox" [(ngModel)]="selectedCameras[i]" /><label>{{ camera.name }}</label></li>
+    </ul>
+</div>
 <ul class="preset-list col-md-12" *ngIf="presets">
-    <li class="preset-list-item col-md-4" *ngFor="#preset of presets" (click)="activatePreset(preset.id)">
-        <figcaption>
-            <h1>{{preset.name}}</h1>
-        </figcaption>
-        <figure class="preset-figure">
-            <img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" [attr.id]="'preset-image-' + preset.id" alt="{{preset.name}}">
-        </figure>
+    <li class="preset-list-item" *ngFor="#preset of presets" (click)="activatePreset(preset.id)">
+        <div class="col-md-4" *ngIf="selectedCameras[getCameraIndex(preset.cameraId)]">
+            <figcaption>
+                <h1>{{ preset.cameraId }} {{preset.name}}</h1>
+            </figcaption>
+            <figure class="preset-figure">
+                <img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" [attr.id]="'preset-image-' + preset.id" alt="{{preset.name}}">
+            </figure>
+        </div>
     </li>
 </ul>
 
