@@ -8,9 +8,9 @@ import {bootstrap}    from "angular2/platform/browser"
 import {Router, ROUTER_PROVIDERS}     from "angular2/router"
 
 
-import {ScriptService} from "./api/script.service";
-import {Script, ActiveScript} from "./api/script";
 import {Action} from "./api/action";
+import {ScriptService} from "./api/script.service";
+import {Script, ActiveScript, Location, Camera} from "./api/script";
 import {PresetListComponent} from "./presetlist.component";
 import {Preset} from "./api/preset";
 import {PresetService} from "./api/preset.service";
@@ -33,6 +33,8 @@ export class Edit implements OnInit {
     scriptid: number;
     presets: Preset[];
     scriptData: Script;
+    activeScriptData: ActiveScript;
+    locations: Location[];
     errorMessage: string;
     actionInsertPos: number;
     ngOnInit() {
@@ -43,6 +45,13 @@ export class Edit implements OnInit {
         else
             this.buildNewScript();
         this.getPresets();
+        this.getLocations();
+    }
+    getLocations() {
+        this._scriptService.getLocations()
+            .subscribe(
+                locations => {this.locations = locations; },
+                error =>  this.errorMessage = <any>error);
     }
     getScript(id: number) {
         this._scriptService.getScriptWithPrefix(id, '../')
@@ -55,7 +64,7 @@ export class Edit implements OnInit {
                 return script;
             })
             .subscribe(
-                scriptData => this.scriptData = scriptData,
+                scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);},
                 error =>  this.errorMessage = <any>error);
     }
     saveScript() {
@@ -74,6 +83,14 @@ export class Edit implements OnInit {
             .subscribe(
                 presets => this.presets = presets
             );
+    }
+    updateLocation(event:string) {
+        var corrLoc:Location = null;
+        this.locations.forEach((location) => {
+            if (location.name === event)
+                corrLoc = location;
+        })
+        this.scriptData.location = corrLoc;
     }
     updateAction(action: Action, event:string) {
         var corrPreset:Preset = null;
@@ -118,6 +135,7 @@ export class Edit implements OnInit {
     buildNewScript() {
         var preset = new Preset(null, " Mock preset", 0, 0, "", null);
         this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset)], null, [preset]);
+        this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);
     }
 }
 

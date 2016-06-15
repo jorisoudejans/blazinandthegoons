@@ -1,8 +1,6 @@
 /// <reference path="../../../typings/jquery.d.ts" />
 import {Preset} from "./api/preset";
-import {Component, Input, OnInit} from "angular2/core";/*
-import {Dragula} from 'ng2-dragula/src/app/directives/dragula.directive';
-import {DragulaService} from 'ng2-dragula/src/app/providers/dragula.provider';*/
+import {Component, Input, OnInit} from "angular2/core";
 
 import {PresetService} from "./api/preset.service";
 import {ActiveScript, Script, Location, Camera} from "./api/script";
@@ -22,6 +20,7 @@ export class PresetListComponent {
     // init to true so all cameras will be shown in the beginning
     selectedCameras: boolean[] = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
     ngOnChanges(item: any) {
+        console.log(this.scriptData);
         this.preparePresets();
         this.prepareCameras();
     }

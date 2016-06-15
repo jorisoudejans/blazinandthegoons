@@ -5,6 +5,9 @@
         </div>
     </div>
     <div class="col-md-6">
+        <select class="form-control" (change)="updateLocation($event.target.value)">
+            <option *ngFor="#location of locations" [value]="location">{{location.name}}</option>
+        </select>
         <ul class="editable-list list-group" *ngIf="scriptData">
             <li class="editable-list-item list-group-item" style="height: 0; padding: 0;border-top: none;">
                 <div style="margin-top: -20px" class="addnew" data-toggle="modal" data-target="#actionModal" (click)="selectInsertPos(0);">
@@ -34,7 +37,7 @@
         </ul>
     </div>
     <div class="col-md-offset-1 col-md-4">
-        <preset-list></preset-list>
+        <preset-list [scriptData]="activeScriptData"></preset-list>
     </div>
     <div class="col-md-offset-1 col-md-12">
         <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>
