@@ -45,7 +45,10 @@ create table preset (
   id                            bigint not null,
   name                          varchar(255),
   camera_id                     bigint,
+  script_id                     bigint,
   real_preset_id                integer,
+  status                        varchar(6),
+  constraint ck_preset_status check (status in ('FAULTY','ERROR','OK')),
   constraint pk_preset primary key (id)
 );
 create sequence preset_seq;
@@ -73,6 +76,9 @@ create index ix_camera_location_id on camera (location_id);
 alter table preset add constraint fk_preset_camera_id foreign key (camera_id) references camera (id) on delete restrict on update restrict;
 create index ix_preset_camera_id on preset (camera_id);
 
+alter table preset add constraint fk_preset_script_id foreign key (script_id) references script (id) on delete restrict on update restrict;
+create index ix_preset_script_id on preset (script_id);
+
 alter table script add constraint fk_script_location_id foreign key (location_id) references location (id) on delete restrict on update restrict;
 create index ix_script_location_id on script (location_id);
 
@@ -92,6 +98,9 @@ drop index if exists ix_camera_location_id;
 
 alter table preset drop constraint if exists fk_preset_camera_id;
 drop index if exists ix_preset_camera_id;
+
+alter table preset drop constraint if exists fk_preset_script_id;
+drop index if exists ix_preset_script_id;
 
 alter table script drop constraint if exists fk_script_location_id;
 drop index if exists ix_script_location_id;

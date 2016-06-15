@@ -1,4 +1,5 @@
 import {Action} from "./action";
+import {Preset} from "./preset";
 
 export class Script {
 
@@ -7,7 +8,8 @@ export class Script {
         public name: string,
         public creationdate: string,
         public actions: Action[],
-        public location: Location
+        public location: Location,
+        public presets: Preset[]
     ) {  }
 
 }

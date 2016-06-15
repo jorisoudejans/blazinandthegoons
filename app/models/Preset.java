@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 import play.mvc.Result;
@@ -36,10 +37,19 @@ public class Preset extends Model {
     @ManyToOne(cascade = CascadeType.REFRESH)
     public Camera camera;
 
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    public Script script;
+
     /**
-     * Used to link to a real world preset
+     * Used to link to a real world preset.
      */
     public int realPresetId;
+
+    /**
+     * State of this preset.
+     */
+    public Status status = Status.OK;
 
     /**
      * Returns the camera id to which this preset belongs. Used on client side
@@ -66,6 +76,16 @@ public class Preset extends Model {
      */
     public boolean isLinked() {
         return camera != null && realPresetId != 0;
+    }
+
+    /**
+     * Link a new preset.
+     * @param c the camera to link it with
+     * @param realPresetId preset id in the camera
+     */
+    public void link(Camera c, int realPresetId) {
+        this.camera = c;
+        this.realPresetId = realPresetId;
     }
 
     /**
@@ -100,6 +120,19 @@ public class Preset extends Model {
         }).thenApply(image -> ok(image).as("image/jpeg"));
     }
 
+    public enum Status {
+
+        @EnumValue("OK")
+        OK,
+
+        @EnumValue("FAULTY")
+        FAULTY,
+
+        @EnumValue("ERROR")
+        ERROR,
+    }
+
+
     public static Finder<Long, Preset> find = new Finder<>(Preset.class);
 
 
@@ -107,12 +140,14 @@ public class Preset extends Model {
      * A static create function which can be called to create a Preset object
      * with the specified parameters.
      * @param name  The name of the preset.
+     * @param script script to link to
      * @return The created Preset object.
      */
     public static Preset createDummyPreset(
-            String name) {
+            String name, Script script) {
         Preset pr = new Preset();
         pr.name = name;
+        pr.script = script;
         pr.save();
 
         return pr;

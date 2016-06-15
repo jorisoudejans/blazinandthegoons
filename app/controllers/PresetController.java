@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Camera;
+import models.Script;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -36,16 +37,21 @@ public class PresetController extends Controller {
 
     /**
      * Method that uses the json body to create and save a PresetController object.
+     * @param id script that owns this preset
      * @return  ok with the created object.
      */
     @BodyParser.Of(BodyParser.Json.class)
-    public Result create() {
-        JsonNode json = request().body().asJson();
-        String name = json.findPath("name").textValue();
+    public Result create(Long id) {
+        Script script = Script.find.byId(id);
+        if (script != null) {
+            JsonNode json = request().body().asJson();
+            String name = json.findPath("name").textValue();
 
-        models.Preset preset = models.Preset.createDummyPreset(name);
+            models.Preset preset = models.Preset.createDummyPreset(name, script);
 
-        return ok(Json.toJson(preset));
+            return ok(Json.toJson(preset));
+        }
+        return notFound();
     }
 
     /**

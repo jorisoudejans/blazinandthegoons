@@ -28,6 +28,9 @@ public class Script extends Model {
     @OneToMany(mappedBy = "script", cascade = CascadeType.ALL)
     public List<Action> actions = new ArrayList<Action>();
 
+    @OneToMany(mappedBy = "script", cascade = CascadeType.ALL)
+    public List<Preset> presets = new ArrayList<>();
+
     @ManyToOne
     public Location location;
 
