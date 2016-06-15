@@ -46,7 +46,11 @@ create table preset (
   name                          varchar(255),
   camera_id                     bigint,
   script_id                     bigint,
-  real_preset_id                integer,
+  pan                           integer,
+  tilt                          integer,
+  zoom                          integer,
+  focus                         integer,
+  iris                          integer,
   status                        varchar(6),
   constraint ck_preset_status check (status in ('FAULTY','ERROR','OK')),
   constraint pk_preset primary key (id)

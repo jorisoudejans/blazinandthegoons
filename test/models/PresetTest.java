@@ -43,10 +43,9 @@ public class PresetTest {
         Camera camera = mock(Camera.class);
         int i = 65;
         Preset pr = Preset.createDummyPreset("preset1", null);
-        pr.link(camera, i);
+        pr.link(camera, 1, 1, 1, 1, 1);
         assertTrue(pr.isLinked());
         assertEquals(camera, pr.camera);
-        assertEquals(i, pr.realPresetId);
     }
 
     /**

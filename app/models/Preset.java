@@ -42,9 +42,13 @@ public class Preset extends Model {
     public Script script;
 
     /**
-     * Used to link to a real world preset.
+     * Preset parameter data
      */
-    public int realPresetId;
+    public int pan;
+    public int tilt;
+    public int zoom;
+    public int focus;
+    public int iris;
 
     /**
      * State of this preset.
@@ -75,17 +79,26 @@ public class Preset extends Model {
      * @return <code>true</code> when linked, <code>false</code> when not
      */
     public boolean isLinked() {
-        return camera != null && realPresetId != 0;
+        return camera != null && pan != 0 && tilt != 0 && zoom != 0 && focus != 0 && iris != 0;
     }
 
     /**
      * Link a new preset.
      * @param c the camera to link it with
-     * @param realPresetId preset id in the camera
+     * @param pan camera value
+     * @param tilt camera value
+     * @param iris camera value
+     * @param focus camera value
+     * @param zoom camera value
      */
-    public void link(Camera c, int realPresetId) {
+    public void link(Camera c, int pan, int tilt, int zoom, int focus, int iris) {
         this.camera = c;
-        this.realPresetId = realPresetId;
+        this.pan = pan;
+        this.tilt = tilt;
+        this.zoom = zoom;
+        this.focus = focus;
+        this.iris = iris;
+        this.save();
     }
 
     /**
