@@ -10,6 +10,4 @@ export class Preset {
         public status: String,
         public script: Script
     ) {  }
-
-
 }
