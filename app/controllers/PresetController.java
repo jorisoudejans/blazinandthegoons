@@ -71,6 +71,33 @@ public class PresetController extends Controller {
     }
 
     /**
+     * Link a preset to a camera and preset values of this camera.
+     * @param id camera id
+     * @return the updated preset
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result link(Long id) {
+        models.Preset preset = models.Preset.find.byId(id); // find preset
+        if (preset != null) {
+            JsonNode json = request().body().asJson();
+            Long cameraId = json.findPath("cameraId").longValue();
+            Camera camera = Camera.find.byId(cameraId);
+            if (camera != null) {
+                preset.link(camera,
+                        json.findPath("pan").intValue(),
+                        json.findPath("tilt").intValue(),
+                        json.findPath("zoom").intValue(),
+                        json.findPath("focus").intValue(),
+                        json.findPath("iris").intValue());
+                preset.save();
+                return ok(Json.toJson(preset));
+            }
+            return notFound("Camera not found");
+        }
+        return notFound("Preset not found");
+    }
+
+    /**
      * Get thumbnail for this preset. takes at least some seconds to complete.
      * We should cache this in the future
      * @param id the preset
