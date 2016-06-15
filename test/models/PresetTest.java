@@ -30,7 +30,7 @@ public class PresetTest {
      */
     @Test
     public void testCreate() {
-        Preset pr = Preset.createPreset("preset1", null, 0, 0, 0, 0);
+        Preset pr = Preset.createDummyPreset("preset1");
         List<Preset> out = Preset.find.where().ilike("name", "preset1").findList();
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), pr);

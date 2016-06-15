@@ -39,10 +39,16 @@ public class DatabaseSeeder {
         location.cameras = Arrays.asList(camera, camera2);
         location.save();
 
-        camera.presets.add(Preset.createPreset("Nice view", camera, 10000, 10000, 0, 0));
-        camera.presets.add(Preset.createPreset("Dirigent focus", camera, 15000, 10000, 0, 0));
-        camera.presets.add(Preset.createPreset("Violin snare closeup", camera, 8000, 6000, 0, 0));
-        camera2.presets.add(Preset.createPreset("Contrabas player", camera2, 500, 800, 0, 0));
+        Preset.createDummyPreset("Nice view"); // unlinked
+        Preset.createDummyPreset("Dirigent focus"); // unlinked
+        Preset p1 = Preset.createDummyPreset("Violin snare closeup"); // linked
+        Preset p2 = Preset.createDummyPreset("Contrabas player"); // linked
+        p1.camera = camera;
+        p2.camera = camera2;
+        p1.realPresetId = 1;
+        p2.realPresetId = 2;
+        camera.presets.add(p1);
+        camera2.presets.add(p2);
         camera.save();
         camera2.save();
 

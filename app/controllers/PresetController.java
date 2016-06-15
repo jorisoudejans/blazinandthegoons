@@ -42,14 +42,8 @@ public class PresetController extends Controller {
     public Result create() {
         JsonNode json = request().body().asJson();
         String name = json.findPath("name").textValue();
-        Long cameraId = json.findPath("camera").longValue();
-        Camera c = Camera.find.byId(cameraId);
-        int pan = json.findPath("pan").intValue();
-        int tilt = json.findPath("tilt").intValue();
-        int zoom = json.findPath("zoom").intValue();
-        int focus = json.findPath("focus").intValue();
 
-        models.Preset preset = models.Preset.createPreset(name, c, pan, tilt, zoom, focus);
+        models.Preset preset = models.Preset.createDummyPreset(name);
 
         return ok(Json.toJson(preset));
     }
