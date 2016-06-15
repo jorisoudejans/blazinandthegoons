@@ -39,19 +39,25 @@ public class DatabaseSeeder {
         location.cameras = Arrays.asList(camera, camera2);
         location.save();
 
-        camera.presets.add(Preset.createPreset("Nice view", camera, 10000, 10000, 0, 0));
-        camera.presets.add(Preset.createPreset("Dirigent focus", camera, 15000, 10000, 0, 0));
-        camera.presets.add(Preset.createPreset("Violin snare closeup", camera, 8000, 6000, 0, 0));
-        camera2.presets.add(Preset.createPreset("Contrabas player", camera2, 500, 800, 0, 0));
-        camera.save();
-        camera2.save();
-
-        System.out.println("Seeding database");
-
         Script s = new Script(); // create new script
         s.name = "Mock script";
         s.location = location;
         s.save();
+
+        Preset.createDummyPreset("Nice view", s); // unlinked
+        Preset.createDummyPreset("Dirigent focus", s); // unlinked
+        Preset p1 = Preset.createDummyPreset("Violin snare closeup", s); // linked
+        Preset p2 = Preset.createDummyPreset("Contrabas player", s); // linked
+        p1.camera = camera;
+        p2.camera = camera2;
+        p1.realPresetId = 1;
+        p2.realPresetId = 2;
+        camera.presets.add(p1);
+        camera2.presets.add(p2);
+        camera.save();
+        camera2.save();
+
+        System.out.println("Seeding database");
 
         // create actions
         Action a1 = Action.createAction(0, "Open on dirigent", 5, 8, models.Preset.find.byId(1L), s);

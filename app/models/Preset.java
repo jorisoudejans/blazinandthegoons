@@ -1,8 +1,8 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
 import play.data.validation.Constraints;
 import play.mvc.Result;
 import util.camera.commands.PanTiltCommand;
@@ -37,17 +37,19 @@ public class Preset extends Model {
     @ManyToOne(cascade = CascadeType.REFRESH)
     public Camera camera;
 
-    @Constraints.Required
-    public int pan;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    public Script script;
 
-    @Constraints.Required
-    public int tilt;
+    /**
+     * Used to link to a real world preset.
+     */
+    public int realPresetId;
 
-    @Constraints.Required
-    public int zoom;
-
-    @Constraints.Required
-    public int focus;
+    /**
+     * State of this preset.
+     */
+    public Status status = Status.OK;
 
     /**
      * Returns the camera id to which this preset belongs. Used on client side
@@ -62,8 +64,28 @@ public class Preset extends Model {
      */
     @JsonIgnore
     public boolean apply() {
-        Camera camera = Camera.make("Boilerplate camera", "192.168.10.101"); // TODO: should be changed, not hardcoded
-        return new PanTiltCommand(tilt, pan).execute(camera);
+        if (isLinked()) {
+            // TODO: Implement this
+        }
+        return false;
+    }
+
+    /**
+     * Whether this preset is linked to a real preset.
+     * @return <code>true</code> when linked, <code>false</code> when not
+     */
+    public boolean isLinked() {
+        return camera != null && realPresetId != 0;
+    }
+
+    /**
+     * Link a new preset.
+     * @param c the camera to link it with
+     * @param realPresetId preset id in the camera
+     */
+    public void link(Camera c, int realPresetId) {
+        this.camera = c;
+        this.realPresetId = realPresetId;
     }
 
     /**
@@ -98,6 +120,19 @@ public class Preset extends Model {
         }).thenApply(image -> ok(image).as("image/jpeg"));
     }
 
+    public enum Status {
+
+        @EnumValue("OK")
+        OK,
+
+        @EnumValue("FAULTY")
+        FAULTY,
+
+        @EnumValue("ERROR")
+        ERROR,
+    }
+
+
     public static Finder<Long, Preset> find = new Finder<>(Preset.class);
 
 
@@ -105,22 +140,14 @@ public class Preset extends Model {
      * A static create function which can be called to create a Preset object
      * with the specified parameters.
      * @param name  The name of the preset.
-     * @param camera    The camera for which the preset is created.
-     * @param pan   The pan position of the camera.
-     * @param tilt  The tilt position of the camera.
-     * @param zoom  The zoom value of the camera.
-     * @param focus The focus value of the camera.
+     * @param script script to link to
      * @return The created Preset object.
      */
-    public static Preset createPreset(
-            String name, Camera camera, int pan, int tilt, int zoom, int focus) {
+    public static Preset createDummyPreset(
+            String name, Script script) {
         Preset pr = new Preset();
         pr.name = name;
-        pr.camera = camera;
-        pr.pan = pan;
-        pr.tilt = tilt;
-        pr.zoom = zoom;
-        pr.focus = focus;
+        pr.script = script;
         pr.save();
 
         return pr;
