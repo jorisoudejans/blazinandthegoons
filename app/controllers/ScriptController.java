@@ -31,8 +31,7 @@ public class ScriptController extends Controller {
      */
     public Result getAll() {
         List<models.Script> scriptList = models.Script.find.all();
-        for(models.Script scr : scriptList) {
-            Collections.sort(scr.actions);
+        for (models.Script scr : scriptList) {
             System.out.println();
         }
         return ok(Json.toJson(scriptList));
@@ -45,7 +44,6 @@ public class ScriptController extends Controller {
      */
     public Result get(Long id) {
         models.Script script = models.Script.find.byId(id);
-        Collections.sort(script.actions);
         return ok(Json.toJson(script));
     }
 
@@ -90,7 +88,6 @@ public class ScriptController extends Controller {
             script.actions = actScript.actions;
             script.update();
         }
-        Collections.sort(script.actions);
         return ok(Json.toJson(script)); // report back the updated script
     }
 
@@ -144,7 +141,6 @@ public class ScriptController extends Controller {
     public Result getActiveScript() {
         if (models.ActiveScript.find.all().size() != 0) {
             models.ActiveScript as = models.ActiveScript.find.all().get(0);
-             Collections.sort(as.script.actions);
              return ok(Json.toJson(as));
         }
         return notFound("No active script");
@@ -158,7 +154,6 @@ public class ScriptController extends Controller {
     public Result startScript(Long id) {
         models.Script s = models.Script.find.byId(id);
         if (s != null) {
-            Collections.sort(s.actions);
             List<ActiveScript> allScripts = ActiveScript.find.all();
             for (ActiveScript as : allScripts) { // remove all scripts
                 as.delete();
@@ -183,7 +178,6 @@ public class ScriptController extends Controller {
     public Result updateActiveScript(Long id) {
         models.Script script = models.Script.find.byId(id);
         if (script != null && script.activeScript != null) {
-            Collections.sort(script.actions);
             JsonNode json = request().body().asJson();
             script.activeScript.actionIndex = json.findPath("actionIndex").intValue();
             script.save();

@@ -85,19 +85,15 @@ public class Preset extends Model {
     /**
      * Link a new preset.
      * @param c the camera to link it with
-     * @param pan camera value
-     * @param tilt camera value
-     * @param iris camera value
-     * @param focus camera value
-     * @param zoom camera value
+     * @param linkData preset data to link with
      */
-    public void link(Camera c, int pan, int tilt, int zoom, int focus, int iris) {
+    public void link(Camera c, PresetLinkData linkData) {
         this.camera = c;
-        this.pan = pan;
-        this.tilt = tilt;
-        this.zoom = zoom;
-        this.focus = focus;
-        this.iris = iris;
+        this.pan = linkData.getPan();
+        this.tilt = linkData.getTilt();
+        this.zoom = linkData.getZoom();
+        this.focus = linkData.getFocus();
+        this.iris = linkData.getIris();
         this.save();
     }
 
