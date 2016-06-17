@@ -85,6 +85,7 @@ public class ScriptController extends Controller {
                 action.update();
             }
             models.Script actScript = models.Script.find.byId(script.id);
+            Collections.sort(actScript.actions);
             script.actions = actScript.actions;
             script.update();
         }

@@ -5,6 +5,8 @@ import {Component, Input, OnInit} from "angular2/core";
 import {PresetService} from "./api/preset.service";
 import {ActiveScript, Script, Location, Camera} from "./api/script";
 
+declare var jQuery:any;
+
 @Component({
     selector:    'preset-list',
     templateUrl: './assets/app/partials/preset-list.component.html',
@@ -35,6 +37,7 @@ export class PresetListComponent {
             }
         }
         this.presets = p;
+        this.updateDragListeners();
         console.log(this.presets);
     }
     prepareCameras() {
@@ -60,15 +63,6 @@ export class PresetListComponent {
                 presets => this.presets = presets
             );
     }
-    activatePreset(id: number) {
-        this._heroService.activatePreset(id)
-            .subscribe(
-                res => console.log("Activation result: " + res)
-            );
-
-        // save thumbnail to image
-        $('#preset-image-'+id).attr("src", "api/presets/" + id + "/thumbnail?" + (new Date()).getTime());
-    }
     getCameraIndex(id: number): number {
         for (var i = 0; i < this.cameras.length; i++) {
             if (this.cameras[i].id === id) {
@@ -76,5 +70,18 @@ export class PresetListComponent {
             }
         }
         return -1;
+    }
+    updateDragListeners() {
+        console.log("Here dem prestes be");
+        console.log(jQuery('.preset-list-item .inner-item'));
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                jQuery('.preset-list-item .inner-item').draggable( {
+                    cursor: 'move',
+                    containment: 'document',
+                    helper: "clone"
+                })
+            }, 1000)
+        })
     }
 }

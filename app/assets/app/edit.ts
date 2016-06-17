@@ -17,6 +17,9 @@ import {PresetService} from "./api/preset.service";
 
 import 'rxjs/Rx';
 
+// Declare jQuery such that jQuery can be used.
+declare var jQuery:any;
+
 @Component({
     selector: "edit",
     templateUrl: '../../assets/app/partials/edit.component.html',
@@ -37,7 +40,11 @@ export class Edit implements OnInit {
     locations: Location[];
     errorMessage: string;
     actionInsertPos: number;
+    droppedPresetIndex: number;
     ngOnInit() {
+        var self = this;
+        this.actionInsertPos = -1;
+        this.droppedPresetIndex = -1;
         var urlarr = window.location.href.split('/');
         this.scriptid = parseInt(urlarr[urlarr.length - 1]);
         if(urlarr[urlarr.length - 1] !== 'edit')
@@ -46,6 +53,22 @@ export class Edit implements OnInit {
             this.buildNewScript();
         this.getPresets();
         this.getLocations();
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                jQuery('.script-action').droppable( {
+                    drop: function(event:any, ui:any) {
+                        console.log("IT HAS BEEN DROPPED HERE")
+                        console.log(event);
+                        console.log(ui);
+                        console.log(self);
+                        self.actionInsertPos = jQuery(event.target).data('index');
+                        self.droppedPresetIndex = jQuery(ui.draggable[0]).data('index');
+                        jQuery('.hax').trigger('click');
+                    },
+                    hoverClass: 'hoverable'
+                })
+            }, 1000)
+        })
     }
     getLocations() {
         this._scriptService.getLocations()
@@ -100,6 +123,14 @@ export class Edit implements OnInit {
         })
         action.preset = corrPreset;
     }
+    dropHandler() {
+        var act = new Action(null, this.actionInsertPos+1, "New action", 0, this.presets[this.droppedPresetIndex]);
+        act.active = true;
+        this.scriptData.actions.splice(this.actionInsertPos+1, 0, act);
+        this.fixActionIndices();
+        this.updateDroppableListeners();
+        jQuery('script-action').removeClass('hoverable');
+    }
     addAction() {
         var corrPreset:Preset = null;
         this.presets.forEach((preset) => {
@@ -127,7 +158,7 @@ export class Edit implements OnInit {
         $('#actionModal .description').val('');
         $('#actionModal .duration').val('');
         $('#actionModal .preset').val('');
-        this.actionInsertPos == null;
+        this.actionInsertPos = -1;
     }
     selectInsertPos(index:number) {
         this.actionInsertPos = index;
@@ -136,6 +167,25 @@ export class Edit implements OnInit {
         var preset = new Preset(null, " Mock preset", 0, 0, "", null);
         this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset)], null, [preset]);
         this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);
+    }
+    updateDroppableListeners() {
+        var self = this;
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                jQuery('.script-action').droppable( {
+                    drop: function(event:any, ui:any) {
+                        console.log("IT HAS BEEN DROPPED HERE")
+                        console.log(event);
+                        console.log(ui);
+                        console.log(self);
+                        self.actionInsertPos = jQuery(event.target).data('index');
+                        self.droppedPresetIndex = jQuery(ui.draggable[0]).data('index');
+                        jQuery('.hax').trigger('click');
+                    },
+                    hoverClass: "hoverable"
+                })
+            }, 1000)
+        })
     }
 }
 
