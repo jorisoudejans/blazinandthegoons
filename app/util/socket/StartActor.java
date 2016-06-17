@@ -22,7 +22,6 @@ public class StartActor extends SocketActor {
         Long scriptId = jsonNode.findPath("start").asLong();
         Script toStart = Script.find.byId(scriptId); // find the script
         if (toStart != null) {
-            Collections.sort(toStart.actions);
             ActiveScript as = new ActiveScript(); // create an activescript object
             as.actionIndex = 0;
             as.runningTime = new Date().getTime();

@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import play.Application;
+import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
@@ -13,12 +14,13 @@ import play.test.Helpers;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static play.test.Helpers.contentAsString;
-import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.*;
 
 /**
  * Runs some integration tests on the location API.
@@ -58,27 +60,19 @@ public class LocationControllerTest {
     }
 
 
-    /**
-     * Test location add camera.
-     */
-    /*@Test
-    public void testGetAllAddCamera() {
-        Location l = new Location();
-        l.name = "Hello123";
-        l.cameras = new ArrayList<>();
-        l.save();
+    @Test
+    public void testAddLocation() {
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/locations/create");
+        builder.header("Content-Type", "application/json");
 
-        Camera c = new Camera();
-        c.name = "Camera 1";
-        c.ip = "null";
-        c.save();
+        Map<String, String> maps = new HashMap<>();
+        maps.put("name", "New location");
 
-        l.cameras.add(c);
-        l.save();
+        builder.bodyJson(Json.toJson(maps));
 
-        Result result = new LocationController().getAll();
-        assertTrue(contentAsString(result).contains("null"));
-    }*/
+        Result r = route(LocationControllerTest.app, builder);
+        assertTrue(contentAsString(r).contains("New location"));
+    }
 
     /**
      * Test location add camera.
@@ -95,10 +89,11 @@ public class LocationControllerTest {
         c.location = l;
         c.save();
 
-        c.delete();
+        Http.RequestBuilder builder = fakeRequest("DELETE", "/api/locations/" + l.id + "/" + c.id + "/remove");
+        builder.header("Content-Type", "application/json");
 
-        Result result = new LocationController().getAll();
-        assertFalse(contentAsString(result).contains("null"));
+        Result r = route(LocationControllerTest.app, builder);
+        assertEquals(200, r.status());
     }
 
 }
