@@ -44,6 +44,7 @@ create sequence location_seq;
 create table preset (
   id                            bigint not null,
   name                          varchar(255),
+  description                   varchar(255),
   camera_id                     bigint,
   script_id                     bigint,
   pan                           integer,

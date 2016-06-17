@@ -109,23 +109,11 @@ public class PresetControllerTest {
         Camera camera = Camera.make("Camera One", "0.0.0.0");
         camera.save();
 
-        Http.RequestBuilder builder = fakeRequest("POST", "/api/presets/" + p1.id + "/link");
+        Http.RequestBuilder builder = fakeRequest("GET", "/api/presets/" + p1.id + "/link/" + camera.id);
         builder.header("Content-Type", "application/json");
 
-        Map<String, Object> maps = new HashMap<>();
-        maps.put("cameraId", camera.id);
-        maps.put("pan", 1);
-        maps.put("tilt", 2);
-        maps.put("zoom", 3);
-        maps.put("focus", 4);
-        maps.put("iris", 5);
-
-        builder.bodyJson(Json.toJson(maps));
-
         Result r = route(PresetControllerTest.app, builder);
-        JsonNode json = Json.parse(contentAsString(r));
-
-        assertEquals(4, json.findPath("focus").asInt());
+        assertEquals(200, r.status());
     }
 
     /**

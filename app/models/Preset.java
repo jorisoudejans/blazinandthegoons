@@ -38,6 +38,8 @@ public class Preset extends Model {
     @Constraints.Required
     public String name;
 
+    public String description;
+
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.REFRESH)
     public Camera camera;
@@ -163,14 +165,16 @@ public class Preset extends Model {
      * A static create function which can be called to create a Preset object
      * with the specified parameters.
      * @param name  The name of the preset.
+     * @param description Description of the preset.
      * @param script script to link to
      * @return The created Preset object.
      */
     public static Preset createDummyPreset(
-            String name, Script script) {
+            String name, String description, Script script) {
         Preset pr = new Preset();
         pr.name = name;
         pr.script = script;
+        pr.description = description;
         pr.save();
 
         return pr;

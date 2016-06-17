@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="list-header"><h2>Presets</h2></div>
+    <div class="unlinked-presets-container col-md-6" style="padding:0;">
+        <ul class="unlinked-presets-list" *ngIf="scriptData">
+            <li class="unlinked-preset-item" *ngFor="#preset of presets; #i=index" [class.active]="i == activeIndex">
+                <div *ngIf="!isLinked(preset)">
+                    <div class="text-area" (click)="makeActive(i)">
+                        <div class="unlinked-preset-left">
+                            <h1>{{preset.name}}</h1>
+                            <span class="preset-description">{{preset.description}}</span>
+                            <div class="camera-select-container">
+                                <select #sel value="0" class="form-control">
+                                    <option *ngFor="#camera of scriptData.location.cameras" [value]="camera.id">{{camera.id}}</option>
+                                </select>
+                                <button class="btn btn-success" (click)="linkPreset(preset, sel.value)">Link</button>
+                            </div>
+                        </div>
+                        <span class="action-est-time">sec</span><br>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="shadow"></div>
+    </div>
+    <div class="col-md-6">
+        <ul class="preset-list" *ngIf="presets">
+            <div class="list-header"><h2>Linked</h2></div>
+            <li class="preset-list-item" *ngFor="#preset of presets">
+                <div class="col-md-4" *ngIf="isLinked(preset)">
+                    <figcaption>
+                        <h1>{{ preset.cameraId }} {{preset.name}}</h1>
+                    </figcaption>
+                    <figure class="preset-figure">
+                        <img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" [attr.id]="'preset-image-' + preset.id" alt="{{preset.name}}">
+                    </figure>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

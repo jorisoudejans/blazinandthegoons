@@ -4,9 +4,13 @@
   overflow-y: scroll;
   padding-top: 20px;
 
+  .hoverable {
+    border-bottom: 5px solid #5BC0DE;
+  }
+
   .editable-list-item {
     background-color: #FFF;
-    width: 95%;
+    width: 100%; // 95% for side plus (manual add)
 
     .active-item {
       display: initial;
