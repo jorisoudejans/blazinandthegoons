@@ -5,8 +5,11 @@ import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 import play.mvc.Result;
+import util.camera.commands.FocusCommand;
+import util.camera.commands.IrisCommand;
 import util.camera.commands.PanTiltCommand;
 import util.camera.commands.SnapshotCommand;
+import util.camera.commands.ZoomCommand;
 
 import javax.imageio.ImageIO;
 import javax.persistence.CascadeType;
@@ -27,6 +30,8 @@ import static play.mvc.Results.ok;
 @Entity
 public class Preset extends Model {
 
+    private static final int SNAPSHOTSLEEP = 3000;
+
     @Id
     public Long id;
 
@@ -42,7 +47,7 @@ public class Preset extends Model {
     public Script script;
 
     /**
-     * Preset parameter data
+     * Preset parameter data.
      */
     public int pan;
     public int tilt;
@@ -56,7 +61,7 @@ public class Preset extends Model {
     public Status status = Status.OK;
 
     /**
-     * Returns the camera id to which this preset belongs. Used on client side
+     * Returns the camera id to which this preset belongs. Used on client side.
      * @return camera id if or 0
      */
     public Long getCameraId() {
@@ -65,11 +70,16 @@ public class Preset extends Model {
 
     /**
      * Apply this preset.
+     * @return true if the preset was correctly applied, false otherwise.
      */
     @JsonIgnore
     public boolean apply() {
         if (isLinked()) {
-            // TODO: Implement this
+            boolean f = new FocusCommand(focus).execute(camera);
+            boolean pt = new PanTiltCommand(tilt, pan).execute(camera);
+            boolean z = new ZoomCommand(zoom).execute(camera);
+            boolean i = new IrisCommand(iris).execute(camera);
+            return f && pt && z && i;
         }
         return false;
     }
@@ -98,7 +108,8 @@ public class Preset extends Model {
     }
 
     /**
-     * Get the thumbnail for this preset. May take some time to load due to moving the camera in the right position
+     * Get the thumbnail for this preset.
+     * May take some time to load due to moving the camera in the right position
      * @return a thumbnail image
      */
     @JsonIgnore
@@ -112,9 +123,9 @@ public class Preset extends Model {
             public byte[] get() {
                 // sleep this thread
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(SNAPSHOTSLEEP);
 
-                    BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
+                    BufferedImage i = new SnapshotCommand().get(camera, SnapshotCommand.RES_1280);
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(i, "jpg", baos);
@@ -129,6 +140,9 @@ public class Preset extends Model {
         }).thenApply(image -> ok(image).as("image/jpeg"));
     }
 
+    /**
+     * The 3 possible statuses a preset can have.
+     */
     public enum Status {
 
         @EnumValue("OK")
