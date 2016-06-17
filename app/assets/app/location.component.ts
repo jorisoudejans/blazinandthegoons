@@ -68,10 +68,9 @@ export class LocationComponent implements OnInit {
         this.hasChanges = true;
     }
     removeCamera(i: number) {
-        this.location.cameras = this.location.cameras.splice(i, 1);
+        this.location.cameras.splice(i, 1);
         this.hasChanges = true;
     }
-
 }
 
 bootstrap(LocationComponent);

@@ -1,8 +1,11 @@
 <div class="container screen-height">
 
     <div class="row" *ngIf="location.id == 0">
-        <div class="text-area input-area form-inline">
-            <label class="text-area-header">Location name: </label><input class="form-control description pull-right" [(ngModel)]="location.name" placeholder="Kurhaus"><br>
+        <div class="col-md-6 col-md-offset-3 text-area input-area form-inline">
+            <h1>Add new location</h1>
+            <hr />
+            <label class="text-area-header label-offset">Location name</label><input class="form-control description pull-right" [(ngModel)]="location.name" placeholder="Kurhaus"><br>
+            <hr />
             <button class="btn btn-primary" data-toggle="modal" (click)="addLocation()">
                 Add location
             </button>
@@ -12,7 +15,7 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="list-header">
                 <div class="nopadding">
-                    <input class="form-control" *ngIf="location" [(ngModel)]="location.name" (change)="hasChanges = true" placeholder="name">
+                    <input class="form-control" *ngIf="location" [(ngModel)]="location.name" (keyup)="hasChanges = true" placeholder="name">
                 </div>
                 <small *ngIf="hasChanges == true"><i>You have unsaved changes</i></small>
             </div>
@@ -24,11 +27,18 @@
                     Save
                 </button>
             </div>
-            <ul class="editable-list list-group" id="cameras-list" *ngIf="location">
-                <li class="editable-list-item list-group-item" *ngFor="#camera of location.cameras; #i = index">
-                    <h3><i class="material-icons">videocam</i>{{ camera.name }}<button class="btn btn-danger pull-right" (click)="removeCamera(i)">Delete</button></h3>
-                </li>
-            </ul>
+            <div>
+                <ul class="indent-list" id="cameras-list" *ngIf="location">
+                    <li class="indent-list-item" *ngFor="#camera of location.cameras; #i = index">
+                        <div class="text-area">
+                            <h1><i class="material-icons">videocam</i>{{ camera.name }}</h1>
+                            <a class="right" (click)="removeCamera(i)">Delete</a>
+                        </div>
+                    </li>
+                    <div class="shadow"></div>
+                </ul>
+            </div>
+
         </div>
     </div>
 
@@ -43,8 +53,8 @@
             </div>
             <div class="modal-body">
                 <div class="text-area input-area form-inline">
-                    <label class="text-area-header">Camera name: </label><input class="form-control description pull-right" [(ngModel)]="newCamera.name" placeholder="One"><br>
-                    <label class="text-area-header">IP address: </label><input class="form-control description pull-right" [(ngModel)]="newCamera.ip" placeholder="192.168.10.101"><br>
+                    <label class="text-area-header label-offset">Camera name: </label><input class="form-control description pull-right" [(ngModel)]="newCamera.name" placeholder="One"><br>
+                    <label class="text-area-header label-offset">IP address: </label><input class="form-control description pull-right" [(ngModel)]="newCamera.ip" placeholder="192.168.10.101"><br>
                 </div>
             </div>
             <div class="modal-footer">
