@@ -39,7 +39,7 @@ GET     /api/presets                    @controllers.PresetController.getAll()
 GET     /api/presets/:id                @controllers.PresetController.get(id: Long)
 GET     /api/presets/:id/activate       @controllers.PresetController.apply(id: Long)
 GET     /api/presets/:id/thumbnail      @controllers.PresetController.thumbnail(id: Long)
-GET    /api/presets/:id/:cameraId/link           @controllers.PresetController.link(id: Long, cameraId: Long)
+GET    /api/presets/:id/link/:cameraId  @controllers.PresetController.link(id: Long, cameraId: Long)
 
 GET    /api/scripts/:id/presets/create             @controllers.PresetController.create(id: Long)
 
