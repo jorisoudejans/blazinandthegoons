@@ -50,6 +50,7 @@ public class Action extends Model implements Comparable {
      * @param duration  The estimated duration the action will take.
      * @param preset    The preset the action will use.
      * @param script    The script to which the action belongs.
+     * @param ind The action index
      * @return  The created Action object.
      */
     public static Action createAction(

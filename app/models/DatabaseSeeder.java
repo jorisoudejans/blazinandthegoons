@@ -55,8 +55,6 @@ public class DatabaseSeeder {
         camera.save();
         camera2.save();
 
-        System.out.println("Seeding database");
-
         // create actions
         Action a1 = Action.createAction(0, "Open on dirigent", 5, 8, models.Preset.find.byId(1L), s);
         Action a2 = Action.createAction(1, "Clarinets", 2, 8, models.Preset.find.byId(4L), s);

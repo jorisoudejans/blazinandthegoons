@@ -26,8 +26,7 @@ GET     /api/camera/image              @controllers.ScriptController.getCameraIm
 GET     /api/locations                  @controllers.LocationController.getAll()
 GET     /api/locations/:id              @controllers.LocationController.get(id: Long)
 POST    /api/locations/create           @controllers.LocationController.create()
-POST     /api/locations/:id/add              @controllers.LocationController.addCamera(id: Long)
-DELETE  /api/locations/:id/:camera/remove       @controllers.LocationController.removeCamera(id: Long, camera: Long)
+PUT    /api/locations/:id           @controllers.LocationController.update(id: Long)
 
 # Live scriptController
 GET     /api/scripts/:id/start              @controllers.ScriptController.startScript(id: Long)
