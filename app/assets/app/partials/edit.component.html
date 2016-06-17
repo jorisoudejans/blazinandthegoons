@@ -34,9 +34,11 @@
                     <select class="form-control" (change)="updateAction(action, $event.target.value)">
                         <option *ngFor="#preset of scriptData.presets" [value]="preset">{{preset.name}}</option>
                     </select><br>
-                    <button type="button" *ngIf="action.flagged" class="btn btn-warning center-block" (click)="action.flagged = false; action.flagDescription = '';">Resolve flag</button>
-                    <button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button>
-                    <button type="button" class="btn btn-danger center-block" (click)="action.active = !action.active; deleteAction(i);">Delete this action</button>
+                    <ul class="list-inline">
+                        <li><button type="button" *ngIf="action.flagged" class="btn btn-warning center-block" (click)="action.flagged = false; action.flagDescription = '';">Resolve flag</button></li>
+                        <li><button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button></li>
+                        <li><button type="button" class="btn btn-danger center-block" (click)="action.active = !action.active; deleteAction(i);">Delete this action</button></li>
+                    </ul>
                 </div>
                 <!--<div class="addnew" data-toggle="modal" data-target="#actionModal" (click)="selectInsertPos(i);">
                     <img src="assets/images/plus.png" width="100%">

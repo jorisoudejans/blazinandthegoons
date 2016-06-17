@@ -16,6 +16,7 @@ export class ActionListComponent {
     @Input()
     socket: WebSocket;
     flagActionId: number;
+    errorMessage: string;
 
     constructor (private scriptService: ScriptService) {}
 
@@ -44,7 +45,7 @@ export class ActionListComponent {
             })
             .subscribe(
                 scriptData => {this.scriptData.script = scriptData},
-                error =>  this.errorMessage = <any>error);;
+                error =>  this.errorMessage = <any>error);
     }
 
     cleanUpModal() {
