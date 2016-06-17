@@ -32,7 +32,17 @@ public abstract class CameraCommandTest {
     }
 
     @Test
+    public void testGetGetCommand() {
+        assertNotNull(getCommand().getGetCommand());
+    }
+
+    @Test
     public void testExecute() {
         assertFalse(getCommand().execute(Camera.make("Boilerplate", "null"))); // should fail because of IP
+    }
+
+    @Test
+    public void testGet() {
+        assertNull(getCommand().get(Camera.make("Boilerplate", "null"))); // should fail because of IP
     }
 }

@@ -24,6 +24,9 @@
                     <a *ngIf="activeScript && script.id == activeScript.script.id" aria-label="View" href="/director">
                         <i class="material-icons">visibility</i>
                     </a>
+                    <a aria-label="Link" [href]="'/link/' + script.id">
+                        <i class="material-icons">timeline</i>
+                    </a>
                 </div>
             </div>
         </div>

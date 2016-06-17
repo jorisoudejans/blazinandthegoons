@@ -35,4 +35,8 @@ public class ApplicationController extends Controller {
         return ok(location.render("Location", id));
     }
 
+    public Result linkView(Long id) {
+        return ok(link.render("Link", id));
+    }
+
 }
