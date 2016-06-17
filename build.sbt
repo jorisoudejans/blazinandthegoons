@@ -54,17 +54,22 @@ findbugsIncludeFilters := Some(<FindBugsFilter> // include controllers
     <Package name="controllers" />
 
     <Not>
-      <Class name="*routes*" />
+      <Or>
+        <Class name="controllers.routes" />
+        <Class name="controllers.routes$javascript" />
+      </Or>
     </Not>
   </Match>
   <Match>
     <Package name="models" />
 
     <Not>
-      <Bug code="SnVI" />
-      <Bug pattern="EI_EXPOSE_REP" />
-      <Bug code="MS" />
-      <Bug code="DLS" />
+      <Or>
+        <Bug code="SnVI" />
+        <Bug pattern="EI_EXPOSE_REP" />
+        <Bug code="MS" />
+        <Bug code="DLS" />
+      </Or>
     </Not>
   </Match>
   <Match>
