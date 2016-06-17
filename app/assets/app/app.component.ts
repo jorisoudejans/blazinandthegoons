@@ -3,6 +3,7 @@ import {OnInit, Component} from "angular2/core";
 import {Observable} from 'rxjs/Observable';
 
 import {ScriptService} from "./api/script.service";
+import {Action} from "./api/action";
 import {Script, ActiveScript} from "./api/script";
 import {ActionListComponent} from "./actionlist.component";
 import {ScriptListComponent} from "./scriptlist.component";
@@ -56,6 +57,9 @@ export class AppComponent implements OnInit {
                 var response = JSON.parse(data.data);
                 if (Object.prototype.toString.call( response ) !== '[object Array]') {
                     this.currentScript = response;
+                    this.currentScript.script.actions.sort(function(a:Action, b:Action) {
+                        return a.index - b.index;
+                    })
                 } else {
                     this.currentScript = null;
                 }

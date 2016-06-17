@@ -44,10 +44,10 @@ public class DatabaseSeeder {
         s.location = location;
         s.save();
 
-        Preset.createDummyPreset("Nice view", s); // unlinked
-        Preset.createDummyPreset("Dirigent focus", s); // unlinked
-        Preset p1 = Preset.createDummyPreset("Violin snare closeup", s); // linked
-        Preset p2 = Preset.createDummyPreset("Contrabas player", s); // linked
+        Preset.createDummyPreset("Nice view", "Nice view of blabla, focused on blabla", s); // unlinked
+        Preset.createDummyPreset("Dirigent focus", "Start zoomed in on his eyebrows", s); // unlinked
+        Preset p1 = Preset.createDummyPreset("Violin snare closeup", "Really catch the texture of the snares", s); // linked
+        Preset p2 = Preset.createDummyPreset("Contrabas player", "A wide shot of the contrabas will do", s); // linked
         p1.camera = camera;
         p2.camera = camera2;
         camera.presets.add(p1);

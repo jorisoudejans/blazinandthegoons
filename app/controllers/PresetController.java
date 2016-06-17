@@ -48,8 +48,9 @@ public class PresetController extends Controller {
         if (script != null) {
             JsonNode json = request().body().asJson();
             String name = json.findPath("name").textValue();
+            String description = json.findPath("description").textValue();
 
-            models.Preset preset = models.Preset.createDummyPreset(name, script);
+            models.Preset preset = models.Preset.createDummyPreset(name, description, script);
 
             return ok(Json.toJson(preset));
         }
@@ -74,25 +75,18 @@ public class PresetController extends Controller {
 
     /**
      * Link a preset to a camera and preset values of this camera.
-     * @param id camera id
+     * @param id preset id
+     * @param cameraId camera id
      * @return the updated preset
      */
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result link(Long id) {
+    public Result link(Long id, Long cameraId) {
         Preset preset = Preset.find.byId(id); // find preset
         if (preset != null) {
-            JsonNode json = request().body().asJson();
-            Long cameraId = json.findPath("cameraId").longValue();
             Camera camera = Camera.find.byId(cameraId);
             if (camera != null) {
-                PresetLinkData data = new PresetLinkData(
-                        json.findPath("pan").intValue(),
-                        json.findPath("tilt").intValue(),
-                        json.findPath("zoom").intValue(),
-                        json.findPath("focus").intValue(),
-                        json.findPath("iris").intValue()
-                );
-                preset.link(camera, data);
+                // find the camera values
+
+                preset.link(camera, camera.getCameraValues());
                 preset.save();
                 return ok(Json.toJson(preset));
             }

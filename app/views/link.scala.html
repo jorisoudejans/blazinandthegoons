@@ -1,0 +1,23 @@
+@(title: String)(id: Long)
+
+@index(title) {
+  <linker [scriptid]="@id"></linker>
+
+  <script>    @* javascript is async downloaded by SystemJs *@
+            System.config({
+                packages: {
+                    '../assets/app': {
+                        defaultExtension: 'js'
+                    },
+                    '../assets/app/api': {
+                        defaultExtension: 'js'
+                    },
+                    '../assets/lib': {
+                        defaultExtension: 'js'
+                    }
+                }
+            });
+        System.import('../assets/app/link')
+                .then(null, console.error.bind(console));
+    </script>
+}
