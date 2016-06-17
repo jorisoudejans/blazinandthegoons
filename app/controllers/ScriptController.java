@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.Action;
 import models.ActiveScript;
 import models.Camera;
+import models.Preset;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -173,23 +174,6 @@ public class ScriptController extends Controller {
     }
 
     /**
-     * Update current action getAll. Sets the action currently being executed.
-     * @param id script id
-     * @return updated script
-     */
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result updateActiveScript(Long id) {
-        models.Script script = models.Script.find.byId(id);
-        if (script != null && script.activeScript != null) {
-            JsonNode json = request().body().asJson();
-            script.activeScript.actionIndex = json.findPath("actionIndex").intValue();
-            script.save();
-            return ok(Json.toJson(script.activeScript));
-        }
-        return notFound("ScriptController " + id);
-    }
-
-    /**
      * Get a new websocket instance.
      * @return websocket for scripts
      */
@@ -201,26 +185,6 @@ public class ScriptController extends Controller {
                 ScriptSocket.getActive().join(in, out);
             }
         };
-    }
-
-    /**
-     * Gives an image of the test camera via VPN
-     * @return the jpeg snapshot
-     */
-    public Result getCameraImage() {
-        // just to show an image for now
-        try {
-            BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(i, "jpg", baos);
-
-            return ok(baos.toByteArray()).as("image/jpg");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return notFound();
     }
 
 }

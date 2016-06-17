@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -33,6 +34,9 @@ public class Preset extends Model {
     public String name;
 
     public String description;
+
+    @Lob
+    public byte[] image;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -61,7 +65,11 @@ public class Preset extends Model {
      * @return camera id if or 0
      */
     public Long getCameraId() {
-        return camera != null ? camera.id : 0;
+        if (camera != null) {
+            return camera.id;
+        } else {
+            return 0L;
+        }
     }
 
     /**
@@ -99,6 +107,19 @@ public class Preset extends Model {
     }
 
     /**
+     * Unlink preset. Remove all previous preset settings.
+     */
+    public void unlink() {
+        this.camera = null;
+        this.pan = 0;
+        this.tilt = 0;
+        this.zoom = 0;
+        this.focus = 0;
+        this.iris = 0;
+        this.save();
+    }
+
+    /**
      * Get the thumbnail for this preset. May take some time to load due to moving the camera in the right position
      * @return a thumbnail image
      */
@@ -107,26 +128,22 @@ public class Preset extends Model {
         // apply this preset
         this.apply();
 
-        return CompletableFuture.supplyAsync(new Supplier<byte[]>() {
+        return CompletableFuture.supplyAsync(() -> {
+            // sleep this thread
+            try {
+                Thread.sleep(3000);
 
-            @Override
-            public byte[] get() {
-                // sleep this thread
-                try {
-                    Thread.sleep(3000);
+                BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
 
-                    BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(i, "jpg", baos);
 
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(i, "jpg", baos);
-
-                    return baos.toByteArray();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-
+                return baos.toByteArray();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return null;
+
         }).thenApply(image -> ok(image).as("image/jpeg"));
     }
 

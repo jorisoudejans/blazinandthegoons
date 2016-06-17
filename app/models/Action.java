@@ -107,5 +107,8 @@ public class Action extends Model implements Comparable {
 
         @EnumValue("BADANGLE")
         BADANGLE,
+
+        @EnumValue("INCOMPATIBLE")
+        INCOMAPIBLE,
     }
 }
