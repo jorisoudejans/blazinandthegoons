@@ -57,10 +57,6 @@ export class Edit implements OnInit {
             setTimeout(function() {
                 jQuery('.script-action').droppable( {
                     drop: function(event:any, ui:any) {
-                        console.log("IT HAS BEEN DROPPED HERE")
-                        console.log(event);
-                        console.log(ui);
-                        console.log(self);
                         self.actionInsertPos = jQuery(event.target).data('index');
                         self.droppedPresetIndex = jQuery(ui.draggable[0]).data('index');
                         jQuery('.hax').trigger('click');
@@ -82,6 +78,9 @@ export class Edit implements OnInit {
                 if(script) {
                     script.actions.forEach((action) => {
                         action.active = false;
+                    })
+                    script.actions.sort(function(a:Action, b:Action) {
+                        return a.index - b.index;
                     })
                 }
                 return script;
@@ -174,10 +173,6 @@ export class Edit implements OnInit {
             setTimeout(function() {
                 jQuery('.script-action').droppable( {
                     drop: function(event:any, ui:any) {
-                        console.log("IT HAS BEEN DROPPED HERE")
-                        console.log(event);
-                        console.log(ui);
-                        console.log(self);
                         self.actionInsertPos = jQuery(event.target).data('index');
                         self.droppedPresetIndex = jQuery(ui.draggable[0]).data('index');
                         jQuery('.hax').trigger('click');

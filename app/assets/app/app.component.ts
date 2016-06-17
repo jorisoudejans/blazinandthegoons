@@ -56,6 +56,9 @@ export class AppComponent implements OnInit {
                 var response = JSON.parse(data.data);
                 if (Object.prototype.toString.call( response ) !== '[object Array]') {
                     this.currentScript = response;
+                    this.currentScript.script.actions.sort(function(a:Action, b:Action) {
+                        return a.index - b.index;
+                    })
                 } else {
                     this.currentScript = null;
                 }

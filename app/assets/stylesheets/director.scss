@@ -100,6 +100,7 @@ $grid-padding: 4px;
   .preset-list-item div {
     padding-left: $grid-padding !important;
     padding-right: $grid-padding !important;
+    z-index: 10000;
 
     .preset-figure {
       position: relative;
