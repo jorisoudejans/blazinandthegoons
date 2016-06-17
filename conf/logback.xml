@@ -27,8 +27,8 @@
         <appender-ref ref="STDOUT" />
     </appender>
 
-    <logger name="play" level="INFO" />
-    <logger name="application" level="INFO" />
+    <logger name="play" level="WARN" />
+    <logger name="application" level="WARN" />
 
     <logger name="com.gargoylesoftware.htmlunit.javascript" level="OFF" />
 

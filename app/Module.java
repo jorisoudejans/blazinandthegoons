@@ -14,8 +14,6 @@ public class Module extends AbstractModule {
     @Override
     protected void configure() {
         // What do?
-        System.out.println("Configure stack");
-
         bind(DatabaseSeeder.class).asEagerSingleton();
     }
 }

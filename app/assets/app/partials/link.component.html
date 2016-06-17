@@ -2,8 +2,8 @@
     <div class="list-header"><h2>Presets</h2></div>
     <div class="unlinked-presets-container col-md-6" style="padding:0;">
         <ul class="unlinked-presets-list" *ngIf="scriptData">
-            <li class="unlinked-preset-item" *ngFor="#preset of presets; #i=index" [class.active]="i == activeIndex">
-                <div *ngIf="!isLinked(preset)">
+            <li class="unlinked-preset-item" *ngFor="#preset of presets; #i=index" [class.hidden]="isLinked(preset)" [class.active]="i == activeIndex">
+                <div>
                     <div class="text-area" (click)="makeActive(i)">
                         <div class="unlinked-preset-left">
                             <h1>{{preset.name}}</h1>
@@ -22,9 +22,8 @@
         </ul>
         <div class="shadow"></div>
     </div>
-    <div class="col-md-6">
+    <div class="linked-presets-container col-md-6">
         <ul class="preset-list" *ngIf="presets">
-            <div class="list-header"><h2>Linked</h2></div>
             <li class="preset-list-item" *ngFor="#preset of presets">
                 <div class="col-md-4" *ngIf="isLinked(preset)">
                     <figcaption>
@@ -33,6 +32,11 @@
                     <figure class="preset-figure">
                         <img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" [attr.id]="'preset-image-' + preset.id" alt="{{preset.name}}">
                     </figure>
+                    <div class="unlink-overlay">
+                        <div class="unlink-button" (click)="unlinkPreset(preset)">
+                            <i class="material-icons">highlight_off</i>
+                        </div>
+                    </div>
                 </div>
             </li>
         </ul>
