@@ -1,6 +1,10 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.Camera;
+import models.Preset;
+import models.PresetLinkData;
+import models.Script;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -35,21 +39,21 @@ public class PresetController extends Controller {
 
     /**
      * Method that uses the json body to create and save a PresetController object.
+     * @param id script that owns this preset
      * @return  ok with the created object.
      */
     @BodyParser.Of(BodyParser.Json.class)
-    public Result create() {
-        JsonNode json = request().body().asJson();
-        String name = json.findPath("name").textValue();
-        int camera = json.findPath("camera").intValue();
-        int pan = json.findPath("pan").intValue();
-        int tilt = json.findPath("pan").intValue();
-        int zoom = json.findPath("pan").intValue();
-        int focus = json.findPath("pan").intValue();
+    public Result create(Long id) {
+        Script script = Script.find.byId(id);
+        if (script != null) {
+            JsonNode json = request().body().asJson();
+            String name = json.findPath("name").textValue();
 
-        models.Preset preset = models.Preset.createPreset(name, camera, pan, tilt, zoom, focus);
+            models.Preset preset = models.Preset.createDummyPreset(name, script);
 
-        return ok(Json.toJson(preset));
+            return ok(Json.toJson(preset));
+        }
+        return notFound();
     }
 
     /**
@@ -66,6 +70,35 @@ public class PresetController extends Controller {
             return internalServerError(); // return error
         }
         return notFound();
+    }
+
+    /**
+     * Link a preset to a camera and preset values of this camera.
+     * @param id camera id
+     * @return the updated preset
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result link(Long id) {
+        Preset preset = Preset.find.byId(id); // find preset
+        if (preset != null) {
+            JsonNode json = request().body().asJson();
+            Long cameraId = json.findPath("cameraId").longValue();
+            Camera camera = Camera.find.byId(cameraId);
+            if (camera != null) {
+                PresetLinkData data = new PresetLinkData(
+                        json.findPath("pan").intValue(),
+                        json.findPath("tilt").intValue(),
+                        json.findPath("zoom").intValue(),
+                        json.findPath("focus").intValue(),
+                        json.findPath("iris").intValue()
+                );
+                preset.link(camera, data);
+                preset.save();
+                return ok(Json.toJson(preset));
+            }
+            return notFound("Camera not found");
+        }
+        return notFound("Preset not found");
     }
 
     /**

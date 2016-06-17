@@ -8,10 +8,8 @@ import models.Script;
 import play.libs.Json;
 import play.mvc.WebSocket;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Collections;
+import java.net.Socket;
+import java.util.*;
 
 /**
  * WebSocket (ws) for streaming script data.
@@ -22,6 +20,8 @@ public final class ScriptSocket {
 
     private List<WebSocket.Out<JsonNode>> subscribers;
 
+    private List<SocketActor> actors;
+
     /**
      * Singleton.
      * @return singleton instance
@@ -30,6 +30,7 @@ public final class ScriptSocket {
         if (singleton == null) {
             singleton = new ScriptSocket();
             singleton.subscribers = new ArrayList<>();
+            singleton.actors = Arrays.asList(new StartActor(), new StopActor(), new StateActor()); // add the actors
         }
         return singleton;
     }
@@ -60,7 +61,6 @@ public final class ScriptSocket {
 
         List<ActiveScript> as = ActiveScript.find.all();
         if (!as.isEmpty()) {
-            Collections.sort(as.get(0).script.actions);
             write(as.get(0));
         } else {
             write(Json.toJson(new ArrayList<>()));
@@ -73,33 +73,16 @@ public final class ScriptSocket {
      * @param jsonNode the input data decoded in a JSON object
      */
     void processInput(WebSocket.In<JsonNode> inputSocket, JsonNode jsonNode) {
-        //System.out.println("This socket: " + jsonNode.toString()); // DEBUG
-        if (jsonNode.has("start")) {
-            // start the script
-            Long scriptId = jsonNode.findPath("start").asLong();
-            Script toStart = Script.find.byId(scriptId);
-            if (toStart != null) {
-                Collections.sort(toStart.actions);
-                ActiveScript as = new ActiveScript();
-                as.actionIndex = 0;
-                as.runningTime = new Date().getTime();
-                as.script = toStart;
-                as.save();
-            }
-        } else if (jsonNode.has("stop")) {
-            List<ActiveScript> aslist = ActiveScript.find.all();
-            if (!aslist.isEmpty()) { // we have an active script
-                Collections.sort(aslist.get(0).script.actions);
-                ActiveScript as = aslist.get(0);
-                as.delete();
+        for (SocketActor socketActor : actors) {
+            if (socketActor.canAct(jsonNode)) {
+                socketActor.act(jsonNode);
             }
         }
+
+        // Update new state to all clients
         List<ActiveScript> aslist = ActiveScript.find.all();
         if (!aslist.isEmpty()) { // we have an active script
-            Collections.sort(aslist.get(0).script.actions);
             ActiveScript as = aslist.get(0);
-            as.actionIndex = jsonNode.findPath("actionIndex").asInt();
-            as.save();
             write(as);
         } else {
             write(Json.toJson(new ArrayList<>()));
@@ -107,7 +90,6 @@ public final class ScriptSocket {
     }
 
     private void write(ActiveScript script) {
-        Collections.sort(script.script.actions);
         JsonNode v = Json.toJson(script);
         write(v);
     }

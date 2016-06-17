@@ -1,6 +1,6 @@
 package util.camera.commands;
 
-import util.camera.LiveCamera;
+import models.Camera;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.net.URLConnection;
 public abstract class CameraCommand {
 
     /**
-     * The command code to execute
+     * The command code to execute.
      * @return string with code
      */
     protected abstract String getCommand();
@@ -30,15 +30,20 @@ public abstract class CameraCommand {
      * @param camera Camera to apply it to
      * @return whether the command caused any errors
      */
-    public boolean execute(LiveCamera camera) {
-        String url = "http://" + camera.getIp() + "/cgi-bin/aw_ptz?cmd=%23" + this.getCommand() + this.getParameters() + "&res=1";
-        System.out.println("Doing url: " + url);
+    public boolean execute(Camera camera) {
+        String url = "http://" + camera.getIp() + "/cgi-bin/aw_ptz?cmd=%23"
+                + this.getCommand()
+                + this.getParameters()
+                + "&res=1";
         try {
             BufferedReader br = getHttp(url);
             String msg = br.readLine();
             return msg.toUpperCase().startsWith(this.getCommand());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.print(
+                    "An error occurred while executing command on camera "
+                            + camera.getIp() + ": "
+                            + e.getMessage());
         }
         return false;
     }
@@ -52,11 +57,13 @@ public abstract class CameraCommand {
     private BufferedReader getHttp(String urlString) throws IOException {
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
-        return new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        return new BufferedReader(
+                new InputStreamReader(conn.getInputStream())
+        );
     }
 
     /**
-     * Convert an int to its hex representation for the camera
+     * Convert an int to its hex representation for the camera.
      * @param value the value
      * @param minLength the minimum hex length (to pad with zeros)
      * @return hex string

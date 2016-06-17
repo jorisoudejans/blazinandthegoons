@@ -1,17 +1,22 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import models.Camera;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import play.Application;
+import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.Helpers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static play.test.Helpers.contentAsString;
-import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.*;
 
 /**
  * Test the preset controller.
@@ -55,12 +60,12 @@ public class PresetControllerTest {
     public void testGetAll() {
         models.Preset p1 = new models.Preset();
         p1.name = "PresetController One";
-        p1.camera = 1;
+        p1.camera = null;
         p1.save();
 
         models.Preset p2 = new models.Preset();
         p2.name = "PresetController Two";
-        p2.camera = 0;
+        p2.camera = null;
         p2.save();
 
         Result result = new PresetController().getAll();
@@ -76,13 +81,44 @@ public class PresetControllerTest {
     public void testGet() {
         models.Preset p1 = new models.Preset();
         p1.name = "PresetController One";
-        p1.camera = 1;
+        p1.camera = null;
         p1.save();
 
         Result result = new PresetController().get(p1.id);
         assertEquals(Http.Status.OK, result.status());
         assertEquals("application/json", result.contentType().get());
         assertTrue(contentAsString(result).contains("PresetController One"));
+    }
+
+    /**
+     * Tests linking of preset.
+     */
+    @Test
+    public void testLink() {
+        models.Preset p1 = new models.Preset();
+        p1.name = "PresetController One";
+        p1.save();
+
+        Camera camera = Camera.make("Camera One", "0.0.0.0");
+        camera.save();
+
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/presets/" + p1.id + "/link");
+        builder.header("Content-Type", "application/json");
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("cameraId", camera.id);
+        maps.put("pan", 1);
+        maps.put("tilt", 2);
+        maps.put("zoom", 3);
+        maps.put("focus", 4);
+        maps.put("iris", 5);
+
+        builder.bodyJson(Json.toJson(maps));
+
+        Result r = route(PresetControllerTest.app, builder);
+        JsonNode json = Json.parse(contentAsString(r));
+
+        assertEquals(4, json.findPath("focus").asInt());
     }
 
 }

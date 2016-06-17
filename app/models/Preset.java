@@ -1,16 +1,18 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 import play.mvc.Result;
-import util.camera.LiveCamera;
 import util.camera.commands.PanTiltCommand;
 import util.camera.commands.SnapshotCommand;
 
 import javax.imageio.ImageIO;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CompletableFuture;
@@ -31,28 +33,68 @@ public class Preset extends Model {
     @Constraints.Required
     public String name;
 
-    @Constraints.Required
-    public int camera;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    public Camera camera;
 
-    @Constraints.Required
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    public Script script;
+
+    /**
+     * Preset parameter data
+     */
     public int pan;
-
-    @Constraints.Required
     public int tilt;
-
-    @Constraints.Required
     public int zoom;
-
-    @Constraints.Required
     public int focus;
+    public int iris;
+
+    /**
+     * State of this preset.
+     */
+    public Status status = Status.OK;
+
+    /**
+     * Returns the camera id to which this preset belongs. Used on client side
+     * @return camera id if or 0
+     */
+    public Long getCameraId() {
+        return camera != null ? camera.id : 0;
+    }
 
     /**
      * Apply this preset.
      */
     @JsonIgnore
     public boolean apply() {
-        LiveCamera camera = new LiveCamera("192.168.10.101"); // TODO: should be changed, not hardcoded
-        return new PanTiltCommand(tilt, pan).execute(camera);
+        if (isLinked()) {
+            // TODO: Implement this
+        }
+        return false;
+    }
+
+    /**
+     * Whether this preset is linked to a real preset.
+     * @return <code>true</code> when linked, <code>false</code> when not
+     */
+    public boolean isLinked() {
+        return camera != null && pan != 0 && tilt != 0 && zoom != 0 && focus != 0 && iris != 0;
+    }
+
+    /**
+     * Link a new preset.
+     * @param c the camera to link it with
+     * @param linkData preset data to link with
+     */
+    public void link(Camera c, PresetLinkData linkData) {
+        this.camera = c;
+        this.pan = linkData.getPan();
+        this.tilt = linkData.getTilt();
+        this.zoom = linkData.getZoom();
+        this.focus = linkData.getFocus();
+        this.iris = linkData.getIris();
+        this.save();
     }
 
     /**
@@ -72,7 +114,7 @@ public class Preset extends Model {
                 try {
                     Thread.sleep(3000);
 
-                    BufferedImage i = new SnapshotCommand().get(new LiveCamera("192.168.10.101"), SnapshotCommand.RES_1280);
+                    BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(i, "jpg", baos);
@@ -87,6 +129,19 @@ public class Preset extends Model {
         }).thenApply(image -> ok(image).as("image/jpeg"));
     }
 
+    public enum Status {
+
+        @EnumValue("OK")
+        OK,
+
+        @EnumValue("FAULTY")
+        FAULTY,
+
+        @EnumValue("ERROR")
+        ERROR,
+    }
+
+
     public static Finder<Long, Preset> find = new Finder<>(Preset.class);
 
 
@@ -94,22 +149,14 @@ public class Preset extends Model {
      * A static create function which can be called to create a Preset object
      * with the specified parameters.
      * @param name  The name of the preset.
-     * @param camera    The camera for which the preset is created.
-     * @param pan   The pan position of the camera.
-     * @param tilt  The tilt position of the camera.
-     * @param zoom  The zoom value of the camera.
-     * @param focus The focus value of the camera.
+     * @param script script to link to
      * @return The created Preset object.
      */
-    public static Preset createPreset(
-            String name, int camera, int pan, int tilt, int zoom, int focus) {
+    public static Preset createDummyPreset(
+            String name, Script script) {
         Preset pr = new Preset();
         pr.name = name;
-        pr.camera = camera;
-        pr.pan = pan;
-        pr.tilt = tilt;
-        pr.zoom = zoom;
-        pr.focus = focus;
+        pr.script = script;
         pr.save();
 
         return pr;
