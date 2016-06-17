@@ -45,17 +45,36 @@ export class Link implements OnInit {
                 });
     }
     linkPreset(preset: Preset, val: number) {
-        console.log("Linking preset " + preset.id + " to camera " + val);
         this._presetService.linkPreset(preset.id, val)
             .subscribe(
                 linkedPreset => {
-                    console.log(linkedPreset);
-                    this.presets.forEach(pres => {
-                        if (pres.id === preset.id) {
-                            preset = linkedPreset;
+                    var newPresets: Preset[] = [];
+                    this.presets.forEach(oldPreset => {
+                        if (oldPreset.id === linkedPreset.id) {
+                            newPresets.push(linkedPreset);
                             console.log(preset);
+                        } else {
+                            newPresets.push(oldPreset);
                         }
                     });
+                    this.presets = newPresets;
+                }
+            )
+    }
+    unlinkPreset(preset: Preset) {
+        this._presetService.unlinkPreset(preset.id)
+            .subscribe(
+                unlinkedPreset => {
+                    var newPresets: Preset[] = [];
+                    this.presets.forEach(oldPreset => {
+                        if (oldPreset.id === unlinkedPreset.id) {
+                            newPresets.push(unlinkedPreset);
+                            console.log(preset);
+                        } else {
+                            newPresets.push(oldPreset);
+                        }
+                    });
+                    this.presets = newPresets;
                 }
             )
     }

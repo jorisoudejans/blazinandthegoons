@@ -302,7 +302,7 @@ public class ScriptControllerTest {
     }
 
     /**
-     * Test get socket
+     * Test get socket.
      */
     @Test
     public void testGetSocket() {
@@ -314,34 +314,5 @@ public class ScriptControllerTest {
         LegacyWebSocket<JsonNode> r = new ScriptController().socket();
         assertNotNull(r);
     }
-
-    @Test
-    public void testUpdateActiveScript() {
-        models.Script s1 = new models.Script();
-        s1.name = "ScriptController One";
-        s1.creationDate = new Date();
-        s1.save();
-
-        ScriptController scriptController = new ScriptController();
-
-        Result r1 = scriptController.updateActiveScript(s1.id);
-        assertEquals(Http.Status.NOT_FOUND, r1.status());
-
-        scriptController.startScript(s1.id);
-
-        Http.RequestBuilder builder = fakeRequest("GET", "/api/scripts/" + s1.id + "/update");
-        builder.header("Content-Type", "application/json");
-
-        Map<String, Object> maps = new HashMap<>();
-        maps.put("actionIndex", 8);
-
-        builder.bodyJson(Json.toJson(maps));
-        Result r = route(ScriptControllerTest.app, builder);
-
-        System.out.println("UPdate Result: " + contentAsString(r));
-        assertEquals(Http.Status.OK, r.status());
-        assertTrue(contentAsString(r).contains("\"actionIndex\":8"));
-    }
-
 
 }

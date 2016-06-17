@@ -3,6 +3,8 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Action;
 import models.ActiveScript;
+import models.Camera;
+import models.Preset;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -167,23 +169,6 @@ public class ScriptController extends Controller {
             as.script = s;
             as.save();
             return ok(Json.toJson(as));
-        }
-        return notFound("ScriptController " + id);
-    }
-
-    /**
-     * Update current action getAll. Sets the action currently being executed.
-     * @param id script id
-     * @return updated script
-     */
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result updateActiveScript(Long id) {
-        models.Script script = models.Script.find.byId(id);
-        if (script != null && script.activeScript != null) {
-            JsonNode json = request().body().asJson();
-            script.activeScript.actionIndex = json.findPath("actionIndex").intValue();
-            script.save();
-            return ok(Json.toJson(script.activeScript));
         }
         return notFound("ScriptController " + id);
     }

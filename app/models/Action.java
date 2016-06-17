@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 
@@ -38,6 +39,13 @@ public class Action extends Model implements Comparable {
     @JsonIgnore
     public Script script;
 
+    @Constraints.Required
+    public boolean flagged;
+
+    public FlagType flagType;
+
+    public String flagDescription;
+
     //Finder Object used for finding objects in the database.
     public static Finder<Long, Action> find = new Finder<>(Action.class);
 
@@ -45,6 +53,7 @@ public class Action extends Model implements Comparable {
     /**
      * A static create function which can be called to create an Action object
      * with the specified parameters.
+     * @param ind   Index of the action
      * @param des   Description of the action
      * @param timestamp Timestamp at which the action begins.
      * @param duration  The estimated duration the action will take.
@@ -61,14 +70,45 @@ public class Action extends Model implements Comparable {
         act.duration = duration;
         act.preset = preset;
         act.script = script;
+        act.flagged = false;
 
         act.save();
         return act;
+    }
+
+    /**
+     * Creates a flag for the action.
+     * @param ft The type of flag
+     * @param desc Description of the flag
+     */
+    public void setFlag(FlagType ft, String desc) {
+        this.flagged = true;
+        this.flagType = ft;
+        this.flagDescription = desc;
+        this.save();
     }
 
     @Override
     public int compareTo(Object o) {
         Action act = (Action) o;
         return this.index - act.index;
+    }
+
+    /**
+     * The different types of reasons a action could be flagged with.
+     */
+    public enum FlagType {
+
+        @EnumValue("OBSTRUCTED")
+        OBSTRUCTED,
+
+        @EnumValue("TOOFAST")
+        TOOFAST,
+
+        @EnumValue("BADANGLE")
+        BADANGLE,
+
+        @EnumValue("INCOMPATIBLE")
+        INCOMAPIBLE,
     }
 }
