@@ -172,9 +172,9 @@ public class PresetControllerTest {
         script.actions.add(action2);
         script.save();
 
-        p1.link(camera, new PresetLinkData(0, 0, 0, 0, 0));
+        p1.camera = camera;
         p1.save();
-        p2.link(camera, new PresetLinkData(1, 1, 1, 1, 1));
+        p2.camera = camera;
         p2.save();
         assertFalse(new PresetController().checkCompatibility(script));
     }
@@ -208,9 +208,10 @@ public class PresetControllerTest {
         script.actions.add(action2);
         script.save();
 
-        p1.link(camera1, new PresetLinkData(0, 0, 0, 0, 0));
-        System.out.println("Camera id's: " + camera1.id + ", " + camera2.id);
-        p2.link(camera2, new PresetLinkData(1, 1, 1, 1, 1));
+        p1.camera = camera1;
+        p1.save();
+        p2.camera = camera2;
+        p2.save();
         Assert.assertTrue(new PresetController().checkCompatibility(script));
     }
 

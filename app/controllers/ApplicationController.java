@@ -3,10 +3,7 @@ package controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.director;
-import views.html.edit;
-import views.html.location;
-import views.html.overview;
+import views.html.*;
 
 /**
  * Controller for the different views that are available.
@@ -64,6 +61,11 @@ public class ApplicationController extends Controller {
         return ok(location.render("Location", id));
     }
 
+    /**
+     * Return the link view
+     * @param id id of the script
+     * @return link view response
+     */
     public Result linkView(Long id) {
         return ok(link.render("Link", id));
     }
