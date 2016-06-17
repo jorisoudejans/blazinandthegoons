@@ -36,6 +36,15 @@ public class ActionTest {
         assertEquals(out.get(0), act);
     }
 
+    @Test
+    public void testSetFlag() {
+        Action act = Action.createAction(0,"decript", 0, 0, new Preset(), new Script());
+        act.setFlag(Action.FlagType.OBSTRUCTED, "Dirigent moved to obtruct the position");
+
+        assertEquals(true, act.flagged);
+        assertEquals(Action.FlagType.OBSTRUCTED, act.flagType);
+    }
+
     /**
      * Stop fake app.
      */
