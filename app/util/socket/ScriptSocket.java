@@ -61,7 +61,6 @@ public final class ScriptSocket {
 
         List<ActiveScript> as = ActiveScript.find.all();
         if (!as.isEmpty()) {
-            Collections.sort(as.get(0).script.actions);
             write(as.get(0));
         } else {
             write(Json.toJson(new ArrayList<>()));
@@ -83,7 +82,6 @@ public final class ScriptSocket {
         // Update new state to all clients
         List<ActiveScript> aslist = ActiveScript.find.all();
         if (!aslist.isEmpty()) { // we have an active script
-            Collections.sort(aslist.get(0).script.actions);
             ActiveScript as = aslist.get(0);
             write(as);
         } else {
@@ -92,7 +90,6 @@ public final class ScriptSocket {
     }
 
     private void write(ActiveScript script) {
-        Collections.sort(script.script.actions);
         JsonNode v = Json.toJson(script);
         write(v);
     }

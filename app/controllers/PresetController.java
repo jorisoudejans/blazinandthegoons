@@ -2,6 +2,8 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Camera;
+import models.Preset;
+import models.PresetLinkData;
 import models.Script;
 import play.libs.Json;
 import play.mvc.BodyParser;
@@ -68,6 +70,35 @@ public class PresetController extends Controller {
             return internalServerError(); // return error
         }
         return notFound();
+    }
+
+    /**
+     * Link a preset to a camera and preset values of this camera.
+     * @param id camera id
+     * @return the updated preset
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public Result link(Long id) {
+        Preset preset = Preset.find.byId(id); // find preset
+        if (preset != null) {
+            JsonNode json = request().body().asJson();
+            Long cameraId = json.findPath("cameraId").longValue();
+            Camera camera = Camera.find.byId(cameraId);
+            if (camera != null) {
+                PresetLinkData data = new PresetLinkData(
+                        json.findPath("pan").intValue(),
+                        json.findPath("tilt").intValue(),
+                        json.findPath("zoom").intValue(),
+                        json.findPath("focus").intValue(),
+                        json.findPath("iris").intValue()
+                );
+                preset.link(camera, data);
+                preset.save();
+                return ok(Json.toJson(preset));
+            }
+            return notFound("Camera not found");
+        }
+        return notFound("Preset not found");
     }
 
     /**

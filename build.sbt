@@ -32,6 +32,12 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
 
+//libraryDependencies += "org.eluder.coveralls" % "coveralls-maven-plugin" % "4.2.0" exclude("org.sonatype.sisu.inject", "guice-parent")
+
+//libraryDependencies += "org.jacoco" % "jacoco-maven-plugin" % "0.7.6.201602180812"
+
+
+
 import de.johoop.findbugs4sbt.FindBugs._
 
 findbugsSettings
@@ -72,4 +78,4 @@ parallelExecution in jacoco.Config := false
 // Exclude generated classes, routes and views
 jacoco.excludes in jacoco.Config := Seq("views*", "*Routes*", "controllers*routes*", "controllers*Reverse*", "controllers*javascript*", "controller*ref*")
 
-
+coverageExcludedPackages := "<empty>;Routes*;controllers*routes*;controllers*Reverse*;controllers*javascript*;controller*ref*"
