@@ -32,7 +32,7 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
 
-//libraryDependencies += "org.eluder.coveralls" % "coveralls-maven-plugin" % "4.2.0" exclude("org.sonatype.sisu.inject", "guice-parent")
+//libraryDependencies += "org.eluder.coveralls" % "coveralls-maven-plugin" % "4.2.0"
 
 //libraryDependencies += "org.jacoco" % "jacoco-maven-plugin" % "0.7.6.201602180812"
 
