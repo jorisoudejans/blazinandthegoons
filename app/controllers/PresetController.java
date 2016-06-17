@@ -48,8 +48,9 @@ public class PresetController extends Controller {
         if (script != null) {
             JsonNode json = request().body().asJson();
             String name = json.findPath("name").textValue();
+            String description = json.findPath("description").textValue();
 
-            models.Preset preset = models.Preset.createDummyPreset(name, script);
+            models.Preset preset = models.Preset.createDummyPreset(name, description, script);
 
             return ok(Json.toJson(preset));
         }

@@ -8,6 +8,7 @@ GET     /director                   @controllers.ApplicationController.directorV
 GET     /edit                       @controllers.ApplicationController.editNewView()
 GET     /edit/:id                   @controllers.ApplicationController.editView(id: Long)
 GET     /locations/:id              @controllers.ApplicationController.locationView(id: Long)
+GET     /link/:id                   @controllers.ApplicationController.linkView(id: Long)
 
 # Scripts
 GET     /api/scripts                    @controllers.ScriptController.getAll()
@@ -38,7 +39,7 @@ GET     /api/presets                    @controllers.PresetController.getAll()
 GET     /api/presets/:id                @controllers.PresetController.get(id: Long)
 GET     /api/presets/:id/activate       @controllers.PresetController.apply(id: Long)
 GET     /api/presets/:id/thumbnail      @controllers.PresetController.thumbnail(id: Long)
-POST    /api/presets/:id/link           @controllers.PresetController.link(id: Long)
+GET    /api/presets/:id/link           @controllers.PresetController.link(id: Long)
 
 POST    /api/scripts/:id/presets/create             @controllers.PresetController.create(id: Long)
 
