@@ -37,6 +37,8 @@ public class Camera extends Model {
     @OneToMany(mappedBy = "camera", cascade = CascadeType.ALL)
     public List<Preset> presets;
 
+    public long deactTime = 0;
+
     /**
      * Returns the camera's ip address.
      * @return IP address
