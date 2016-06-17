@@ -20,9 +20,7 @@ POST    /api/scripts/:id/actions/create     @controllers.ScriptController.addAct
 DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.ScriptController.removeAction(scriptId: Long, actionId: Long)
 
 
-# For now put snapshot of default cam in ScriptController
-GET     /api/camera/image              @controllers.ScriptController.getCameraImage()
-
+# Location
 GET     /api/locations                  @controllers.LocationController.getAll()
 GET     /api/locations/:id              @controllers.LocationController.get(id: Long)
 POST    /api/locations/create           @controllers.LocationController.create()

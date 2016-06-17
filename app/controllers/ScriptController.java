@@ -3,22 +3,16 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Action;
 import models.ActiveScript;
-import models.Camera;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
 import play.mvc.WebSocket;
-import util.camera.commands.SnapshotCommand;
 import util.socket.ScriptSocket;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.Collections;
 
 /**
  * Controls a script.
@@ -76,12 +70,17 @@ public class ScriptController extends Controller {
             actScript.name = script.name;
             actScript.save();
             for (models.Action action : script.actions) {
-                Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), actScript);
+                Action.createAction(action.index, action.description, action.timestamp,
+                        action.duration, models.Preset.find.byId(action.preset.id), actScript);
             }
         } else {
             for (models.Action action : script.actions) {
-                if (action.id == null)
-                    Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), models.Script.find.byId(script.id));
+                if (action.id == null) {
+                    Action.createAction(action.index, action.description,
+                            action.timestamp, action.duration,
+                            models.Preset.find.byId(action.preset.id),
+                            models.Script.find.byId(script.id));
+                }
                 action.update();
             }
             models.Script actScript = models.Script.find.byId(script.id);
@@ -201,26 +200,6 @@ public class ScriptController extends Controller {
                 ScriptSocket.getActive().join(in, out);
             }
         };
-    }
-
-    /**
-     * Gives an image of the test camera via VPN
-     * @return the jpeg snapshot
-     */
-    public Result getCameraImage() {
-        // just to show an image for now
-        try {
-            BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(i, "jpg", baos);
-
-            return ok(baos.toByteArray()).as("image/jpg");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return notFound();
     }
 
 }

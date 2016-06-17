@@ -3,7 +3,6 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Camera;
 import models.Location;
-import models.Script;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -53,7 +52,7 @@ public class LocationController extends Controller {
     }
 
     /**
-     * Add a new camera to this location
+     * Add a new camera to this location.
      * @param location identifier
      * @return updated location
      */
@@ -73,7 +72,7 @@ public class LocationController extends Controller {
     }
 
     /**
-     * Remove camera from this location
+     * Remove camera from this location.
      * @param location identifier
      * @param camera camera identifier
      * @return updated location
