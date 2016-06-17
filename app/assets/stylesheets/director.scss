@@ -127,7 +127,7 @@ $grid-padding: 4px;
       }
     }
 
-    .link-overlay {
+    .unlink-overlay {
       position: absolute;
       left: 0;
       top: 0;
@@ -140,15 +140,15 @@ $grid-padding: 4px;
         opacity: 1;
       }
 
-      .link-button {
-        text-align: center;
-        top: 30%;
-        position: relative;
+      .unlink-button {
+        top: 10px;
+        right: 10px;
+        position: absolute;
         cursor: pointer;
 
         i {
           color: white;
-          font-size: 3em;
+          font-size: 2em;
         }
       }
     }
@@ -188,18 +188,21 @@ $grid-padding: 4px;
   overflow-y: scroll;
 }
 
-
 .unlinked-presets-list {
   position: relative;
   max-height: 700px;
   overflow-y: scroll;
 
   .unlinked-preset-item {
-    height: 50px;
+    height: 60px;
     background-color: #eeeeee;
     position: relative;
     overflow: hidden;
     padding: 16px 16px 20px 16px;
+
+    &.hidden {
+      display: none;
+    }
 
     .preset-description {
       visibility: hidden;

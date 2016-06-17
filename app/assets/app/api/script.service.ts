@@ -54,17 +54,10 @@ export class ScriptService {
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
     }
-    addCamera (camera: Camera, locationId: number): Observable<Location> { // adds a new location
+    updateLocation (location: Location): Observable<Location> { // adds a new location
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post("api/locations/" + locationId + "/add", JSON.stringify(camera), options)
-            .map(ScriptService.extractData)
-            .catch(ScriptService.handleError);
-    }
-    removeCamera (camera: Camera, locationId: number): Observable<Location> { // adds a new location
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-        return this.http.delete("api/locations/" + locationId + "/" + camera.id + "/remove", options)
+        return this.http.put("api/locations/"+location.id, JSON.stringify(location), options)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
     }

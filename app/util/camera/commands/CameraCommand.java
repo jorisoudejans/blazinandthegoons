@@ -26,14 +26,14 @@ public abstract class CameraCommand {
     protected abstract String getParameters();
 
     /**
-     * Get the values for this command
+     * Get the values for this command.
      * @param camera the camera
      * @return values
      */
     public abstract Object get(Camera camera);
 
     /**
-     * The command to retrieve the values
+     * The command to retrieve the values.
      * @return the get values
      */
     protected String getGetCommand() {
@@ -64,7 +64,7 @@ public abstract class CameraCommand {
     }
 
     /**
-     * Get current values of this command
+     * Get current values of this command.
      * @param camera Camera to apply it to
      * @return the values
      */
@@ -97,6 +97,7 @@ public abstract class CameraCommand {
     private BufferedReader getHttp(String urlString) throws IOException {
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
+        conn.setConnectTimeout(5000);
         return new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
         );

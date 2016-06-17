@@ -8,7 +8,11 @@ import util.camera.commands.IrisCommand;
 import util.camera.commands.PanTiltCommand;
 import util.camera.commands.ZoomCommand;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
@@ -33,6 +37,8 @@ public class Camera extends Model {
     @OneToMany(mappedBy = "camera", cascade = CascadeType.ALL)
     public List<Preset> presets;
 
+    public long deactTime = 0;
+
     /**
      * Returns the camera's ip address.
      * @return IP address
@@ -47,15 +53,15 @@ public class Camera extends Model {
      * @return current values
      */
     @JsonIgnore
-    public PresetLinkData getCameraValues() {
+    public Integer[] getCameraValues() {
         Integer[] panTilt = new PanTiltCommand(0, 0).get(this);
         Integer focus = new FocusCommand(0).get(this);
         Integer iris = new IrisCommand(0).get(this);
         Integer zoom = new ZoomCommand(0).get(this);
         if (panTilt != null && focus != null && iris != null && zoom != null) {
-            return new PresetLinkData(panTilt[0], panTilt[1], zoom, focus, iris);
+            return new Integer[] {panTilt[0], panTilt[1], zoom, focus, iris};
         }
-        return new PresetLinkData(0, 0, 0, 0, 0);
+        return new Integer[] {0, 0, 0, 0, 0};
     }
 
     public static Finder<Long, Camera> find = new Finder<>(Camera.class);

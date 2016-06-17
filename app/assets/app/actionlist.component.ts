@@ -3,6 +3,7 @@ import {Component, Input} from "angular2/core";
 import {ScriptService} from "./api/script.service";
 import {Action} from "./api/action"
 
+declare var jQuery:any;
 
 @Component({
     selector:    'action-list',
@@ -31,7 +32,7 @@ export class ActionListComponent {
 
     flagAction() {
         this.scriptData.script.actions[this.flagActionId].flagged = true;
-        this.scriptData.script.actions[this.flagActionId].flagDescription = $('#flagModal textarea').val();
+        this.scriptData.script.actions[this.flagActionId].flagDescription = jQuery('#flagModal textarea').val();
         this.cleanUpModal();
         console.log(this.scriptData.script);
         this.scriptService.saveScript(this.scriptData.script)
@@ -49,7 +50,7 @@ export class ActionListComponent {
     }
 
     cleanUpModal() {
-        $('#flagModal textarea').val('');
+        jQuery('#flagModal textarea').val('');
     }
 
 }

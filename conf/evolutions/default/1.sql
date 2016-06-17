@@ -10,11 +10,11 @@ create table action (
   timestamp                     integer,
   duration                      integer,
   preset_id                     bigint,
-  flagged                       boolean,
-  flag_type                     varchar(10),
-  flag_description              varchar(255),
   script_id                     bigint,
-  constraint ck_action_flag_type check (flag_type in ('OBSTRUCTED','TOOFAST','BADANGLE')),
+  flagged                       boolean,
+  flag_type                     varchar(12),
+  flag_description              varchar(255),
+  constraint ck_action_flag_type check (flag_type in ('OBSTRUCTED','TOOFAST','BADANGLE','INCOMPATIBLE')),
   constraint pk_action primary key (id)
 );
 create sequence action_seq;
@@ -34,6 +34,7 @@ create table camera (
   name                          varchar(255),
   ip                            varchar(255),
   location_id                   bigint,
+  deact_time                    bigint,
   constraint pk_camera primary key (id)
 );
 create sequence camera_seq;
@@ -49,6 +50,7 @@ create table preset (
   id                            bigint not null,
   name                          varchar(255),
   description                   varchar(255),
+  image                         blob,
   camera_id                     bigint,
   script_id                     bigint,
   pan                           integer,
