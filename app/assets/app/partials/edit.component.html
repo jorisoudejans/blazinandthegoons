@@ -25,7 +25,7 @@
                     <input type="number" class="form-control" [(ngModel)]="action.duration" placeholder="duration"> <label class="text-area-detail">sec</label><br>
                     <span class="text-area-detail">Preset:</span>
                     <select class="form-control" (change)="updateAction(action, $event.target.value)">
-                        <option *ngFor="#preset of presets" [value]="preset">{{preset.name}}</option>
+                        <option *ngFor="#preset of scriptData.presets" [value]="preset">{{preset.name}}</option>
                     </select><br>
                     <button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button>
                     <button type="button" class="btn btn-danger center-block" (click)="action.active = !action.active; deleteAction(i);">Delete this action</button>
@@ -45,7 +45,7 @@
 </div>
 <button class="hax" (click)="dropHandler()" style="display:none;"></button>
 
-<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" *ngIf="scriptData">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -58,7 +58,7 @@
                     <input type="number" class="form-control duration" placeholder="duration"> <label class="text-area-detail">sec</label><br>
                     <span class="text-area-detail">Preset:</span>
                     <select class="form-control preset">
-                        <option *ngFor="#preset of presets" [value]="preset">{{preset.name}}</option>
+                        <option *ngFor="#preset of scriptData.presets" [value]="preset">{{preset.name}}</option>
                     </select><br>
                 </div>
             </div>

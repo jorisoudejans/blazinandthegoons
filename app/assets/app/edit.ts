@@ -91,11 +91,23 @@ export class Edit implements OnInit {
     }
     saveScript() {
         this._scriptService.saveScript(this.scriptData)
+            .map((script: Script) => {
+                if(script) {
+                    script.actions.forEach((action) => {
+                        action.active = false;
+                    })
+                    script.actions.sort(function(a:Action, b:Action) {
+                        return a.index - b.index;
+                    })
+                }
+                return script;
+            })
             .subscribe(
-                scriptData => this.scriptData = scriptData,
+                scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);},
                 error =>  this.errorMessage = <any>error);
         console.log("BINNENGEKOMEN DATA");
         console.log(this.scriptData);
+        this.updateDroppableListeners();
         // var base = location.hostname + (location.port ? ':'+location.port: '')
         // location.href = 'localhost:9000';
         this.router.navigateByUrl('localhost:9000/');
@@ -116,14 +128,14 @@ export class Edit implements OnInit {
     }
     updateAction(action: Action, event:string) {
         var corrPreset:Preset = null;
-        this.presets.forEach((preset) => {
+        this.scriptData.presets.forEach((preset) => {
             if (preset.name === event)
                 corrPreset = preset;
         })
         action.preset = corrPreset;
     }
     dropHandler() {
-        var act = new Action(null, this.actionInsertPos+1, "New action", 0, this.presets[this.droppedPresetIndex]);
+        var act = new Action(null, this.actionInsertPos+1, "New action", 0, this.scriptData.presets[this.droppedPresetIndex]);
         act.active = true;
         this.scriptData.actions.splice(this.actionInsertPos+1, 0, act);
         this.fixActionIndices();
@@ -132,7 +144,7 @@ export class Edit implements OnInit {
     }
     addAction() {
         var corrPreset:Preset = null;
-        this.presets.forEach((preset) => {
+        this.scriptData.presets.forEach((preset) => {
             if (preset.name === $('#actionModal .preset').val())
                 corrPreset = preset;
         })
