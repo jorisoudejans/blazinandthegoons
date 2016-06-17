@@ -55,7 +55,7 @@ export class Link implements OnInit {
                             preset = linkedPreset;
                             console.log(preset);
                         }
-                    })
+                    });
                 }
             )
     }

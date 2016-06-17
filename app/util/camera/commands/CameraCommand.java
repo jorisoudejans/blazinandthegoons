@@ -97,6 +97,7 @@ public abstract class CameraCommand {
     private BufferedReader getHttp(String urlString) throws IOException {
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
+        conn.setConnectTimeout(5000);
         return new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
         );

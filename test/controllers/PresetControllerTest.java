@@ -109,7 +109,7 @@ public class PresetControllerTest {
         Camera camera = Camera.make("Camera One", "0.0.0.0");
         camera.save();
 
-        Http.RequestBuilder builder = fakeRequest("GET", "/api/presets/" + p1.id + "/" + camera.id + "/link");
+        Http.RequestBuilder builder = fakeRequest("GET", "/api/presets/" + p1.id + "/link/" + camera.id);
         builder.header("Content-Type", "application/json");
 
         Result r = route(PresetControllerTest.app, builder);
