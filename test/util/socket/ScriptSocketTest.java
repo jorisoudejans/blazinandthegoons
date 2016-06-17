@@ -17,6 +17,8 @@ import play.test.Helpers;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertFalse;
@@ -116,6 +118,24 @@ public class ScriptSocketTest {
     }
 
     /**
+     * Tests adding two sockets while activeScript is activated for one
+     */
+    @Test
+    public void test_joinActiveScript() {
+        scriptSocket.join(socket_in_p1, socket_out_p1);
+
+        ActiveScript activeScript = activateScript();
+
+        scriptSocket.join(socket_in_p2, socket_out_p2);
+
+        verify(socket_out_p1, times(1)).write(Json.toJson(new ArrayList<>()));
+        verify(socket_out_p2, times(0)).write(Json.toJson(new ArrayList<>())); // 2 never sees empty list
+
+        verify(socket_out_p1, times(1)).write(Json.toJson(activeScript));
+        verify(socket_out_p2, times(1)).write(Json.toJson(activeScript));
+    }
+
+    /**
      * Tests adding two sockets and writing both sockets back forth
      */
     @Test
@@ -136,6 +156,40 @@ public class ScriptSocketTest {
         activeScript.actionIndex++;
         verify(socket_out_p1, times(1)).write(Json.toJson(activeScript));
         verify(socket_out_p2, times(1)).write(Json.toJson(activeScript));
+    }
+
+    /**
+     * Tests activating script.
+     */
+    @Test
+    public void test_singleActivateScript() {
+        scriptSocket.join(socket_in_p1, socket_out_p1); // add the mocks
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("start", 1);
+
+        JsonNode node = Json.toJson(maps);
+        scriptSocket.processInput(socket_in_p1, node);
+
+        verify(socket_out_p1, times(2)).write(any(JsonNode.class)); // retrieve empty array for no active script
+    }
+
+    /**
+     * Tests activating script.
+     */
+    @Test
+    public void test_singleStopScript() {
+        scriptSocket.join(socket_in_p1, socket_out_p1); // add the mocks
+
+        ActiveScript activeScript = activateScript();
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("stop", activeScript.id);
+
+        JsonNode node = Json.toJson(maps);
+        scriptSocket.processInput(socket_in_p1, node);
+
+        verify(socket_out_p1, times(2)).write(Json.toJson(new ArrayList<>())); // retrieve empty array for no active script
     }
 
     private ActiveScript activateScript() {

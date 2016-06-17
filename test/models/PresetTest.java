@@ -32,7 +32,7 @@ public class PresetTest {
      */
     @Test
     public void testCreate() {
-        Preset pr = Preset.createDummyPreset("preset1", null);
+        Preset pr = Preset.createDummyPreset("preset1", "test", null);
         List<Preset> out = Preset.find.where().ilike("name", "preset1").findList();
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), pr);
@@ -42,7 +42,7 @@ public class PresetTest {
     public void testIsLinked() {
         Camera camera = mock(Camera.class);
         int i = 65;
-        Preset pr = Preset.createDummyPreset("preset1", null);
+        Preset pr = Preset.createDummyPreset("preset1", "test", null);
         pr.link(camera, new PresetLinkData(1, 1, 1, 1, 1));
         assertTrue(pr.isLinked());
         assertEquals(camera, pr.camera);

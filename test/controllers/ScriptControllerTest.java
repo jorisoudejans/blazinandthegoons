@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
@@ -12,12 +13,14 @@ import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
 import play.test.Helpers;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static play.test.Helpers.*;
 
 /**
@@ -166,6 +169,54 @@ public class ScriptControllerTest {
         maps.put("id", -1);
         maps.put("name", "New script");
 
+        Map<String, Object> preset = new HashMap<>();
+        preset.put("id", 1);
+
+        Map<String, Object> action = new HashMap<>();
+        action.put("index", 1);
+        action.put("description", "Action description");
+        action.put("timestamp", 12345);
+        action.put("duration", 1);
+        action.put("preset", preset);
+
+        maps.put("actions", Collections.singletonList(action));
+
+        builder.bodyJson(Json.toJson(maps));
+
+        Result r = route(ScriptControllerTest.app, builder);
+        System.out.println("Result: " + contentAsString(r));
+        assertTrue(contentAsString(r).contains("New script"));
+    }
+
+    /**
+     * Tests update of a script.
+     */
+    @Test
+    public void testUpdateScriptNotNew() {
+        models.Script s1 = new models.Script();
+        s1.name = "ScriptController One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/scripts/" + s1.id);
+        builder.header("Content-Type", "application/json");
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("id", s1.id);
+        maps.put("name", "New script");
+
+        Map<String, Object> preset = new HashMap<>();
+        preset.put("id", 1);
+
+        Map<String, Object> action = new HashMap<>();
+        action.put("index", 1);
+        action.put("description", "Action description");
+        action.put("timestamp", 12345);
+        action.put("duration", 1);
+        action.put("preset", preset);
+
+        maps.put("actions", Collections.singletonList(action));
+
         builder.bodyJson(Json.toJson(maps));
 
         Result r = route(ScriptControllerTest.app, builder);
@@ -248,6 +299,20 @@ public class ScriptControllerTest {
 
         r = new ScriptController().removeAction((long) -300, (long) -300);
         assertEquals(Http.Status.NOT_FOUND, r.status());
+    }
+
+    /**
+     * Test get socket
+     */
+    @Test
+    public void testGetSocket() {
+        models.Script s1 = new models.Script();
+        s1.name = "ScriptController One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        LegacyWebSocket<JsonNode> r = new ScriptController().socket();
+        assertNotNull(r);
     }
 
     @Test

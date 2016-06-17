@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Camera;
+import models.Script;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,8 @@ public class PresetControllerTest {
 
     private static Application app;
 
+    private Script script;
+
     /**
      * Start fake app.
      */
@@ -32,6 +35,10 @@ public class PresetControllerTest {
     public void startApp() {
         app = fakeApplication(Helpers.inMemoryDatabase());
         Helpers.start(app);
+
+        script = new Script();
+        script.name = "My script";
+        script.save();
     }
 
     /**
@@ -102,23 +109,66 @@ public class PresetControllerTest {
         Camera camera = Camera.make("Camera One", "0.0.0.0");
         camera.save();
 
-        Http.RequestBuilder builder = fakeRequest("POST", "/api/presets/" + p1.id + "/link");
+        Http.RequestBuilder builder = fakeRequest("GET", "/api/presets/" + p1.id + "/" + camera.id + "/link");
+        builder.header("Content-Type", "application/json");
+
+        Result r = route(PresetControllerTest.app, builder);
+        assertEquals(200, r.status());
+    }
+
+    /**
+     * Tests linking of preset.
+     */
+    @Test
+    public void testCreate() {
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/scripts/" + script.id + "/presets/create");
         builder.header("Content-Type", "application/json");
 
         Map<String, Object> maps = new HashMap<>();
-        maps.put("cameraId", camera.id);
-        maps.put("pan", 1);
-        maps.put("tilt", 2);
-        maps.put("zoom", 3);
-        maps.put("focus", 4);
-        maps.put("iris", 5);
+        maps.put("name", "Preset name");
 
         builder.bodyJson(Json.toJson(maps));
 
         Result r = route(PresetControllerTest.app, builder);
         JsonNode json = Json.parse(contentAsString(r));
 
-        assertEquals(4, json.findPath("focus").asInt());
+        assertEquals("Preset name", json.findPath("name").asText());
+    }
+
+    /**
+     * Tests linking of preset.
+     */
+    @Test
+    public void testCreateNotFound() {
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/scripts/" + 100 + "/presets/create");
+        builder.header("Content-Type", "application/json");
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("name", "Preset name");
+
+        builder.bodyJson(Json.toJson(maps));
+
+        Result r = route(PresetControllerTest.app, builder);
+        assertEquals(404, r.status());
+    }
+
+    /**
+     * Tests linking of preset.
+     */
+    @Test
+    public void testApplyPresetNotFound() {
+        models.Preset p1 = new models.Preset();
+        p1.name = "PresetController One";
+        p1.save();
+
+        Camera camera = Camera.make("Camera One", "0.0.0.0");
+        camera.save();
+
+        Http.RequestBuilder builder = fakeRequest("GET", "/api/presets/" + 100 + "/activate");
+        builder.header("Content-Type", "application/json");
+
+        Result r = route(PresetControllerTest.app, builder);
+        assertEquals(404, r.status()); // We can only look at the status reported back by the server
     }
 
 }
