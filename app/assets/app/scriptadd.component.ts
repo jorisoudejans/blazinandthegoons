@@ -10,7 +10,7 @@ import {OnInit, Component} from "angular2/core"
 })
 export class ScriptAddComponent {
     constructor (private _heroService: ScriptService) {}
-    model = new Script(0, "New script", "vandaag", []);
+    model = new Script(0, "New script", "vandaag", [], null, []);
     submitted = false;
     onSubmit() {
         console.log("Hello");

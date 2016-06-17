@@ -1,6 +1,26 @@
+html {
+  min-height: 100%;
+  position:relative;
+}
 body {
   background-color: #fafafa;
   font-family: Open Sans;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
 }
 
 h1 {
@@ -26,10 +46,32 @@ span {
   background: #009900;
   border-radius: 0;
 
-  a.nav-link {
+  ul.navbar-nav li {
+    padding: 5px 5px;
+  }
+
+  a {
     color: white;
   }
 }
+
+/** Removes navbar disabling bootstrap**/
+.navbar-collapse.collapse {
+  display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+  float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+  margin-right: -15px !important;
+}
+
+.navbar-right {
+  float: right!important;
+}
+
 .md-button {
   color : currentColor;
 }
@@ -42,12 +84,59 @@ span {
 }
 
 .connection-lost {
-  background-color: #009900;
+  background-color: #005d00;
   color: white;
   text-align: center;
   padding: 5px;
+  margin-top:-20px; /** Due to navbar **/
 }
 
 .screen-height {
   height: 100%;
+}
+
+.no-activescript {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  .no-activescript-inner {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    width: 600px;
+    text-align: center;
+
+    #icon {
+      font-size: 160px;
+      color: #ff8080;
+    }
+
+    p {
+      font-size: 20px;
+    }
+  }
+}
+
+#cameras-list {
+  li {
+    vertical-align: middle;
+
+    .material-icons {
+      font-size: 30px;
+    }
+
+    button {
+      float: right;
+    }
+
+  }
+}
+
+#action-new-camera {
+  .text-area-header {
+    width: 250px;
+  }
 }

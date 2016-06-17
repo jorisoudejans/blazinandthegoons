@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +27,12 @@ public class Script extends Model {
 
     @OneToMany(mappedBy = "script", cascade = CascadeType.ALL)
     public List<Action> actions = new ArrayList<Action>();
+
+    @OneToMany(mappedBy = "script", cascade = CascadeType.ALL)
+    public List<Preset> presets = new ArrayList<>();
+
+    @ManyToOne
+    public Location location;
 
     @OneToOne(mappedBy = "script", cascade = CascadeType.ALL)
     @JsonIgnore

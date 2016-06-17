@@ -1,14 +1,16 @@
 package models;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import play.Application;
 import play.test.Helpers;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * Test presets.
@@ -19,8 +21,8 @@ public class PresetTest {
     /**
      * Start fake app.
      */
-    @BeforeClass
-    public static void startApp() {
+    @Before
+    public void startApp() {
         app = Helpers.fakeApplication(Helpers.inMemoryDatabase());
         Helpers.start(app);
     }
@@ -30,17 +32,27 @@ public class PresetTest {
      */
     @Test
     public void testCreate() {
-        Preset pr = Preset.createPreset("preset1", 0, 0, 0, 0, 0);
+        Preset pr = Preset.createDummyPreset("preset1", null);
         List<Preset> out = Preset.find.where().ilike("name", "preset1").findList();
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), pr);
     }
 
+    @Test
+    public void testIsLinked() {
+        Camera camera = mock(Camera.class);
+        int i = 65;
+        Preset pr = Preset.createDummyPreset("preset1", null);
+        pr.link(camera, new PresetLinkData(1, 1, 1, 1, 1));
+        assertTrue(pr.isLinked());
+        assertEquals(camera, pr.camera);
+    }
+
     /**
      * Stop fake app.
      */
-    @AfterClass
-    public static void stopApp() {
+    @After
+    public void stopApp() {
         Helpers.stop(app);
     }
 

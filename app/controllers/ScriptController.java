@@ -3,13 +3,13 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Action;
 import models.ActiveScript;
+import models.Camera;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
 import play.mvc.WebSocket;
-import util.camera.LiveCamera;
 import util.camera.commands.SnapshotCommand;
 import util.socket.ScriptSocket;
 
@@ -31,8 +31,7 @@ public class ScriptController extends Controller {
      */
     public Result getAll() {
         List<models.Script> scriptList = models.Script.find.all();
-        for(models.Script scr : scriptList) {
-            Collections.sort(scr.actions);
+        for (models.Script scr : scriptList) {
             System.out.println();
         }
         return ok(Json.toJson(scriptList));
@@ -45,7 +44,6 @@ public class ScriptController extends Controller {
      */
     public Result get(Long id) {
         models.Script script = models.Script.find.byId(id);
-        Collections.sort(script.actions);
         return ok(Json.toJson(script));
     }
 
@@ -58,7 +56,7 @@ public class ScriptController extends Controller {
         JsonNode json = request().body().asJson();
         String name = json.findPath("name").textValue();
         models.Script script = Json.fromJson(json, models.Script.class);
-        script.id = null;
+        script.name = name;
         script.save();
         System.out.println(script);
         return ok(Json.toJson(script));
@@ -73,15 +71,15 @@ public class ScriptController extends Controller {
     public Result save(Long id) {
         JsonNode json = request().body().asJson(); // get the JSON payload
         models.Script script = Json.fromJson(json, models.Script.class); // find the script
-        if(script.id == -1) {
+        if (script.id == -1) {
             models.Script actScript = new models.Script();
             actScript.name = script.name;
             actScript.save();
-            for(models.Action action : script.actions) {
+            for (models.Action action : script.actions) {
                 Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), actScript);
             }
         } else {
-            for(models.Action action : script.actions) {
+            for (models.Action action : script.actions) {
                 if (action.id == null)
                     Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), models.Script.find.byId(script.id));
                 action.update();
@@ -90,7 +88,6 @@ public class ScriptController extends Controller {
             script.actions = actScript.actions;
             script.update();
         }
-        Collections.sort(script.actions);
         return ok(Json.toJson(script)); // report back the updated script
     }
 
@@ -120,13 +117,16 @@ public class ScriptController extends Controller {
      * @param actionId the action id in the script
      * @return script with added action
      */
-    @BodyParser.Of(BodyParser.Json.class)
     public Result removeAction(Long scriptId, Long actionId) {
         models.Script script = models.Script.find.byId(scriptId); // retrieve the script
         if (script != null) {
             Action action = Action.find.byId(actionId); // retrieve the action
             if (action != null) {
-                action.delete(); // retrieve the action
+                //TODO: If the action is not in the action-list
+                // of the script it will still delete it in the db
+                script.actions.remove(action);
+                script.save();
+                action.delete(); // delete the action
                 return ok(Json.toJson(script));
             }
             return notFound("ActionController " + actionId);
@@ -139,10 +139,9 @@ public class ScriptController extends Controller {
      * @return data of running script
      */
     public Result getActiveScript() {
-        models.ActiveScript as = models.ActiveScript.find.all().get(0);
-        if (as != null) {
-            Collections.sort(as.script.actions);
-            return ok(Json.toJson(as));
+        if (models.ActiveScript.find.all().size() != 0) {
+            models.ActiveScript as = models.ActiveScript.find.all().get(0);
+             return ok(Json.toJson(as));
         }
         return notFound("No active script");
     }
@@ -155,7 +154,6 @@ public class ScriptController extends Controller {
     public Result startScript(Long id) {
         models.Script s = models.Script.find.byId(id);
         if (s != null) {
-            Collections.sort(s.actions);
             List<ActiveScript> allScripts = ActiveScript.find.all();
             for (ActiveScript as : allScripts) { // remove all scripts
                 as.delete();
@@ -180,7 +178,6 @@ public class ScriptController extends Controller {
     public Result updateActiveScript(Long id) {
         models.Script script = models.Script.find.byId(id);
         if (script != null && script.activeScript != null) {
-            Collections.sort(script.actions);
             JsonNode json = request().body().asJson();
             script.activeScript.actionIndex = json.findPath("actionIndex").intValue();
             script.save();
@@ -210,7 +207,7 @@ public class ScriptController extends Controller {
     public Result getCameraImage() {
         // just to show an image for now
         try {
-            BufferedImage i = new SnapshotCommand().get(new LiveCamera("192.168.10.101"), SnapshotCommand.RES_1280);
+            BufferedImage i = new SnapshotCommand().get(Camera.make("Boilerplate", "192.168.10.101"), SnapshotCommand.RES_1280);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(i, "jpg", baos);

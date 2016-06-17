@@ -91,7 +91,7 @@ $grid-padding: 4px;
   padding-top: 8px;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.35);
 
-  .preset-list-item {
+  .preset-list-item div {
     padding-left: $grid-padding !important;
     padding-right: $grid-padding !important;
 
@@ -248,4 +248,17 @@ $grid-padding: 4px;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.35);
 
   pointer-events: none;
+}
+
+.cameras {
+  margin-bottom: 20px;
+
+  label {
+    margin-left: 15px;
+  }
+
+  #toggle-camera-list {
+    margin-left: -.9375rem;
+    margin-bottom: 15px;
+  }
 }

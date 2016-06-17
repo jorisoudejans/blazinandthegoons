@@ -1,8 +1,8 @@
 package util.camera.commands;
 
+import models.Camera;
 import org.junit.Before;
 import org.junit.Test;
-import util.camera.LiveCamera;
 
 import static org.junit.Assert.assertNull;
 
@@ -18,6 +18,6 @@ public class SnapshotCommandTest extends CameraCommandTest {
 
     @Test
     public void testGet() {
-        assertNull(((SnapshotCommand)command).get(new LiveCamera("0.0.0.0"), SnapshotCommand.RES_1280));
+        assertNull(((SnapshotCommand)command).get(Camera.make("Boilerplate", "0.0.0.0"), SnapshotCommand.RES_1280));
     }
 }

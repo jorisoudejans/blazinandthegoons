@@ -1,7 +1,7 @@
 package util.camera.commands;
 
+import models.Camera;
 import org.junit.Test;
-import util.camera.LiveCamera;
 
 import static org.junit.Assert.*;
 
@@ -33,6 +33,6 @@ public abstract class CameraCommandTest {
 
     @Test
     public void testExecute() {
-        assertFalse(getCommand().execute(new LiveCamera("0.0.0.0"))); // should fail because of IP
+        assertFalse(getCommand().execute(Camera.make("Boilerplate", "null"))); // should fail because of IP
     }
 }

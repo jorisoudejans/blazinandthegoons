@@ -31,4 +31,8 @@ public class ApplicationController extends Controller {
         return ok(edit.render("Edit script", (long) -1));
     }
 
+    public Result locationView(Long id) {
+        return ok(location.render("Location", id));
+    }
+
 }
