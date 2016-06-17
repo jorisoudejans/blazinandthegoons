@@ -56,17 +56,17 @@ public class DatabaseSeeder {
         camera2.save();
 
         // create actions
-        Action a1 = Action.createAction(0, "Open on dirigent", 5, 8, models.Preset.find.byId(1L), s);
-        Action a2 = Action.createAction(1, "Clarinets", 2, 8, models.Preset.find.byId(4L), s);
-        Action a3 = Action.createAction(2, "Static on strings", 4, 12, models.Preset.find.byId(2L), s);
-        Action a4 = Action.createAction(3, "Static on violins", 3, 12, models.Preset.find.byId(3L), s);
-        Action a5 = Action.createAction(4, "Dirigent still", 2, 18, models.Preset.find.byId(4L), s);
-        Action a6 = Action.createAction(5, "Flutes close-up", 2, 6, models.Preset.find.byId(1L), s);
-        Action a7 = Action.createAction(6, "Harp", 2, 5, models.Preset.find.byId(3L), s);
+        Action a1 = createAction(0, "Open on dirigent", 5, 8, models.Preset.find.byId(1L), s);
+        Action a2 = createAction(1, "Clarinets", 2, 8, models.Preset.find.byId(4L), s);
+        Action a3 = createAction(2, "Static on strings", 4, 12, models.Preset.find.byId(2L), s);
+        Action a4 = createAction(3, "Static on violins", 3, 12, models.Preset.find.byId(3L), s);
+        Action a5 = createAction(4, "Dirigent still", 2, 18, models.Preset.find.byId(4L), s);
+        Action a6 = createAction(5, "Flutes close-up", 2, 6, models.Preset.find.byId(1L), s);
+        Action a7 = createAction(6, "Harp", 2, 5, models.Preset.find.byId(3L), s);
         //actionlist.addAll(Arrays.asList(a1,a2,a3,a4));
 
         for (int i = 0; i < 20; i++) { // create some more actions
-            Action a = Action.createAction(6 + i, "Action " + i, i, i * 2, models.Preset.find.byId(1L), s);
+            Action a = createAction(6 + i, "Action " + i, i, i * 2, models.Preset.find.byId(1L), s);
         }
         //printall(); // for debug
     }
@@ -91,5 +91,31 @@ public class DatabaseSeeder {
             System.out.println(Json.toJson(pr));
         System.out.println();
     }
+
+    /**
+     * A static create function which can be called to create an Action object
+     * with the specified parameters.
+     * @param des   Description of the action
+     * @param timestamp Timestamp at which the action begins.
+     * @param duration  The estimated duration the action will take.
+     * @param preset    The preset the action will use.
+     * @param script    The script to which the action belongs.
+     * @param ind The action index
+     * @return  The created Action object.
+     */
+    private Action createAction(
+            int ind, String des, int timestamp, int duration, Preset preset, Script script) {
+        Action act =  new Action();
+        act.index = ind;
+        act.description = des;
+        act.timestamp = timestamp;
+        act.duration = duration;
+        act.preset = preset;
+        act.script = script;
+
+        act.save();
+        return act;
+    }
+
 
 }

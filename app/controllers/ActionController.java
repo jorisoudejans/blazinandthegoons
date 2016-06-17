@@ -33,25 +33,4 @@ public class ActionController extends Controller {
         return ok(Json.toJson(action));
     }
 
-
-    /**
-     * Method that uses the json body to create and save an ActionController object.
-     * @return  ok with the created object.
-     */
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result create() {
-        JsonNode json = request().body().asJson();
-        int index = json.findPath("index").intValue();
-        String des = json.findPath("description").textValue();
-        int timestamp = json.findPath("timestamp").intValue();
-        int duration = json.findPath("estTime").intValue();
-        models.Preset preset = models.Preset.find.byId(json.findPath("preset").longValue());
-        models.Script script = models.Script.find.byId(json.findPath("script").longValue());
-
-        models.Action action = models.Action.createAction(
-                index, des, timestamp, duration, preset, script);
-
-        return ok(Json.toJson(action));
-    }
-
 }

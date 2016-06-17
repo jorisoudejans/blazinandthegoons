@@ -51,15 +51,15 @@ public class Camera extends Model {
      * @return current values
      */
     @JsonIgnore
-    public PresetLinkData getCameraValues() {
+    public Integer[] getCameraValues() {
         Integer[] panTilt = new PanTiltCommand(0, 0).get(this);
         Integer focus = new FocusCommand(0).get(this);
         Integer iris = new IrisCommand(0).get(this);
         Integer zoom = new ZoomCommand(0).get(this);
         if (panTilt != null && focus != null && iris != null && zoom != null) {
-            return new PresetLinkData(panTilt[0], panTilt[1], zoom, focus, iris);
+            return new Integer[] {panTilt[0], panTilt[1], zoom, focus, iris};
         }
-        return new PresetLinkData(0, 0, 0, 0, 0);
+        return new Integer[] {0, 0, 0, 0, 0};
     }
 
     public static Finder<Long, Camera> find = new Finder<>(Camera.class);

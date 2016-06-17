@@ -84,21 +84,6 @@ public class Preset extends Model {
     }
 
     /**
-     * Link a new preset.
-     * @param c the camera to link it with
-     * @param linkData preset data to link with
-     */
-    public void link(Camera c, PresetLinkData linkData) {
-        this.camera = c;
-        this.pan = linkData.getPan();
-        this.tilt = linkData.getTilt();
-        this.zoom = linkData.getZoom();
-        this.focus = linkData.getFocus();
-        this.iris = linkData.getIris();
-        this.save();
-    }
-
-    /**
      * Get the thumbnail for this preset. May take some time to load due to moving the camera in the right position
      * @return a thumbnail image
      */

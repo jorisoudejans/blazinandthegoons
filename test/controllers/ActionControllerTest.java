@@ -1,19 +1,22 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import play.Application;
+import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.Helpers;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static play.test.Helpers.contentAsString;
-import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.*;
 
 /**
  * Test the action controller.

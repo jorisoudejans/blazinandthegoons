@@ -13,7 +13,6 @@ GET     /link/:id                   @controllers.ApplicationController.linkView(
 # Scripts
 GET     /api/scripts                    @controllers.ScriptController.getAll()
 GET     /api/scripts/connect                 @controllers.ScriptController.socket()
-POST    /api/scripts/create             @controllers.ScriptController.create()
 GET     /api/scripts/:id                @controllers.ScriptController.get(id: Long)
 POST    /api/scripts/:id                @controllers.ScriptController.save(id: Long)
 POST    /api/scripts/:id/actions/create     @controllers.ScriptController.addAction(id: Long)

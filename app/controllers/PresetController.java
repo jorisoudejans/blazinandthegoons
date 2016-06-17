@@ -3,7 +3,6 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Camera;
 import models.Preset;
-import models.PresetLinkData;
 import models.Script;
 import play.libs.Json;
 import play.mvc.BodyParser;
@@ -85,8 +84,13 @@ public class PresetController extends Controller {
             Camera camera = Camera.find.byId(cameraId);
             if (camera != null) {
                 // find the camera values
-
-                preset.link(camera, camera.getCameraValues());
+                Integer[] values = camera.getCameraValues();
+                preset.camera = camera;
+                preset.pan = values[0];
+                preset.tilt = values[1];
+                preset.zoom = values[2];
+                preset.focus = values[3];
+                preset.iris = values[4];
                 preset.save();
                 return ok(Json.toJson(preset));
             }
