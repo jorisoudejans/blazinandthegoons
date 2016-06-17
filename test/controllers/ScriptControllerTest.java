@@ -174,6 +174,30 @@ public class ScriptControllerTest {
     }
 
     /**
+     * Tests update of a script.
+     */
+    @Test
+    public void testUpdateScriptNotNew() {
+        models.Script s1 = new models.Script();
+        s1.name = "ScriptController One";
+        s1.creationDate = new Date();
+        s1.save();
+
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/scripts/" + s1.id);
+        builder.header("Content-Type", "application/json");
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("id", s1.id);
+        maps.put("name", "New script");
+
+        builder.bodyJson(Json.toJson(maps));
+
+        Result r = route(ScriptControllerTest.app, builder);
+        System.out.println("Result: " + contentAsString(r));
+        assertTrue(contentAsString(r).contains("New script"));
+    }
+
+    /**
      * Tests adding an action to a script.
      */
     @Test

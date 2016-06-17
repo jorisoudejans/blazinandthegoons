@@ -96,4 +96,88 @@ public class LocationControllerTest {
         assertEquals(200, r.status());
     }
 
+    /**
+     * Test location add camera location not found.
+     */
+    @Test
+    public void testGetAllRemoveCameraNotFound() {
+        Http.RequestBuilder builder = fakeRequest("DELETE", "/api/locations/" + 10 + "/" + 0 + "/remove");
+        builder.header("Content-Type", "application/json");
+
+        Result r = route(LocationControllerTest.app, builder);
+        assertEquals(404, r.status());
+    }
+
+    /**
+     * Test location add camera.
+     */
+    @Test
+    public void testGetAllRemoveCameraNotFoundCamera() {
+        Location l = new Location();
+        l.name = "Hello123";
+        l.save();
+
+        Http.RequestBuilder builder = fakeRequest("DELETE", "/api/locations/" + l.id + "/" + 10 + "/remove");
+        builder.header("Content-Type", "application/json");
+
+        Result r = route(LocationControllerTest.app, builder);
+        assertEquals(404, r.status());
+    }
+
+    @Test
+    public void testAddCamera() {
+        Location l = new Location();
+        l.name = "Hello123";
+        l.save();
+
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/locations/" + l.id + "/add");
+        builder.header("Content-Type", "application/json");
+
+        Map<String, String> maps = new HashMap<>();
+        maps.put("name", "New camera");
+        maps.put("ip", "0.0.0.0");
+
+        builder.bodyJson(Json.toJson(maps));
+
+        Result r = route(LocationControllerTest.app, builder);
+        assertTrue(contentAsString(r).contains("New camera"));
+    }
+
+    @Test
+    public void testAddCameraLocationNotFound() {
+        Http.RequestBuilder builder = fakeRequest("POST", "/api/locations/" + 100 + "/add");
+        builder.header("Content-Type", "application/json");
+
+        Map<String, String> maps = new HashMap<>();
+        maps.put("name", "New camera");
+        maps.put("ip", "0.0.0.0");
+
+        builder.bodyJson(Json.toJson(maps));
+
+        Result r = route(LocationControllerTest.app, builder);
+        assertEquals(404, r.status());
+    }
+
+    @Test
+    public void testGetLocations() {
+        Location l = new Location();
+        l.name = "Hello123";
+        l.save();
+
+        Http.RequestBuilder builder = fakeRequest("GET", "/api/locations/" + l.id + "");
+        builder.header("Content-Type", "application/json");
+
+        Result r = route(LocationControllerTest.app, builder);
+        assertEquals(200, r.status());
+    }
+
+    @Test
+    public void testGetLocationsNotFound() {
+        Http.RequestBuilder builder = fakeRequest("GET", "/api/locations/" + 100);
+        builder.header("Content-Type", "application/json");
+
+        Result r = route(LocationControllerTest.app, builder);
+        assertEquals(404, r.status());
+    }
+
 }
