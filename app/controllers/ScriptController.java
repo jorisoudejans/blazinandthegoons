@@ -71,20 +71,7 @@ public class ScriptController extends Controller {
             models.Script actScript = new models.Script();
             actScript.name = script.name;
             actScript.save();
-            for (models.Action action : script.actions) {
-                Action.createAction(action.index, action.description, action.timestamp,
-                        action.duration, models.Preset.find.byId(action.preset.id), actScript);
-            }
         } else {
-            for (models.Action action : script.actions) {
-                if (action.id == null) {
-                    Action.createAction(action.index, action.description,
-                            action.timestamp, action.duration,
-                            models.Preset.find.byId(action.preset.id),
-                            models.Script.find.byId(script.id));
-                }
-                action.update();
-            }
             models.Script actScript = models.Script.find.byId(script.id);
             if (actScript != null) {
                 Collections.sort(actScript.actions);

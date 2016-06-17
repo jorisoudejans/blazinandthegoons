@@ -22,8 +22,7 @@ DELETE  /api/scripts/:scriptId/actions/:actionId     @controllers.ScriptControll
 GET     /api/locations                  @controllers.LocationController.getAll()
 GET     /api/locations/:id              @controllers.LocationController.get(id: Long)
 POST    /api/locations/create           @controllers.LocationController.create()
-POST     /api/locations/:id/add              @controllers.LocationController.addCamera(id: Long)
-DELETE  /api/locations/:id/:camera/remove       @controllers.LocationController.removeCamera(id: Long, camera: Long)
+PUT    /api/locations/:id           @controllers.LocationController.update(id: Long)
 
 # Live scriptController
 GET     /api/scripts/:id/start              @controllers.ScriptController.startScript(id: Long)
@@ -37,11 +36,6 @@ GET    /api/presets/:id/link/:cameraId  @controllers.PresetController.link(id: L
 GET    /api/presets/:id/unlink          @controllers.PresetController.unlink(id: Long)
 
 POST    /api/scripts/:id/presets/create             @controllers.PresetController.create(id: Long)
-
-#ActionController service
-GET     /api/actions                    @controllers.ActionController.getAll()
-GET     /api/actions/:id                @controllers.ActionController.get(id: Long)
-POST    /api/actions/create             @controllers.ActionController.create()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               @controllers.Assets.versioned(path="/public", file)

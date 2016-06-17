@@ -86,7 +86,14 @@ public class PresetController extends Controller {
             if (camera != null) {
                 // find the camera values
                 checkCompatibility(preset.script);
-                preset.link(camera, camera.getCameraValues());
+
+                Integer[] values = camera.getCameraValues();
+                preset.camera = camera;
+                preset.pan = values[0];
+                preset.tilt = values[1];
+                preset.zoom = values[2];
+                preset.focus = values[3];
+                preset.iris = values[4];
                 //savePresetThumbnail(preset);
                 preset.save();
                 return ok(Json.toJson(preset));

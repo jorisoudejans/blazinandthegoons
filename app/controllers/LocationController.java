@@ -52,42 +52,15 @@ public class LocationController extends Controller {
     }
 
     /**
-     * Add a new camera to this location.
-     * @param location identifier
-     * @return updated location
+     * Update a location
+     * @param id location id
+     * @return updated location object
      */
     @BodyParser.Of(BodyParser.Json.class)
-    public Result addCamera(Long location) {
-        Location l = Location.find.byId(location);
-        if (l != null) {
-            JsonNode json = request().body().asJson();
-            Camera c = new Camera();
-            c.name = json.findPath("name").textValue();
-            c.ip = json.findPath("ip").textValue();
-            c.location = l;
-            c.save();
-            return ok(Json.toJson(l));
-        }
-        return notFound();
-    }
-
-    /**
-     * Remove camera from this location.
-     * @param location identifier
-     * @param camera camera identifier
-     * @return updated location
-     */
-    public Result removeCamera(Long location, Long camera) {
-        Location l = Location.find.byId(location);
-        if (l != null) {
-            Camera c = Camera.find.byId(camera);
-            if (c != null) {
-                c.delete();
-                return ok(Json.toJson(l));
-            }
-            return notFound("Camera not found");
-        }
-        return notFound("Location not found");
+    public Result update(Long id) {
+        Location l = Json.fromJson(request().body().asJson(), Location.class);
+        l.update();
+        return ok(Json.toJson(l));
     }
 
 }

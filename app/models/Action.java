@@ -49,33 +49,6 @@ public class Action extends Model implements Comparable {
     //Finder Object used for finding objects in the database.
     public static Finder<Long, Action> find = new Finder<>(Action.class);
 
-
-    /**
-     * A static create function which can be called to create an Action object
-     * with the specified parameters.
-     * @param ind   Index of the action
-     * @param des   Description of the action
-     * @param timestamp Timestamp at which the action begins.
-     * @param duration  The estimated duration the action will take.
-     * @param preset    The preset the action will use.
-     * @param script    The script to which the action belongs.
-     * @return  The created Action object.
-     */
-    public static Action createAction(
-            int ind, String des, int timestamp, int duration, Preset preset, Script script) {
-        Action act =  new Action();
-        act.index = ind;
-        act.description = des;
-        act.timestamp = timestamp;
-        act.duration = duration;
-        act.preset = preset;
-        act.script = script;
-        act.flagged = false;
-
-        act.save();
-        return act;
-    }
-
     /**
      * Creates a flag for the action.
      * @param ft The type of flag
