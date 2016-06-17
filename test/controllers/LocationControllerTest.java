@@ -1,6 +1,5 @@
 package controllers;
 
-import models.Camera;
 import models.Location;
 import org.junit.After;
 import org.junit.Before;
@@ -8,18 +7,14 @@ import org.junit.Test;
 import play.Application;
 import play.libs.Json;
 import play.mvc.Http;
-import play.mvc.LegacyWebSocket;
 import play.mvc.Result;
 import play.test.Helpers;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static play.test.Helpers.*;
 
 /**
