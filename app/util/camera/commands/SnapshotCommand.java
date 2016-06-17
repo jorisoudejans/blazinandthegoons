@@ -22,6 +22,11 @@ public class SnapshotCommand extends CameraCommand {
         return "";
     }
 
+    @Override
+    public Object get(Camera camera) {
+        return null; // can't retrieve anything
+    }
+
     public static final int RES_480 = 480;
     public static final int RES_720 = 720;
     public static final int RES_1280 = 1280;

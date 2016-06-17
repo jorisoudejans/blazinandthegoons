@@ -26,6 +26,21 @@ public abstract class CameraCommand {
     protected abstract String getParameters();
 
     /**
+     * Get the values for this command
+     * @param camera the camera
+     * @return values
+     */
+    public abstract Object get(Camera camera);
+
+    /**
+     * The command to retrieve the values
+     * @return the get values
+     */
+    protected String getGetCommand() {
+        return getCommand();
+    }
+
+    /**
      * Executes this command on the camera.
      * @param camera Camera to apply it to
      * @return whether the command caused any errors
@@ -46,6 +61,31 @@ public abstract class CameraCommand {
                             + e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * Get current values of this command
+     * @param camera Camera to apply it to
+     * @return the values
+     */
+    protected String getValues(Camera camera) {
+        String url = "http://" + camera.getIp() + "/cgi-bin/aw_ptz?cmd=%23"
+                + this.getGetCommand()
+                + "&res=1";
+        try {
+            BufferedReader br = getHttp(url);
+            String msg = br.readLine();
+            if (msg.toUpperCase().startsWith(this.getCommand())) {
+                return msg.toUpperCase().substring(this.getCommand().length());
+            }
+            return null;
+        } catch (IOException e) {
+            System.out.print(
+                    "An error occurred while executing command on camera "
+                            + camera.getIp() + ": "
+                            + e.getMessage());
+        }
+        return null;
     }
 
     /**

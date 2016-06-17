@@ -52,6 +52,23 @@ findbugsSettings
 findbugsIncludeFilters := Some(<FindBugsFilter> // include controllers
   <Match>
     <Package name="controllers" />
+
+    <Not>
+      <Class name="*routes*" />
+    </Not>
+  </Match>
+  <Match>
+    <Package name="models" />
+
+    <Not>
+      <Bug code="SnVI" />
+      <Bug pattern="EI_EXPOSE_REP" />
+      <Bug code="MS" />
+      <Bug code="DLS" />
+    </Not>
+  </Match>
+  <Match>
+    <Package name="util" />
   </Match>
 </FindBugsFilter>)
 findbugsReportType := Some(ReportType.FancyHtml) // generate html
