@@ -30,8 +30,16 @@ public class ActionTest {
      */
     @Test
     public void testCreate() {
-        Action act = Action.createAction(0,"decript", 0, 0, new Preset(), new Script());
-        List<Action> out = Action.find.where().ilike("description", "decript").findList();
+        Action act = new Action();
+        act.index = 0;
+        act.description = "Description";
+        act.timestamp = 0;
+        act.duration = 0;
+        act.preset = new Preset();
+        act.script = new Script();
+        act.save();
+
+        List<Action> out = Action.find.where().ilike("description", "Description").findList();
         assertEquals(out.size(), 1);
         assertEquals(out.get(0), act);
     }

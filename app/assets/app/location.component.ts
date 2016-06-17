@@ -25,41 +25,52 @@ import 'rxjs/Rx';
 })
 export class LocationComponent implements OnInit {
     constructor (private _scriptService: ScriptService) {}
-    location: Location;
-    locationid: number;
+    location: Location = new Location(0, null, null);
     newCamera: Camera = new Camera(0, "", "");
+    hasChanges: boolean = false;
 
     ngOnInit() {
         var urlarr = window.location.href.split('/');
-        this.locationid = parseInt(urlarr[urlarr.length - 1]);
+        this.location.id = parseInt(urlarr[urlarr.length - 1]);
 
-        this._scriptService.getLocation(this.locationid).subscribe(
+        this._scriptService.getLocation(this.location.id).subscribe(
                 location => {
                     this.location = location;
                 },
-                error =>  console.log(error)
+                error => null // do nothing
+        );
+    }
+    addLocation() {
+        this._scriptService.addLocation(this.location.name).subscribe(
+            location => {
+                window.history.pushState("", "", '/locations/'+location.id);
+                this.location = location;
+            },
+
+            error =>  console.log(error)
+        );
+    }
+    save() {
+        this._scriptService.updateLocation(this.location).subscribe(
+            location => {
+                console.log(location);
+                this.location = location;
+                this.hasChanges = false;
+            },
+            error => {
+                console.log(error)
+            }
         );
     }
     addAction() {
-        this._scriptService.addCamera(this.newCamera, this.location.id).subscribe(
-                location => {
-                    console.log(location);
-                    this.location = location;
-                    this.newCamera = new Camera(0, "", "") },
-                error => {
-                    console.log(error)
-                }
-        );
+        this.location.cameras.push(this.newCamera);
+        this.newCamera = new Camera(0, "", "");
+        this.hasChanges = true;
     }
     removeCamera(i: number) {
-        this._scriptService.removeCamera(this.location.cameras[i], this.location.id).subscribe(
-                location => {
-                this.location = location;
-            },
-                error =>  console.log(error)
-        );
+        this.location.cameras.splice(i, 1);
+        this.hasChanges = true;
     }
-
 }
 
 bootstrap(LocationComponent);
