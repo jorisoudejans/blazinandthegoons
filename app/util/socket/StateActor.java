@@ -28,9 +28,14 @@ public class StateActor extends SocketActor {
             as.actionIndex = jsonNode.findPath("actionIndex").asInt();
             as.save(); // save it
 
-            Camera prevCam = as.script.actions.get(as.actionIndex - 1).preset.camera;
-            prevCam.deactTime = System.currentTimeMillis();
-            prevCam.save();
+            if (as.actionIndex > 0) {
+                Camera prevCam = as.script.actions.get(as.actionIndex - 1).preset.camera;
+                if (prevCam != null) {
+                    prevCam.deactTime = System.currentTimeMillis();
+                    prevCam.save();
+                }
+            }
+
 
             setupPreset(as);
         }
@@ -40,16 +45,18 @@ public class StateActor extends SocketActor {
      * This method will make sure the cameras will be set to the correct preset in time.
      * @param as The active script
      */
-    public void setupPreset(ActiveScript as) {
+    private void setupPreset(ActiveScript as) {
         Preset next = as.script.actions.get(as.actionIndex + 1).preset;
-        if (Math.abs(next.camera.deactTime - System.currentTimeMillis()) < IDLETIME) {
-            try {
-                Thread.sleep(IDLETIME);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (next != null && next.camera != null) {
+            if (Math.abs(next.camera.deactTime - System.currentTimeMillis()) < IDLETIME) {
+                try {
+                    Thread.sleep(IDLETIME);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+            next.apply();
         }
-        next.apply();
     }
 
 }
