@@ -30,6 +30,7 @@ create table camera (
   name                          varchar(255),
   ip                            varchar(255),
   location_id                   bigint,
+  deact_time                    bigint,
   constraint pk_camera primary key (id)
 );
 create sequence camera_seq;
