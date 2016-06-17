@@ -175,6 +175,75 @@ $grid-padding: 4px;
   }
 }
 
+.unlinked-presets-container {
+  max-height: 80%;
+  position: relative;
+  overflow-y: scroll;
+}
+
+
+.unlinked-presets-list {
+  position: relative;
+  max-height: 700px;
+  overflow-y: scroll;
+
+  .unlinked-preset-item {
+    height: 50px;
+    background-color: #eeeeee;
+    position: relative;
+    overflow: hidden;
+    padding: 16px 16px 20px 16px;
+
+    .preset-description {
+      visibility: hidden;
+    }
+
+    &.active {
+      background-color: #fafafa;
+      height: auto;
+
+      .preset-description {
+        visibility: visible;
+      }
+    }
+
+    .unlinked-preset-left {
+      float: left;
+    }
+
+    .camera-select-container {
+      margin-top: 10px;
+
+      button {
+        margin-top: 10px;
+      }
+    }
+
+    .text-area {
+      font-family: Open Sans, sans-serif;
+      padding-left: 5px;
+
+      .action-est-time {
+        float: right;
+      }
+
+      h1 {
+        font-size: 110%;
+        color: #000000;
+        opacity: .87;
+        line-height: 28px;
+      }
+
+      span {
+        font-size: 100%;
+        color: #000000;
+        opacity: .54;
+      }
+    }
+  }
+}
+
+
 .camera-list {
   padding-left: 0;
   padding-right: 0;

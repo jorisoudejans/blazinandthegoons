@@ -22,8 +22,9 @@ export class PresetService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    linkPreset (id: number): Observable<Preset> {
-        return this.http.get(this._heroesUrl + "/" + id + "/link")
+    linkPreset (id: number, cameraId: number): Observable<Preset> {
+        console.log(this._heroesUrl + "/" + id + "/link/" + cameraId);
+        return this.http.get(this._heroesUrl + "/" + id + "/link/" + cameraId)
             .map(this.extractData)
             .catch(this.handleError);
     }

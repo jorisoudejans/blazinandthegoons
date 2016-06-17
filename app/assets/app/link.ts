@@ -29,6 +29,7 @@ export class Link implements OnInit {
     constructor (private _scriptService: ScriptService, private _presetService: PresetService, private router: Router) {}
     scriptId: number;
     presets: Preset[];
+    activeIndex: number;
     scriptData: Script;
     ngOnInit() {
         var urlarr = window.location.href.split('/');
@@ -43,18 +44,26 @@ export class Link implements OnInit {
                     this.presets = scriptData.presets;
                 });
     }
-    linkPreset(preset: Preset) {
-        this._presetService.linkPreset(preset.id)
+    linkPreset(preset: Preset, val: number) {
+        console.log("Linking preset " + preset.id + " to camera " + val);
+        this._presetService.linkPreset(preset.id, val)
             .subscribe(
-                linkedPreset => this.presets.forEach(pres => {
-                    if (pres.id === preset.id) {
-                        preset = linkedPreset;
-                    }
-                })
+                linkedPreset => {
+                    console.log(linkedPreset);
+                    this.presets.forEach(pres => {
+                        if (pres.id === preset.id) {
+                            preset = linkedPreset;
+                            console.log(preset);
+                        }
+                    })
+                }
             )
     }
     isLinked(preset: Preset) {
         return preset.cameraId !== 0;
+    }
+    makeActive(index: number) {
+        this.activeIndex = index;
     }
 }
 
