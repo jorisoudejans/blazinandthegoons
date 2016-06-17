@@ -1,11 +1,11 @@
 /// <reference path="../../../typings/jquery.d.ts" />
 import {Preset} from "./api/preset";
-import {Component, Input, OnInit} from "angular2/core";/*
-import {Dragula} from 'ng2-dragula/src/app/directives/dragula.directive';
-import {DragulaService} from 'ng2-dragula/src/app/providers/dragula.provider';*/
+import {Component, Input, OnInit} from "angular2/core";
 
 import {PresetService} from "./api/preset.service";
 import {ActiveScript, Script, Location, Camera} from "./api/script";
+
+declare var jQuery:any;
 
 @Component({
     selector:    'preset-list',
@@ -22,6 +22,7 @@ export class PresetListComponent {
     // init to true so all cameras will be shown in the beginning
     selectedCameras: boolean[] = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
     ngOnChanges(item: any) {
+        console.log(this.scriptData);
         this.preparePresets();
         this.prepareCameras();
     }
@@ -36,6 +37,7 @@ export class PresetListComponent {
             }
         }
         this.presets = p;
+        this.updateDragListeners();
         console.log(this.presets);
     }
     prepareCameras() {
@@ -61,15 +63,6 @@ export class PresetListComponent {
                 presets => this.presets = presets
             );
     }
-    activatePreset(id: number) {
-        this._heroService.activatePreset(id)
-            .subscribe(
-                res => console.log("Activation result: " + res)
-            );
-
-        // save thumbnail to image
-        $('#preset-image-'+id).attr("src", "api/presets/" + id + "/thumbnail?" + (new Date()).getTime());
-    }
     getCameraIndex(id: number): number {
         for (var i = 0; i < this.cameras.length; i++) {
             if (this.cameras[i].id === id) {
@@ -77,5 +70,18 @@ export class PresetListComponent {
             }
         }
         return -1;
+    }
+    updateDragListeners() {
+        console.log("Here dem prestes be");
+        console.log(jQuery('.preset-list-item .inner-item'));
+        jQuery(document).ready(function() {
+            setTimeout(function() {
+                jQuery('.preset-list-item .inner-item').draggable( {
+                    cursor: 'move',
+                    containment: 'document',
+                    helper: "clone"
+                })
+            }, 1000)
+        })
     }
 }

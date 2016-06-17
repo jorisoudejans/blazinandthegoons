@@ -6,8 +6,8 @@
     </ul>
 </div>
 <ul class="preset-list col-md-12" *ngIf="presets">
-    <li class="preset-list-item" *ngFor="#preset of presets" (click)="activatePreset(preset.id)">
-        <div class="col-md-4" *ngIf="selectedCameras[getCameraIndex(preset.cameraId)]">
+    <li class="preset-list-item" *ngFor="#preset of presets; #i=index">
+        <div class="col-md-4 inner-item" *ngIf="selectedCameras[getCameraIndex(preset.cameraId)]" [attr.data-index]="i">
             <figcaption>
                 <h1>{{ preset.cameraId }} {{preset.name}}</h1>
             </figcaption>
