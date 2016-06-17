@@ -5,7 +5,6 @@ import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 import play.mvc.Result;
-import util.camera.commands.PanTiltCommand;
 import util.camera.commands.SnapshotCommand;
 
 import javax.imageio.ImageIO;

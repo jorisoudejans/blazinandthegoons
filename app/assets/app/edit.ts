@@ -116,7 +116,7 @@ export class Edit implements OnInit {
         this.actionInsertPos = index;
     }
     buildNewScript() {
-        var preset = new Preset(null, " Mock preset", 0, 0, "", null);
+        var preset = new Preset(null, " Mock preset", "Desc", 0, "", null, 0, 0, 0, 0, 0);
         this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset)], null, [preset]);
     }
 }
