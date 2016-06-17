@@ -10,7 +10,11 @@ create table action (
   timestamp                     integer,
   duration                      integer,
   preset_id                     bigint,
+  flagged                       boolean,
+  flag_type                     varchar(10),
+  flag_description              varchar(255),
   script_id                     bigint,
+  constraint ck_action_flag_type check (flag_type in ('OBSTRUCTED','TOOFAST','BADANGLE')),
   constraint pk_action primary key (id)
 );
 create sequence action_seq;

@@ -14,11 +14,18 @@
                     <img src="assets/images/plus.png" width="100%">
                 </div>
             </li> -->
-            <li class="editable-list-item list-group-item script-action" *ngFor="#action of scriptData.actions; #i=index" [attr.data-index]="i" [class.selected]="i == scriptData.actionIndex">
+            <li class="editable-list-item list-group-item script-action" *ngFor="#action of scriptData.actions; #i=index" [attr.data-index]="i" [class.selected]="i == scriptData.actionIndex" [class.flagged]="action.flagged">
+                <a *ngIf="action.flagged" class="flag"  aria-label="Link">
+                    <i class="material-icons">flag</i>
+                </a>
                 <div [class.active-item]="action.active" [class.inactive-item]="action.active" class="text-area" (click)="action.active = !action.active">
                     <h1 class="text-area-header">Action description: {{action.description}}</h1>
                     <span class="text-area-detail">{{action.duration}} sec</span><br>
-                    <span class="text-area-detail">Preset: {{action.preset.name}}</span>
+                    <span class="text-area-detail">Preset: {{action.preset.name}}</span><br>
+                    <div *ngIf="action.flagged">
+                        <span class="text-area-detail">Flag description:</span>
+                        <textarea class="form-control" rows="3" disabled>{{ action.flagDescription }}</textarea>
+                    </div>
                 </div>
                 <div [class.inactive-item]="!action.active" [class.active-item]="action.active"  class="text-area input-area form-inline">
                     <label class="text-area-header">Action description: </label><input class="form-control" [(ngModel)]="action.description" placeholder="description"><br>
@@ -27,6 +34,7 @@
                     <select class="form-control" (change)="updateAction(action, $event.target.value)">
                         <option *ngFor="#preset of scriptData.presets" [value]="preset">{{preset.name}}</option>
                     </select><br>
+                    <button type="button" *ngIf="action.flagged" class="btn btn-warning center-block" (click)="action.flagged = false; action.flagDescription = '';">Resolve flag</button>
                     <button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button>
                     <button type="button" class="btn btn-danger center-block" (click)="action.active = !action.active; deleteAction(i);">Delete this action</button>
                 </div>

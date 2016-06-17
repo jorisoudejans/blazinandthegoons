@@ -84,6 +84,11 @@ export class PresetListComponent {
         console.log(preset);
         this.scriptData.script.presets.push(preset);
         this.presets = this.scriptData.script.presets;
+        this.cleanUpModal();
         this.updateDragListeners();
+    }
+    cleanUpModal() {
+        $('#presetModal .description').val('');
+        $('#presetModal textarea').val('');
     }
 }

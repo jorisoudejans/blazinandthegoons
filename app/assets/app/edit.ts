@@ -135,7 +135,7 @@ export class Edit implements OnInit {
         action.preset = corrPreset;
     }
     dropHandler() {
-        var act = new Action(null, this.actionInsertPos+1, "New action", 0, this.scriptData.presets[this.droppedPresetIndex]);
+        var act = new Action(null, this.actionInsertPos+1, "New action", 0, this.scriptData.presets[this.droppedPresetIndex], false, "");
         act.active = true;
         this.scriptData.actions.splice(this.actionInsertPos+1, 0, act);
         this.fixActionIndices();
@@ -148,7 +148,7 @@ export class Edit implements OnInit {
             if (preset.name === $('#actionModal .preset').val())
                 corrPreset = preset;
         })
-        var act = new Action(null, this.actionInsertPos+1, $('#actionModal .description').val(), $('#actionModal .duration').val(), corrPreset);
+        var act = new Action(null, this.actionInsertPos+1, $('#actionModal .description').val(), $('#actionModal .duration').val(), corrPreset, false, "");
         this.scriptData.actions.splice(this.actionInsertPos+1, 0, act);
         this.fixActionIndices();
         this.cleanUpModal();
@@ -176,7 +176,7 @@ export class Edit implements OnInit {
     }
     buildNewScript() {
         var preset = new Preset(null, " Mock preset", "Desc", 0, "", null, 0, 0, 0, 0, 0);
-        this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset)], null, [preset]);
+        this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset, false, "")], null, [preset]);
         this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);
     }
     updateDroppableListeners() {
