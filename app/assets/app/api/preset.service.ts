@@ -22,6 +22,16 @@ export class PresetService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    linkPreset (id: number, cameraId: number): Observable<Preset> {
+        return this.http.get(this._heroesUrl + "/" + id + "/link/" + cameraId)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    unlinkPreset (id: number): Observable<Preset> {
+        return this.http.get(this._heroesUrl + "/" + id + "/unlink")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     // No functionality to create presets implemented yet.
     /*createPreset (name: string): Observable<PresetController> {
 

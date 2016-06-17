@@ -120,12 +120,58 @@ span {
   }
 }
 
+.indent-list {
+  position: relative;
+
+  .indent-list-item {
+    height: 50px;
+    background-color: #eeeeee;
+    position: relative;
+    overflow: hidden;
+    padding: 16px 16px 20px 16px;
+  }
+
+  .text-area {
+    font-family: Open Sans, sans-serif;
+    padding-left: 5px;
+
+    .right {
+      float: right;
+    }
+
+    h1 {
+      font-size: 110%;
+      float: left;
+      color: #000000;
+      opacity: .87;
+      line-height: 28px;
+    }
+
+    span {
+      font-size: 100%;
+      color: #000000;
+      opacity: .54;
+    }
+  }
+
+  .indent-list-item.selected {
+    height: 110px;
+    background-color: #FFF;
+  }
+
+
+
+}
+
 #cameras-list {
+  margin-top: 10px;
+
   li {
     vertical-align: middle;
 
     .material-icons {
-      font-size: 30px;
+      font-size: 25px;
+      margin-right: 30px;
     }
 
     button {
@@ -135,8 +181,6 @@ span {
   }
 }
 
-#action-new-camera {
-  .text-area-header {
-    width: 250px;
-  }
+.label-offset {
+  width: 250px;
 }

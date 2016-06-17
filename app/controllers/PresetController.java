@@ -1,9 +1,9 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.Action;
 import models.Camera;
 import models.Preset;
-import models.PresetLinkData;
 import models.Script;
 import play.libs.Json;
 import play.mvc.BodyParser;
@@ -48,8 +48,9 @@ public class PresetController extends Controller {
         if (script != null) {
             JsonNode json = request().body().asJson();
             String name = json.findPath("name").textValue();
+            String description = json.findPath("description").textValue();
 
-            models.Preset preset = models.Preset.createDummyPreset(name, script);
+            models.Preset preset = models.Preset.createDummyPreset(name, description, script);
 
             return ok(Json.toJson(preset));
         }
@@ -74,29 +75,97 @@ public class PresetController extends Controller {
 
     /**
      * Link a preset to a camera and preset values of this camera.
-     * @param id camera id
+     * @param id preset id
+     * @param cameraId camera id
      * @return the updated preset
      */
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result link(Long id) {
+    public Result link(Long id, Long cameraId) {
         Preset preset = Preset.find.byId(id); // find preset
         if (preset != null) {
-            JsonNode json = request().body().asJson();
-            Long cameraId = json.findPath("cameraId").longValue();
             Camera camera = Camera.find.byId(cameraId);
             if (camera != null) {
-                PresetLinkData data = new PresetLinkData(
-                        json.findPath("pan").intValue(),
-                        json.findPath("tilt").intValue(),
-                        json.findPath("zoom").intValue(),
-                        json.findPath("focus").intValue(),
-                        json.findPath("iris").intValue()
-                );
-                preset.link(camera, data);
+                // find the camera values
+                checkCompatibility(preset.script);
+
+                Integer[] values = camera.getCameraValues();
+                preset.camera = camera;
+                preset.pan = values[0];
+                preset.tilt = values[1];
+                preset.zoom = values[2];
+                preset.focus = values[3];
+                preset.iris = values[4];
+                //savePresetThumbnail(preset);
                 preset.save();
                 return ok(Json.toJson(preset));
             }
             return notFound("Camera not found");
+        }
+        return notFound("Preset not found");
+    }
+
+    /**
+     * Check if camera linking does not mean two actions one the same camera are adjacent.
+     * @param script script to check.
+     * @return true if link is compatible, false if some disputes arise.
+     */
+    public boolean checkCompatibility(Script script) {
+        if (script == null) {
+            return true;
+        }
+        Action prev = null;
+        boolean isCompatible = true;
+        List<Action> actions = script.actions;
+        for (Action current : actions) {
+            if (prev != null) {
+                if (current.preset.getCameraId().equals(prev.preset.getCameraId())) {
+                    current.setFlag(
+                            Action.FlagType.INCOMAPIBLE,
+                            "Action not compatible with previous action"
+                    );
+                    isCompatible = false;
+                }
+            }
+            prev = current;
+        }
+        return isCompatible;
+    }
+
+    /**
+     * Saves the current image a camera has to the preset.
+     * @param preset preset to be saved to.
+     * @return true if saving succeeded, false otherwise.
+     */
+    /*public boolean savePresetThumbnail(Preset preset) {
+        try {
+            Camera camera = preset.camera;
+            if (camera == null) {
+                return false;
+            }
+            BufferedImage i = new SnapshotCommand().get(camera, SnapshotCommand.RES_1280);
+            if (i == null) {
+                return false;
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(i, "jpg", baos);
+            preset.image = baos.toByteArray();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }*/
+
+    /**
+     * Unlink a preset, remove the linked camera.
+     * @param id preset id
+     * @return the updated preset
+     */
+    public Result unlink(Long id) {
+        Preset preset = Preset.find.byId(id); // find preset
+        if (preset != null) {
+            preset.unlink();
+            return ok(Json.toJson(preset));
         }
         return notFound("Preset not found");
     }

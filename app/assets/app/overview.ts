@@ -82,12 +82,7 @@ export class Overview implements OnInit {
         }
     }
     addLocation() {
-        name = prompt("Location name", "Location1");
-        this._scriptService.addLocation(name).subscribe(
-                location => document.location.href = '/locations/' + location.id,
-                error =>  this.errorMessage = <any>error
-        );
-
+        document.location.href = '/locations/0';
     }
 }
 
