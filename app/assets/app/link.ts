@@ -81,12 +81,13 @@ export class Link implements OnInit {
         return preset.cameraId !== 0;
     }
     allLinked(presets: Preset[]) {
+        var allLinked = true;
         presets.forEach((preset) => {
             if (preset.cameraId === 0) {
-                return false;
+                allLinked = false;
             }
         });
-        return true;
+        return allLinked;
     }
     makeActive(index: number) {
         this.activeIndex = index;
