@@ -119,8 +119,8 @@ public class PresetController extends Controller {
             if (prev != null) {
                 if (current.preset.getCameraId().equals(prev.preset.getCameraId())) {
                     current.setFlag(
-                            Action.FlagType.INCOMAPIBLE,
-                            "Action not compatible with previous action"
+                            Action.FlagType.INCOMPATIBLE,
+                            "Action not compatible with action \"" + prev.description + "\""
                     );
                     isCompatible = false;
                 }

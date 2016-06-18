@@ -1,6 +1,3 @@
-/**
- * Created by floris on 11/05/2016.
- */
 import {OnInit, Component} from "angular2/core";
 import {Observable} from 'rxjs/Observable';
 import { HTTP_PROVIDERS }    from "angular2/http";
@@ -69,7 +66,9 @@ export class Overview implements OnInit {
     }
 
     makeActive(newscript: Script) {
-        ScriptService.startScript(newscript.id, this.socket);
+        // if (this.isPlayable(newscript)) {
+            ScriptService.startScript(newscript.id, this.socket);
+        // }
     }
     deactivateScript() {
         ScriptService.stopScript(this.socket);
@@ -83,6 +82,34 @@ export class Overview implements OnInit {
     }
     addLocation() {
         document.location.href = '/locations/0';
+    }
+    isPlayable(script: Script) {
+        var playable = true;
+        script.actions.forEach((action => {
+            if (action.flagged) {
+                playable = false;
+            }
+        }));
+        script.presets.forEach((preset => {
+            if (preset.cameraId === 0) {
+                playable = false;
+            }
+        }));
+        return playable;
+    }
+    getStatusMessage(script: Script) {
+        var statusMessage = "Ready to play.";
+        script.actions.forEach((action => {
+            if (action.flagged) {
+                statusMessage = "Script actions have issues.";
+            }
+        }));
+        script.presets.forEach((preset => {
+            if (preset.cameraId === 0) {
+                statusMessage = "Not all presets have been linked to camera's.";
+            }
+        }));
+        return statusMessage;
     }
 }
 

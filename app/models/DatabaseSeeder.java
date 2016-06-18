@@ -66,7 +66,7 @@ public class DatabaseSeeder {
         //actionlist.addAll(Arrays.asList(a1,a2,a3,a4));
 
         for (int i = 0; i < 20; i++) { // create some more actions
-            Action a = createAction(6 + i, "Action " + i, i, i * 2, models.Preset.find.byId(1L), s);
+            Action a = createAction(6 + i, "Action " + i, i, i * 2, models.Preset.find.byId((long) ((i % 2) + 1)), s);
         }
         //printall(); // for debug
     }

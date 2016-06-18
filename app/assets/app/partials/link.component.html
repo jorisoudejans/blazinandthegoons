@@ -19,6 +19,16 @@
                     </div>
                 </div>
             </li>
+            <li class="all-linked unlinked-preset-item" *ngIf="allLinked(presets)">
+                <div>
+                    <div class="text-area">
+                        <div class="unlinked-preset-left">
+                            <h1>All presets linked!</h1>
+                        </div>
+                        <span class="action-est-time"><a href="/"><i class="material-icons">done</i></a></span><br>
+                    </div>
+                </div>
+            </li>
         </ul>
         <div class="shadow"></div>
     </div>
