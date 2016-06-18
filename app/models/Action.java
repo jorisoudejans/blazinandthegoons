@@ -102,6 +102,6 @@ public class Action extends Model implements Comparable {
         BADANGLE,
 
         @EnumValue("INCOMPATIBLE")
-        INCOMAPIBLE,
+        INCOMPATIBLE,
     }
 }

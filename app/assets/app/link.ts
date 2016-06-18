@@ -52,7 +52,6 @@ export class Link implements OnInit {
                     this.presets.forEach(oldPreset => {
                         if (oldPreset.id === linkedPreset.id) {
                             newPresets.push(linkedPreset);
-                            console.log(preset);
                         } else {
                             newPresets.push(oldPreset);
                         }
@@ -80,6 +79,14 @@ export class Link implements OnInit {
     }
     isLinked(preset: Preset) {
         return preset.cameraId !== 0;
+    }
+    allLinked(presets: Preset[]) {
+        presets.forEach((preset) => {
+            if (preset.cameraId === 0) {
+                return false;
+            }
+        });
+        return true;
     }
     makeActive(index: number) {
         this.activeIndex = index;

@@ -7,8 +7,19 @@
     background-color: #090 !important;
   }
 
-  a i.material-icons {
-    color: white;
-    cursor: pointer;
+  a {
+    &:hover {
+      text-decoration: none !important;
+    }
+
+    i.material-icons {
+      color: white;
+      cursor: pointer;
+
+      &.disabled {
+        color: #666;
+        cursor: not-allowed;
+      }
+    }
   }
 }
