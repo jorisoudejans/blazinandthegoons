@@ -30,13 +30,7 @@ export class PresetListComponent {
         if (!this.scriptData) {
             return;
         }
-        var p: Preset[] = [];
-        for (var a of this.scriptData.script.actions) {
-            if (!this.findPreset(p, a.preset)) {
-                p.push(a.preset);
-            }
-        }
-        this.presets = p;
+        this.presets = this.scriptData.script.presets;
         this.updateDragListeners();
         console.log(this.presets);
     }
@@ -48,6 +42,7 @@ export class PresetListComponent {
     }
     toggleCamera(i: number) {
         this.selectedCameras[i] = !this.selectedCameras[i];
+        this.updateDragListeners();
     }
     findPreset(array: Preset[], needle: Preset): boolean {
         for (var a of array) {
@@ -69,7 +64,7 @@ export class PresetListComponent {
                 return i;
             }
         }
-        return -1;
+        return 1000;
     }
     updateDragListeners() {
         console.log("Here dem prestes be");
@@ -83,5 +78,17 @@ export class PresetListComponent {
                 })
             }, 1000)
         })
+    }
+    createPreset() {
+        var preset:Preset = new Preset(null, $('#presetModal .description').val(), $('#presetModal textarea').val(), null, null, null, null, null, null, null, null);
+        console.log(preset);
+        this.scriptData.script.presets.push(preset);
+        this.presets = this.scriptData.script.presets;
+        this.cleanUpModal();
+        this.updateDragListeners();
+    }
+    cleanUpModal() {
+        $('#presetModal .description').val('');
+        $('#presetModal textarea').val('');
     }
 }

@@ -19,6 +19,14 @@
   max-height: 700px;
   overflow-y: scroll;
 
+  .flagged {
+    background-color: rgba(200,57,43,0.5) !important;
+
+    .flag {
+      color: red;
+    }
+  }
+
   .action-list-item {
     height: 50px;
     background-color: #eeeeee;
@@ -90,7 +98,6 @@ $grid-padding: 4px;
   background-color: rgb(0, 153, 0);
   padding-top: 8px;
   height: auto;
-  overflow: hidden;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.35);
 
   .list-header {

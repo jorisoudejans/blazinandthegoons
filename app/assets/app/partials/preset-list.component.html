@@ -1,7 +1,8 @@
-<div class="list-header"><h2>Presets</h2></div>
+<div class="list-header"><h2>Presets<a class="btn btn-info" data-toggle="modal" data-target="#presetModal">Add preset</a></h2></div>
 <div class="col-md-12 cameras">
     <button class="btn btn-info" id="toggle-camera-list" data-target="#camera-list" data-toggle="collapse">Show/hide cameras</button>
     <ul class="list-group row collapse in" id="camera-list">
+        <li class="list-group-item col-md-4" (click)="toggleCamera(1000)"><input type="checkbox" [(ngModel)]="selectedCameras[1000]" /><label>Unbound</label></li>
         <li class="list-group-item col-md-4" *ngFor="#camera of cameras; #i = index" (click)="toggleCamera(i)"><input type="checkbox" [(ngModel)]="selectedCameras[i]" /><label>{{ camera.name }}</label></li>
     </ul>
 </div>
@@ -18,3 +19,23 @@
     </li>
 </ul>
 
+<div class="modal fade" id="presetModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add a new Preset</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-area input-area form-inline">
+                    <label class="text-area-header">Preset name: </label><input class="form-control description" placeholder="description"><br>
+                    <label class="text-area-header">Preset description: </label><textarea style="width: 100%;" class="form-control" placeholder="description"></textarea><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cleanUpModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createPreset()">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

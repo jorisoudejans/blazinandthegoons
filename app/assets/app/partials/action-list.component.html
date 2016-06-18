@@ -1,10 +1,15 @@
 <div class="list-header"><h2>Script</h2></div>
 <div class="action-list-container">
     <ul class="action-list" *ngIf="scriptData">
-        <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index" [class.done]="i < scriptData.actionIndex" [class.selected]="i == scriptData.actionIndex" (click)="clickAction(i)">
+        <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index" [class.done]="i < scriptData.actionIndex" [class.selected]="i == scriptData.actionIndex" [class.flagged]="action.flagged">
             <div class="text-area">
                 <h1 class="action-title">Action description: {{action.description}}</h1>
-                <span class="action-est-time">{{action.duration}} sec</span><br>
+                <div class="action-est-time">
+                    <span class="action-est-time">{{action.duration}} sec</span>
+                    <a class="flag" aria-label="Link" (click)="setFlagId(i)" data-toggle="modal" data-target="#flagModal" style="cursor: pointer">
+                        <i class="material-icons">flag</i>
+                    </a>
+                </div><br>
                 <span *ngIf="i == scriptData.actionIndex">Preset: {{action.preset.name}}</span>
             </div>
             <div class="slider"
@@ -14,3 +19,24 @@
     </ul>
     <div class="shadow"></div>
 </div>
+
+
+<div class="modal fade" id="flagModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Flag an action</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-area input-area form-inline">
+                    <label class="text-area-header">Flag description: </label><textarea style="width:100%;" class="form-control" placeholder=""></textarea><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="cleanUpModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="flagAction()">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

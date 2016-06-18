@@ -18,11 +18,14 @@ export class ScriptService {
             .catch(ScriptService.handleError);
     }
     getScriptWithPrefix (id: number, prefix: String): Observable<Script> {
+        console.log(this.http.get(prefix + this._heroesUrl + "/" + id));
         return this.http.get(prefix + this._heroesUrl + "/" + id)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
     }
     getScript (id: number): Observable<Script> {
+        console.log("API CALL SCRIPT")
+        console.log(this.http.get(this._heroesUrl + "/" + id));
         return this.http.get(this._heroesUrl + "/" + id)
             .map(ScriptService.extractData)
             .catch(ScriptService.handleError);
