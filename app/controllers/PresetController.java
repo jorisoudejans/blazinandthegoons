@@ -94,9 +94,9 @@ public class PresetController extends Controller {
                 preset.focus = values[3];
                 preset.iris = values[4];
                 //savePresetThumbnail(preset);
-                if (checkCompatibility(preset.script)) {
-                    preset.save();
-                }
+                checkCompatibility(preset.script);
+                preset.save();
+
                 return ok(Json.toJson(preset));
             }
             return notFound("Camera not found");
