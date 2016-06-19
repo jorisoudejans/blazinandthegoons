@@ -94,6 +94,11 @@ export class AppComponent implements OnInit {
         }
         this.save();
     }
+    setFlagged() {
+        // ugly method to set boolean flag...
+        var action = this.currentScript.script.actions[this.currentScript.actionIndex];
+        action.flagged = !!((action.flagDescription !== null && action.flagDescription !== "") || action.flagType !== null);
+    }
     save() {
         ScriptService.putScript(this.currentScript, this.socket);
     }

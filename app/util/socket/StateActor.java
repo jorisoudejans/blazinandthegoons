@@ -19,7 +19,7 @@ public class StateActor extends SocketActor {
 
     @Override
     public boolean canAct(JsonNode jsonNode) {
-        return true;
+        return jsonNode.has("id");
     }
 
     @Override

@@ -17,9 +17,9 @@
             <h2>Notes</h2>
             <br />
             <label class="text-area-header">Flag reason *</label>
-            <textarea style="width:100%;" class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagDescription"></textarea><br>
+            <textarea style="width:100%;" class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagDescription" (keyup)="setFlagged()"></textarea><br>
             <label class="text-area-header">Type</label>
-            <select class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagType">
+            <select class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagType" (change)="setFlagged()">
                 <option value="">No reason</option>
                 <option value="OBSTRUCTED">Obstructed</option>
                 <option value="TOOFAST">Too fast</option>
