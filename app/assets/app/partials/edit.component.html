@@ -1,7 +1,10 @@
 <div class="container-fluid screen-height">
-    <div class="list-header col-xs-12">
-        <div class="col-xs-2 nopadding">
+    <div class="list-header col-md-12">
+        <div class="col-md-2 nopadding">
             <input class="form-control" *ngIf="scriptData" [(ngModel)]="scriptData.name" placeholder="name">
+        </div>
+        <div class="col-md-10">
+            <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>
         </div>
     </div>
     <div class="col-md-6">
@@ -82,9 +85,6 @@
     </div>
     <div class="col-md-6">
         <preset-list [scriptData]="activeScriptData"></preset-list>
-    </div>
-    <div class="col-md-offset-1 col-md-12">
-        <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>
     </div>
 </div>
 <button class="hax" (click)="dropHandler()" style="display:none;"></button>
