@@ -117,12 +117,15 @@ public class PresetController extends Controller {
         List<Action> actions = script.actions;
         for (Action current : actions) {
             if (prev != null) {
-                if (current.preset.getCameraId().equals(prev.preset.getCameraId())) {
+                if ((current.preset.getCameraId() != 0)
+                        && current.preset.getCameraId().equals(prev.preset.getCameraId())) {
                     current.setFlag(
                             Action.FlagType.INCOMPATIBLE,
                             "Action not compatible with action \"" + prev.description + "\""
                     );
                     isCompatible = false;
+                } else if (current.flagType == Action.FlagType.INCOMPATIBLE) {
+                    current.flagged = false;
                 }
             }
             prev = current;
