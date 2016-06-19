@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import play.data.validation.Constraints;
 import play.mvc.Result;
 import util.camera.commands.FocusCommand;
@@ -29,6 +30,7 @@ import static play.mvc.Results.ok;
  * The model class for Presets. This is the representation used for the database.
  */
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Preset extends Model {
 
     private static final int SNAPSHOTSLEEP = 3000;
@@ -49,7 +51,7 @@ public class Preset extends Model {
     public Camera camera;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.ALL)
     public Script script;
 
     /**
@@ -75,6 +77,16 @@ public class Preset extends Model {
             return camera.id;
         } else {
             return 0L;
+        }
+    }
+
+    /**
+     * Set the camera.
+     * @param id camera
+     */
+    public void setCameraId(Long id) {
+        if (camera == null) {
+            camera = Camera.find.byId(id);
         }
     }
 

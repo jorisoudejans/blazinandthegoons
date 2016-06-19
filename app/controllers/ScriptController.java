@@ -72,10 +72,6 @@ public class ScriptController extends Controller {
             actScript.name = script.name;
             actScript.save();
         } else {
-            models.Script actScript = models.Script.find.byId(script.id);
-            if (actScript != null) {
-                script.actions = actScript.actions;
-            }
             script.update();
         }
         return ok(Json.toJson(script)); // report back the updated script

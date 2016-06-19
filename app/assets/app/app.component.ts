@@ -3,6 +3,7 @@ import {OnInit, Component} from "angular2/core";
 import {Observable} from 'rxjs/Observable';
 
 import {ScriptService} from "./api/script.service";
+import {Action} from "./api/action";
 import {Script, ActiveScript} from "./api/script";
 import {ActionListComponent} from "./actionlist.component";
 import {ScriptListComponent} from "./scriptlist.component";
@@ -56,6 +57,9 @@ export class AppComponent implements OnInit {
                 var response = JSON.parse(data.data);
                 if (Object.prototype.toString.call( response ) !== '[object Array]') {
                     this.currentScript = response;
+                    this.currentScript.script.actions.sort(function(a:Action, b:Action) {
+                        return a.index - b.index;
+                    })
                 } else {
                     this.currentScript = null;
                 }
@@ -83,7 +87,19 @@ export class AppComponent implements OnInit {
         }
     }
     advance(c: number) {
-        this.currentScript.actionIndex = this.currentScript.actionIndex + c;
+        if (this.currentScript.actionIndex + c < 0) {
+            this.currentScript.actionIndex = 0;
+        } else {
+            this.currentScript.actionIndex = this.currentScript.actionIndex + c;
+        }
+        this.save();
+    }
+    setFlagged() {
+        // ugly method to set boolean flag...
+        var action = this.currentScript.script.actions[this.currentScript.actionIndex];
+        action.flagged = !!((action.flagDescription !== null && action.flagDescription !== "") || action.flagType !== null);
+    }
+    save() {
         ScriptService.putScript(this.currentScript, this.socket);
     }
 }

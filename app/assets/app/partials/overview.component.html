@@ -12,11 +12,11 @@
                     {{ script.name }}
                 </div>
                 <div class="col-md-4 pull-right">
-                    <a aria-label="Edit" href="/edit/{{ script.id }}">
+                    <a *ngIf="!activeScript || script.id != activeScript.script.id" aria-label="Edit" href="/edit/{{ script.id }}">
                         <i class="material-icons">mode_edit</i>
                     </a>
-                    <a *ngIf="!activeScript" aria-label="Play" (click)="makeActive(script)">
-                        <i class="material-icons">play_arrow</i>
+                    <a *ngIf="!activeScript" [title]="getStatusMessage(script)" aria-label="Play" (click)="makeActive(script)">
+                        <i class="material-icons" [class.disabled]="!isPlayable(script)">play_arrow</i>
                     </a>
                     <a *ngIf="activeScript && script.id == activeScript.script.id" aria-label="Deactivate" (click)="deactivateScript()">
                         <i class="material-icons">stop</i>
@@ -24,7 +24,7 @@
                     <a *ngIf="activeScript && script.id == activeScript.script.id" aria-label="View" href="/director">
                         <i class="material-icons">visibility</i>
                     </a>
-                    <a aria-label="Link" [href]="'/link/' + script.id">
+                    <a *ngIf="!activeScript || script.id != activeScript.script.id" aria-label="Link" [href]="'/link/' + script.id">
                         <i class="material-icons">timeline</i>
                     </a>
                 </div>
@@ -33,13 +33,13 @@
     </div>
     <div class="col-md-6">
         <h2>Location list <a class="btn btn-info" (click)="addLocation()">Add location</a></h2>
-        <p><i>Choose a location from the list</i></p>
+        <p><i>Choose a location from the list or add a new one</i></p>
         <div class="list-group script-list">
             <div *ngFor="#location of locations" class="list-group-item row">
-                <div class="col-md-offset-4 col-md-4">
+                <div class="col-md-4">
                     {{ location.name }}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-offset-4 col-md-4">
                     <a aria-label="Edit" href="/locations/{{ location.id }}">
                         <i class="material-icons">mode_edit</i>
                     </a>

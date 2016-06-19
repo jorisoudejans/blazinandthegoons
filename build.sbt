@@ -27,7 +27,9 @@ libraryDependencies ++= Seq(
   "org.webjars.npm" % "ng2-material" % "0.3.5",
   "org.webjars.npm" % "jasmine-core" % "2.4.1",
   "org.mockito" % "mockito-core" % "1.9.5" % "test",
-  "org.webjars.npm" % "ng2-dragula" % "1.1.2"
+  "org.webjars.npm" % "ng2-dragula" % "1.1.2",
+
+  "mysql" % "mysql-connector-java" % "5.1.18"
 )
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"

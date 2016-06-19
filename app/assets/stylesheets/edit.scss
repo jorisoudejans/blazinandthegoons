@@ -8,9 +8,22 @@
     border-bottom: 5px solid #5BC0DE;
   }
 
+  .flagged {
+    background-color: rgba(200,57,43,0.5) !important;
+  }
+
   .editable-list-item {
     background-color: #FFF;
+    height: auto;
+    overflow: hidden;
     width: 100%; // 95% for side plus (manual add)
+
+    .flag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+    }
 
     .active-item {
       display: initial;
@@ -23,9 +36,27 @@
       background-color: #fafafa;
     }
 
+    table {
+      width: 100%;
+
+      td {
+        width: 50%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+    }
+
+    .edit-buttons {
+      margin-top: 10px;
+      float: right;
+
+      li {
+        float: left;
+        margin-left: 10px;
+      }
+    }
+
     .text-area {
-      font-family: Open Sans, sans-serif;
-      padding-left: 5px;
 
       .text-area-header {
         font-size: 110%;

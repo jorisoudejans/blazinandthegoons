@@ -1,11 +1,15 @@
 <div class="container-fluid screen-height">
-    <div class="list-header col-xs-12">
-        <div class="col-xs-2 nopadding">
+    <div class="list-header col-md-12">
+        <div class="col-md-2 nopadding">
             <input class="form-control" *ngIf="scriptData" [(ngModel)]="scriptData.name" placeholder="name">
+        </div>
+        <div class="col-md-10">
+            <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>
         </div>
     </div>
     <div class="col-md-6">
-        <select class="form-control" (change)="updateLocation($event.target.value)">
+        <label for="location">Location</label>
+        <select class="form-control" id="location" (change)="updateLocation($event.target.value)">
             <option *ngFor="#location of locations" [value]="location">{{location.name}}</option>
         </select>
         <ul class="editable-list list-group" *ngIf="scriptData"><!--
@@ -14,38 +18,78 @@
                     <img src="assets/images/plus.png" width="100%">
                 </div>
             </li> -->
-            <li class="editable-list-item list-group-item script-action" *ngFor="#action of scriptData.actions; #i=index" [attr.data-index]="i" [class.selected]="i == scriptData.actionIndex">
+            <li class="editable-list-item list-group-item script-action" *ngFor="#action of scriptData.actions; #i=index" [attr.data-index]="i" [class.selected]="i == scriptData.actionIndex" [class.flagged]="action.flagged">
+                <a *ngIf="action.flagged" class="flag"  aria-label="Link">
+                    <i class="material-icons">flag</i>
+                </a>
                 <div [class.active-item]="action.active" [class.inactive-item]="action.active" class="text-area" (click)="action.active = !action.active">
                     <h1 class="text-area-header">Action description: {{action.description}}</h1>
                     <span class="text-area-detail">{{action.duration}} sec</span><br>
-                    <span class="text-area-detail">Preset: {{action.preset.name}}</span>
+                    <span class="text-area-detail">Preset: {{action.preset.name}}</span><br>
+                    <div *ngIf="action.flagged">
+                        <span class="text-area-detail">Flag description:</span>
+                        <span>{{ action.flagDescription }}</span>
+                    </div>
                 </div>
                 <div [class.inactive-item]="!action.active" [class.active-item]="action.active"  class="text-area input-area form-inline">
-                    <label class="text-area-header">Action description: </label><input class="form-control" [(ngModel)]="action.description" placeholder="description"><br>
-                    <input type="number" class="form-control" [(ngModel)]="action.duration" placeholder="duration"> <label class="text-area-detail">sec</label><br>
-                    <span class="text-area-detail">Preset:</span>
-                    <select class="form-control" (change)="updateAction(action, $event.target.value)">
-                        <option *ngFor="#preset of presets" [value]="preset">{{preset.name}}</option>
-                    </select><br>
-                    <button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button>
-                    <button type="button" class="btn btn-danger center-block" (click)="action.active = !action.active; deleteAction(i);">Delete this action</button>
-                </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="description">Action description</label>
+                            </td>
+                            <td>
+                                <input id="description" class="form-control" [(ngModel)]="action.description" placeholder="description">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="duration">Estimated duration</label>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input id="duration" aria-describedby="sec-addon" type="number" class="form-control" [(ngModel)]="action.duration" placeholder="duration">
+                                    <span class="input-group-addon" id="sec-addon">sec</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="preset">Preset</label>
+                            </td>
+                            <td>
+                                <select class="form-control" id="preset" (change)="updateAction(action, $event.target.value)">
+                                    <option *ngFor="#preset of scriptData.presets" [value]="preset">{{preset.name}}</option>
+                                </select><br>
+                            </td>
+                        </tr>
+                        <tr *ngIf="action.flagged">
+                            <td>
+                                Flag
+                            </td>
+                            <td>
+                                {{action.flagDescription}}
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
+                    <ul class="list-inline edit-buttons" *ngIf="action.active">
+                        <li><button type="button" *ngIf="action.flagged" class="btn btn-warning center-block" (click)="action.flagged = false; action.flagDescription = '';">Resolve flag</button></li>
+                        <li><button type="button" class="btn btn-success center-block" (click)="action.active = !action.active">Apply changes</button></li>
+                        <li><button type="button" class="btn btn-danger center-block" (click)="action.active = !action.active; deleteAction(i);">Delete this action</button></li>
+                    </ul>
                 <!--<div class="addnew" data-toggle="modal" data-target="#actionModal" (click)="selectInsertPos(i);">
                     <img src="assets/images/plus.png" width="100%">
                 </div>-->
             </li>
         </ul>
     </div>
-    <div class="col-md-offset-1 col-md-4">
+    <div class="col-md-6">
         <preset-list [scriptData]="activeScriptData"></preset-list>
-    </div>
-    <div class="col-md-offset-1 col-md-12">
-        <button type="button" class="btn btn-lg btn-success" (click)="saveScript()">Save script</button>
     </div>
 </div>
 <button class="hax" (click)="dropHandler()" style="display:none;"></button>
 
-<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" *ngIf="scriptData">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -58,7 +102,7 @@
                     <input type="number" class="form-control duration" placeholder="duration"> <label class="text-area-detail">sec</label><br>
                     <span class="text-area-detail">Preset:</span>
                     <select class="form-control preset">
-                        <option *ngFor="#preset of presets" [value]="preset">{{preset.name}}</option>
+                        <option *ngFor="#preset of scriptData.presets" [value]="preset">{{preset.name}}</option>
                     </select><br>
                 </div>
             </div>

@@ -85,7 +85,6 @@ public class PresetController extends Controller {
             Camera camera = Camera.find.byId(cameraId);
             if (camera != null) {
                 // find the camera values
-                checkCompatibility(preset.script);
 
                 Integer[] values = camera.getCameraValues();
                 preset.camera = camera;
@@ -95,7 +94,9 @@ public class PresetController extends Controller {
                 preset.focus = values[3];
                 preset.iris = values[4];
                 //savePresetThumbnail(preset);
-                preset.save();
+                if (checkCompatibility(preset.script)) {
+                    preset.save();
+                }
                 return ok(Json.toJson(preset));
             }
             return notFound("Camera not found");
@@ -117,12 +118,15 @@ public class PresetController extends Controller {
         List<Action> actions = script.actions;
         for (Action current : actions) {
             if (prev != null) {
-                if (current.preset.getCameraId().equals(prev.preset.getCameraId())) {
+                if ((current.preset.getCameraId() != 0)
+                        && current.preset.getCameraId().equals(prev.preset.getCameraId())) {
                     current.setFlag(
-                            Action.FlagType.INCOMAPIBLE,
-                            "Action not compatible with previous action"
+                            Action.FlagType.INCOMPATIBLE,
+                            "Action not compatible with action \"" + prev.description + "\""
                     );
                     isCompatible = false;
+                } else if (current.flagType == Action.FlagType.INCOMPATIBLE) {
+                    current.flagged = false;
                 }
             }
             prev = current;

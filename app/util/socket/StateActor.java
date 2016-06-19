@@ -1,9 +1,11 @@
 package util.socket;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.ActiveScript;
 import models.Camera;
 import models.Preset;
+import play.api.libs.json.Json;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,16 +19,17 @@ public class StateActor extends SocketActor {
 
     @Override
     public boolean canAct(JsonNode jsonNode) {
-        return true;
+        return jsonNode.has("id");
     }
 
     @Override
     public void act(JsonNode jsonNode) {
         List<ActiveScript> aslist = ActiveScript.find.all();
         if (!aslist.isEmpty()) { // we have an active script
-            ActiveScript as = aslist.get(0);
-            as.actionIndex = jsonNode.findPath("actionIndex").asInt();
-            as.save(); // save it
+            ActiveScript as = new ObjectMapper().convertValue(jsonNode, ActiveScript.class);
+            if (as.actionIndex < 0)
+                as.actionIndex = 0;
+            as.update();
 
             if (as.actionIndex > 0) {
                 Camera prevCam = as.script.actions.get(as.actionIndex - 1).preset.camera;
@@ -35,7 +38,6 @@ public class StateActor extends SocketActor {
                     prevCam.save();
                 }
             }
-
 
             setupPreset(as);
         }
