@@ -65,7 +65,7 @@ export class ScriptService {
         var activeData = {
             "actionIndex": script.actionIndex
         };
-        socket.send(JSON.stringify(activeData));
+        socket.send(JSON.stringify(script));
         console.log("sending: "+JSON.stringify(activeData))
     }
     static startScript (activeScriptId: number, socket: WebSocket): void {

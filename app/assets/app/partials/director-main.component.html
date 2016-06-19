@@ -9,15 +9,24 @@
     </div>
 </div>
 <div class="container-fluid screen-height">
-    <div class="col-md-4 screen-height">
+    <div class="col-md-8 screen-height">
         <action-list [scriptData]="currentScript" [socket]="socket"></action-list>
     </div>
-    <div class="col-md-8">
-        <preset-list [scriptData]="currentScript"></preset-list>
+    <div class="col-md-4">
+        <div class="form-group" *ngIf="currentScript">
+            <h2>Notes</h2>
+            <br />
+            <label class="text-area-header">Flag reason *</label>
+            <textarea style="width:100%;" class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagDescription"></textarea><br>
+            <label class="text-area-header">Type</label>
+            <select class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagType">
+                <option value="">No reason</option>
+                <option value="OBSTRUCTED">Obstructed</option>
+                <option value="TOOFAST">Too fast</option>
+                <option value="BADANGLE">Bad angle</option>
+            </select>
+        </div>
     </div>
-    <!--<div class="col-md-12">
-        <script-list></script-list>
-    </div>-->
 </div> <!-- /container -->
 <div id="dock-container">
     <div id="dock-top">
