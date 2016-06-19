@@ -6,11 +6,11 @@
                 <h1 class="action-title">Action description: {{action.description}}</h1>
                 <div class="action-est-time">
                     <span class="action-est-time">{{action.duration}} sec</span>
-                    <a class="flag" aria-label="Link">
-                        <i class="material-icons">flag</i>
-                    </a>
-                </div><br>
+                </div>
                 <span *ngIf="i == scriptData.actionIndex">Preset: {{action.preset.name}}</span>
+                <a class="flag" aria-label="Link">
+                    <i class="material-icons">flag</i>
+                </a>
             </div>
             <div class="slider"
                  [style.animation-duration]="action.duration + 's'"

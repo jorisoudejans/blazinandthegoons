@@ -19,6 +19,11 @@
   max-height: 700px;
   overflow-y: scroll;
 
+  .flag {
+    position: absolute;
+    right: 80px;
+  }
+
   .flagged {
     background-color: rgba(200,57,43,0.5) !important;
 
