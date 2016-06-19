@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import play.data.validation.Constraints;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
  * The model class for Actions. This is the representation used for the database.
  */
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Action extends Model implements Comparable {
 
 

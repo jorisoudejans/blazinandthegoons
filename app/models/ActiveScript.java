@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import play.data.validation.Constraints;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.OneToOne;
  * Class to represent an active script.
  */
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ActiveScript extends Model {
 
     @Id

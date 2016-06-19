@@ -87,7 +87,19 @@ export class AppComponent implements OnInit {
         }
     }
     advance(c: number) {
-        this.currentScript.actionIndex = this.currentScript.actionIndex + c;
+        if (this.currentScript.actionIndex + c < 0) {
+            this.currentScript.actionIndex = 0;
+        } else {
+            this.currentScript.actionIndex = this.currentScript.actionIndex + c;
+        }
+        this.save();
+    }
+    setFlagged() {
+        // ugly method to set boolean flag...
+        var action = this.currentScript.script.actions[this.currentScript.actionIndex];
+        action.flagged = !!((action.flagDescription !== null && action.flagDescription !== "") || action.flagType !== null);
+    }
+    save() {
         ScriptService.putScript(this.currentScript, this.socket);
     }
 }
