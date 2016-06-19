@@ -51,7 +51,7 @@ public class Preset extends Model {
     public Camera camera;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.ALL)
     public Script script;
 
     /**
@@ -77,6 +77,16 @@ public class Preset extends Model {
             return camera.id;
         } else {
             return 0L;
+        }
+    }
+
+    /**
+     * Set the camera.
+     * @param id camera
+     */
+    public void setCameraId(Long id) {
+        if (camera == null) {
+            camera = Camera.find.byId(id);
         }
     }
 

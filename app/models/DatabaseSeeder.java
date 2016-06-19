@@ -26,12 +26,12 @@ public class DatabaseSeeder {
         location.name = "Mola";
         location.save();
 
-        Camera camera = Camera.make("Camera One", "192.166.10.101");
+        Camera camera = Camera.make("Camera One", "null");
         camera.location = location;
         camera.presets = new ArrayList<>();
         camera.save();
 
-        Camera camera2 = Camera.make("Camera Two", "192.166.10.101");
+        Camera camera2 = Camera.make("Camera Two", "null");
         camera2.location = location;
         camera2.presets = new ArrayList<>();
         camera2.save();
@@ -44,8 +44,8 @@ public class DatabaseSeeder {
         s.location = location;
         s.save();
 
-        Preset.createDummyPreset("Nice view", "Nice view of blabla, focused on blabla", s); // unlinked
-        Preset.createDummyPreset("Dirigent focus", "Start zoomed in on his eyebrows", s); // unlinked
+        Preset u1 = Preset.createDummyPreset("Nice view", "Nice view of blabla, focused on blabla", s); // unlinked
+        Preset u2 = Preset.createDummyPreset("Dirigent focus", "Start zoomed in on his eyebrows", s); // unlinked
         Preset p1 = Preset.createDummyPreset("Violin snare closeup", "Really catch the texture of the snares", s); // linked
         Preset p2 = Preset.createDummyPreset("Contrabas player", "A wide shot of the contrabas will do", s); // linked
         p1.camera = camera;
@@ -54,6 +54,9 @@ public class DatabaseSeeder {
         camera2.presets.add(p2);
         camera.save();
         camera2.save();
+
+        //s.presets = Arrays.asList(u1, u2, p1, p2);
+        //s.save();
 
         // create actions
         Action a1 = createAction(0, "Open on dirigent", 5, 8, models.Preset.find.byId(1L), s);

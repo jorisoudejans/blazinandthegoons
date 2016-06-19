@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import play.data.validation.Constraints;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * The model class for Actions. This is the representation used for the database.
@@ -23,21 +20,23 @@ public class Action extends Model implements Comparable {
     public Long id;
 
     @Constraints.Required
+    @Column(name = "position")
     public int index;
 
     @Constraints.Required
     public String description;
 
     @Constraints.Required
+    @Column(name = "moment")
     public int timestamp;
 
     @Constraints.Required
     public int duration;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {})
     public Preset preset;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {})
     @JsonIgnore
     public Script script;
 

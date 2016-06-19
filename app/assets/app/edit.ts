@@ -91,17 +91,6 @@ export class Edit implements OnInit {
     }
     saveScript() {
         this._scriptService.saveScript(this.scriptData)
-            .map((script: Script) => {
-                if(script) {
-                    script.actions.forEach((action) => {
-                        action.active = false;
-                    })
-                    script.actions.sort(function(a:Action, b:Action) {
-                        return a.index - b.index;
-                    })
-                }
-                return script;
-            })
             .subscribe(
                 scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);},
                 error =>  this.errorMessage = <any>error);
@@ -123,7 +112,7 @@ export class Edit implements OnInit {
         this.locations.forEach((location) => {
             if (location.name === event)
                 corrLoc = location;
-        })
+        });
         this.scriptData.location = corrLoc;
     }
     updateAction(action: Action, event:string) {
@@ -131,7 +120,7 @@ export class Edit implements OnInit {
         this.scriptData.presets.forEach((preset) => {
             if (preset.name === event)
                 corrPreset = preset;
-        })
+        });
         action.preset = corrPreset;
     }
     dropHandler() {
@@ -147,7 +136,7 @@ export class Edit implements OnInit {
         this.scriptData.presets.forEach((preset) => {
             if (preset.name === $('#actionModal .preset').val())
                 corrPreset = preset;
-        })
+        });
         var act = new Action(null, this.actionInsertPos+1, $('#actionModal .description').val(), $('#actionModal .duration').val(), corrPreset, false, "");
         this.scriptData.actions.splice(this.actionInsertPos+1, 0, act);
         this.fixActionIndices();
@@ -175,7 +164,7 @@ export class Edit implements OnInit {
         this.actionInsertPos = index;
     }
     buildNewScript() {
-        var preset = new Preset(null, " Mock preset", "Desc", 0, "", null, 0, 0, 0, 0, 0);
+        var preset = new Preset(null, " Mock preset", "Desc", 0, null, null, 0, 0, 0, 0, 0);
         this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset, false, "")], null, [preset]);
         this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);
     }

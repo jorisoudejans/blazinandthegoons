@@ -5,9 +5,9 @@
 
 create table action (
   id                            bigint not null,
-  index                         integer,
+  position                      integer,
   description                   varchar(255),
-  timestamp                     integer,
+  moment                        integer,
   duration                      integer,
   preset_id                     bigint,
   script_id                     bigint,

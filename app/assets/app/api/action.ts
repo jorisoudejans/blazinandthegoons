@@ -10,7 +10,7 @@ export class Action {
         public preset: Preset,
         public flagged: boolean,
         public flagDescription: string,
-        public flagType: string = "",
+        public flagType: string = null,
         public active: boolean = false,
         public percentage: string = "2%",
         public color: string = "rgb(0, 153, 0)"
