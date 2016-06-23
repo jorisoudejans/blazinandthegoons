@@ -4,7 +4,8 @@
     background-color: rgba(63, 63, 63, 0.3);
   }
   .active {
-    background-color: #090 !important;
+    background-color: #009900 !important;
+    color: white;
   }
 
   a {
@@ -19,6 +20,14 @@
       &.disabled {
         color: #666;
         cursor: not-allowed;
+      }
+
+      &.highlight {
+        color: #900;
+      }
+
+      &.ready {
+        color: #090;
       }
     }
   }
