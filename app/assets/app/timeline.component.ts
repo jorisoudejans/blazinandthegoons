@@ -20,6 +20,10 @@ export class TimelineComponent {
         setTimeout(function(){ jQuery('[data-toggle="tooltip"]').tooltip() }, 100);
     }
 
+    random(seed: number) {
+        var x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
     ngOnChanges() {
         if (this.scriptData != null) {
             var totalTime = 0;
@@ -27,14 +31,9 @@ export class TimelineComponent {
                 totalTime += action.duration;
             }
             for (var action of this.scriptData.script.actions) {
-                function random(seed: number) {
-                    var x = Math.sin(seed++) * 10000;
-                    return x - Math.floor(x);
-                }
-
                 var perc = action.duration / totalTime * 100;
                 action.percentage = perc + "%";
-                action.color = "#00" + Math.round(113 + random(action.duration) * 70).toString(16) + "00";
+                action.color = "#00" + Math.round(113 + this.random(action.duration) * 70).toString(16) + "00";
             }
 
             this.scriptData.percentage = this.scriptData.runningTime / totalTime + "%";
