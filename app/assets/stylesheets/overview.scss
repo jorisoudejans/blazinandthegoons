@@ -2,14 +2,10 @@
 
   .list-group-item {
     background-color: rgba(63, 63, 63, 0.3);
-
-    &.ready {
-      background-color: #007700;
-      color: white;
-    }
   }
   .active {
     background-color: #009900 !important;
+    color: white;
   }
 
   a {
@@ -28,6 +24,10 @@
 
       &.highlight {
         color: #900;
+      }
+
+      &.ready {
+        color: #090;
       }
     }
   }

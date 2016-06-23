@@ -86,13 +86,13 @@ export class Edit implements OnInit {
                 return script;
             })
             .subscribe(
-                scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);},
+                scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData, 0);},
                 error =>  this.errorMessage = <any>error);
     }
     saveScript() {
         this._scriptService.saveScript(this.scriptData)
             .subscribe(
-                scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);},
+                scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData, 0);},
                 error =>  this.errorMessage = <any>error);
         console.log("BINNENGEKOMEN DATA");
         console.log(this.scriptData);
@@ -166,7 +166,7 @@ export class Edit implements OnInit {
     buildNewScript() {
         var preset = new Preset(null, " Mock preset", "Desc", 0, null, null, 0, 0, 0, 0, 0);
         this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset, false, "")], null, [preset]);
-        this.activeScriptData = new ActiveScript(0,"",0,this.scriptData);
+        this.activeScriptData = new ActiveScript(0,"",0,this.scriptData, 0);
     }
     updateDroppableListeners() {
         var self = this;

@@ -22,7 +22,7 @@
                         <i class="material-icons" [class.highlight]="!isFlagless(script)">mode_edit</i>
                     </a>
                     <a *ngIf="!activeScript" aria-label="Play" (click)="makeActive(script)">
-                        <i class="material-icons">play_arrow</i>
+                        <i class="material-icons" [class.ready]="isPlayable(script)">play_arrow</i>
                     </a>
                     <a *ngIf="activeScript && script.id == activeScript.script.id" aria-label="Deactivate" (click)="deactivateScript()">
                         <i class="material-icons">stop</i>
