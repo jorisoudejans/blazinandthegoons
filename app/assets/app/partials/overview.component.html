@@ -4,19 +4,25 @@
         <p><i>Pick a script from the list</i></p>
 
         <div class="list-group script-list">
-            <div *ngFor="#script of scripts;" class="col-md-12 list-group-item" [class.active]="activeScript && activeScript.script && script.id == activeScript.script.id">
-                <div class="col-md-4">
-                    {{ script.id }}
-                </div>
-                <div class="col-md-4">
+            <div
+                    *ngFor="#script of scripts;"
+                    class="col-md-12 list-group-item"
+                    [class.active]="activeScript && activeScript.script && script.id == activeScript.script.id"
+                    [class.ready]="isPlayable(script)"
+            >
+                <div class="col-md-3">
                     {{ script.name }}
                 </div>
-                <div class="col-md-4 pull-right">
+                <div class="col-md-6">
+                    <div *ngIf="!isPlayable(script)" [innerHTML]="getStatusMessage(script)">
+                    </div>
+                </div>
+                <div class="col-md-3 pull-right">
                     <a *ngIf="!activeScript || script.id != activeScript.script.id" aria-label="Edit" href="/edit/{{ script.id }}">
-                        <i class="material-icons">mode_edit</i>
+                        <i class="material-icons" [class.highlight]="!isFlagless(script)">mode_edit</i>
                     </a>
-                    <a *ngIf="!activeScript" [title]="getStatusMessage(script)" aria-label="Play" (click)="makeActive(script)">
-                        <i class="material-icons" [class.disabled]="!isPlayable(script)">play_arrow</i>
+                    <a *ngIf="!activeScript" aria-label="Play" (click)="makeActive(script)">
+                        <i class="material-icons">play_arrow</i>
                     </a>
                     <a *ngIf="activeScript && script.id == activeScript.script.id" aria-label="Deactivate" (click)="deactivateScript()">
                         <i class="material-icons">stop</i>
@@ -25,7 +31,7 @@
                         <i class="material-icons">visibility</i>
                     </a>
                     <a *ngIf="!activeScript || script.id != activeScript.script.id" aria-label="Link" [href]="'/link/' + script.id">
-                        <i class="material-icons">timeline</i>
+                        <i class="material-icons" [class.highlight]="!isLinked(script)">timeline</i>
                     </a>
                 </div>
             </div>
@@ -39,7 +45,7 @@
                 <div class="col-md-4">
                     {{ location.name }}
                 </div>
-                <div class="col-md-offset-4 col-md-4">
+                <div class="col-md-offset-7 col-md-1">
                     <a aria-label="Edit" href="/locations/{{ location.id }}">
                         <i class="material-icons">mode_edit</i>
                     </a>

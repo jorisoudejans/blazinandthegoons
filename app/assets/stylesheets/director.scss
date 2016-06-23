@@ -22,13 +22,37 @@
   .flag {
     position: absolute;
     right: 80px;
+    top: 12px;
+    display: none;
+    color: white !important;
+  }
+
+  .highlighted {
+    background-color: #f7f7f7 !important;
+
+    .flag {
+      display: inline;
+      color: #090 !important;
+
+      &.active-flag {
+        top: 18px;
+        right: 18px;
+      }
+    }
   }
 
   .flagged {
-    background-color: rgba(200,57,43,0.5) !important;
+    background-color: #900 !important;
+    border-bottom: 1px solid #ccc;
+    color: white !important;
 
     .flag {
-      color: red;
+      display: inline;
+
+      &.active-flag {
+        top: 18px;
+        right: 18px;
+      }
     }
   }
 
@@ -67,14 +91,11 @@
       h1 {
         font-size: 110%;
         float: left;
-        color: #000000;
         opacity: .87;
-        line-height: 28px;
       }
 
       span {
         font-size: 100%;
-        color: #000000;
         opacity: .54;
       }
     }
@@ -82,7 +103,7 @@
 
   .action-list-item.selected {
     height: 110px;
-    background-color: #FFF;
+    background-color: #FFF !important;
 
     .action-title, .action-est-time {
       float: none;
@@ -104,6 +125,10 @@ $grid-padding: 4px;
   padding-top: 8px;
   height: auto;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.35);
+
+  &.preset-list-linker {
+    overflow: hidden;
+  }
 
   .list-header {
     color: white;

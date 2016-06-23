@@ -1,14 +1,14 @@
 <div class="list-header"><h2>Script</h2></div>
 <div class="action-list-container">
     <ul class="action-list" *ngIf="scriptData">
-        <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index" [class.done]="i < scriptData.actionIndex" [class.selected]="i == scriptData.actionIndex" [class.flagged]="action.flagDescription != null && action.flagDescription != ''">
+        <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index" (click)="makeSelected(i)" [class.done]="i < scriptData.actionIndex" [class.highlighted]="i == scriptData.selectedIndex" [class.selected]="i == scriptData.actionIndex" [class.flagged]="action.flagDescription != null && action.flagDescription != ''">
             <div class="text-area">
                 <h1 class="action-title">Action description: {{action.description}}</h1>
                 <div class="action-est-time">
                     <span class="action-est-time">{{action.duration}} sec</span>
                 </div>
                 <span *ngIf="i == scriptData.actionIndex">Preset: {{action.preset.name}}</span>
-                <a class="flag" aria-label="Link">
+                <a class="flag" [class.active-flag]="i == scriptData.actionIndex" aria-label="Link">
                     <i class="material-icons">flag</i>
                 </a>
             </div>

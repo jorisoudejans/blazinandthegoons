@@ -13,19 +13,20 @@
         <action-list [scriptData]="currentScript" [socket]="socket"></action-list>
     </div>
     <div class="col-md-4">
+        <h2>Notes</h2>
+        <br />
         <div class="form-group" *ngIf="currentScript">
-            <h2>Notes</h2>
-            <br />
             <label class="text-area-header">Flag reason *</label>
-            <textarea style="width:100%;" class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagDescription" (keyup)="setFlagged()"></textarea><br>
+            <textarea style="width:100%;" class="form-control" [(ngModel)]="currentScript.script.actions[getSelectedActionIndex()].flagDescription" (keyup)="setFlagged()"></textarea><br>
             <label class="text-area-header">Type</label>
-            <select class="form-control" [(ngModel)]="currentScript.script.actions[currentScript.actionIndex].flagType" (change)="setFlagged()">
+            <select class="form-control" [(ngModel)]="currentScript.script.actions[getSelectedActionIndex()].flagType" (change)="setFlagged()">
                 <option value="">No reason</option>
                 <option value="OBSTRUCTED">Obstructed</option>
                 <option value="TOOFAST">Too fast</option>
                 <option value="BADANGLE">Bad angle</option>
             </select>
         </div>
+        <i>Flags will be automatically saved upon typing.</i>
     </div>
 </div> <!-- /container -->
 <div id="dock-container">
