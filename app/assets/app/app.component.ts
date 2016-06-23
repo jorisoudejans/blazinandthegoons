@@ -94,6 +94,9 @@ export class AppComponent implements OnInit {
         }
         this.save();
     }
+    stop() {
+        ScriptService.stopScript(this.socket);
+    }
     getSelectedActionIndex() {
         if (this.currentScript.selectedIndex === undefined) {
             return this.currentScript.actionIndex;

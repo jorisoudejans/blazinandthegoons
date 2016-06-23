@@ -12,7 +12,6 @@
         <ul class="action-list" *ngIf="scriptData">
             <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index"
                 (click)="makeSelected(i)"
-                [class.done]="i < scriptData.actionIndex"
                 [class.selected]="i == scriptData.actionIndex"
                 [class.flagged]="action.flagDescription != null && action.flagDescription != ''"
                 [class.highlighted]="i == scriptData.selectedIndex">

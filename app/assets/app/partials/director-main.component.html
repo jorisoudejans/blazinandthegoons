@@ -41,8 +41,8 @@
             <button *ngIf="!currentScript" md-button class="md-icon-button" aria-label="Play">
                 <i class="material-icons">play_arrow</i>
             </button>
-            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Forward">
-                <i class="material-icons">fast_forward</i>
+            <button *ngIf="currentScript" md-button class="md-icon-button" aria-label="Forward" (click)="stop()">
+                <i class="material-icons">stop</i>
             </button>
         </section>
         <!--
