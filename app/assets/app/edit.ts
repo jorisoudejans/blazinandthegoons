@@ -91,6 +91,17 @@ export class Edit implements OnInit {
     }
     saveScript() {
         this._scriptService.saveScript(this.scriptData)
+            .map((script: Script) => {
+                if(script) {
+                    script.actions.forEach((action) => {
+                        action.active = false;
+                    })
+                    script.actions.sort(function(a:Action, b:Action) {
+                        return a.index - b.index;
+                    })
+                }
+                return script;
+            })
             .subscribe(
                 scriptData => {this.scriptData = scriptData; this.activeScriptData = new ActiveScript(0,"",0,this.scriptData, 0);},
                 error =>  this.errorMessage = <any>error);
@@ -164,6 +175,7 @@ export class Edit implements OnInit {
         this.actionInsertPos = index;
     }
     buildNewScript() {
+        console.log("JTESDIOJFSFIOJSODIFJSDIOGJFOEISFJCIOSDFJOIESDFJOISEDFLJl")
         var preset = new Preset(null, " Mock preset", "Desc", 0, null, null, 0, 0, 0, 0, 0);
         this.scriptData = new Script(-1, "new Script", (new Date()).toString(), [new Action(null, 0, "Mock action", 5, preset, false, "")], null, [preset]);
         this.activeScriptData = new ActiveScript(0,"",0,this.scriptData, 0);

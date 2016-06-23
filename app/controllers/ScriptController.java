@@ -72,6 +72,35 @@ public class ScriptController extends Controller {
             actScript.name = script.name;
             actScript.save();
         } else {
+            for(models.Preset preset : script.presets) {
+                if(preset.id == null) {
+                    System.out.println(preset.camera);
+                    Preset pr = new Preset();
+                    pr.name = preset.name;
+                    pr.description = preset.description;
+                    pr.save();
+                    System.out.println(pr.id + "     THIS IS THE PRIDDD");
+                    preset.id = pr.id;
+                    System.out.println(preset.id + "     THIS IS THE PRIDDD222222222222222");
+                }
+            }
+            for (models.Action action : script.actions) {
+                if (action.id == null) {
+                    if(action.preset.id == null) {
+                        for(models.Preset pr : script.presets) {
+                            if(pr.name.equals(action.preset.name) && pr.description.equals(action.preset.description)) {
+                                action.preset = pr;
+                            }
+                        }
+                    }
+                    Action.createAction(action.index, action.description, action.timestamp, action.duration, models.Preset.find.byId(action.preset.id), models.Script.find.byId(script.id));
+                }
+                action.update();
+            }
+            models.Script actScript = models.Script.find.byId(script.id);
+            if (actScript != null) {
+                script.actions = actScript.actions;
+            }
             script.update();
         }
         return ok(Json.toJson(script)); // report back the updated script
