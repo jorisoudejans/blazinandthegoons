@@ -40,8 +40,8 @@
                     <figcaption>
                         <h1>{{ preset.cameraId }} {{preset.name}}</h1>
                     </figcaption>
-                    <figure class="preset-figure">
-                        <img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" [attr.id]="'preset-image-' + preset.id" alt="{{preset.name}}">
+                    <figure class="preset-figure" [style.background-position-x]="preset.id * 250 + 'px'" [style.background-position-y]="preset.id * 250 + 'px'">
+                        <!--<img src="http://blair.vanderbilt.edu/images/ensembles/orchestra.JPG" [attr.id]="'preset-image-' + preset.id" alt="{{preset.name}}">-->
                     </figure>
                     <div class="unlink-overlay">
                         <div class="unlink-button" (click)="unlinkPreset(preset)">
