@@ -15,8 +15,7 @@
                 [class.done]="i < scriptData.actionIndex"
                 [class.selected]="i == scriptData.actionIndex"
                 [class.flagged]="action.flagDescription != null && action.flagDescription != ''"
-                [class.highlighted]="i == scriptData.selectedIndex"
-                [class.fade]="!selectedCameras[indexOfCamera(action.preset.cameraId)]">
+                [class.highlighted]="i == scriptData.selectedIndex">
                 <div class="text-area">
                     <h1 class="action-title">Action description: {{action.description}}</h1>
                     <div class="action-est-time">
@@ -30,6 +29,7 @@
                 <div class="slider"
                      [style.animation-duration]="action.duration + 's'"
                      *ngIf="i == scriptData.actionIndex"></div>
+                <div class="fade-overlay" *ngIf="!selectedCameras[indexOfCamera(action.preset.cameraId)]"></div>
             </li>
         </ul>
         <div class="shadow"></div>
