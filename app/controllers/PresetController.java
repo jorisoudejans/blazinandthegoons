@@ -10,8 +10,10 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
+import java.util.Collections;
 
 /**
  * Api controller for handling the json calls from the client.
@@ -115,6 +117,7 @@ public class PresetController extends Controller {
         }
         Action prev = null;
         boolean isCompatible = true;
+        Collections.sort(script.actions);
         List<Action> actions = script.actions;
         for (Action current : actions) {
             if (prev != null) {

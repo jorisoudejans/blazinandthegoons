@@ -38,7 +38,8 @@ export class PresetListComponent {
         if (!this.scriptData) {
             return;
         }
-        this.cameras = this.scriptData.script.location.cameras;
+        if(this.scriptData.script.location != null)
+            this.cameras = this.scriptData.script.location.cameras;
     }
     toggleCamera(i: number) {
         this.selectedCameras[i] = !this.selectedCameras[i];

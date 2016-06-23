@@ -85,7 +85,7 @@ public class Preset extends Model {
      * @param id camera
      */
     public void setCameraId(Long id) {
-        if (camera == null) {
+        if (camera == null && id != null) {
             camera = Camera.find.byId(id);
         }
     }
