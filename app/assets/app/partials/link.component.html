@@ -9,6 +9,7 @@
                             <h1>{{preset.name}}</h1>
                             <span class="preset-description">{{preset.description}}</span>
                             <div class="camera-select-container">
+                                <span id="camera">Camera </span>
                                 <select #sel value="0" class="form-control">
                                     <option *ngFor="#camera of scriptData.location.cameras" [value]="camera.id">{{camera.id}}</option>
                                 </select>
@@ -33,7 +34,7 @@
         <div class="shadow"></div>
     </div>
     <div class="linked-presets-container col-md-6">
-        <ul class="preset-list" *ngIf="presets">
+        <ul class="preset-list preset-list-linker" *ngIf="presets">
             <li class="preset-list-item" *ngFor="#preset of presets">
                 <div class="col-md-4" *ngIf="isLinked(preset)">
                     <figcaption>

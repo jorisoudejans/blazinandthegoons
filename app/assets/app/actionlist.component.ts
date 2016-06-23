@@ -25,4 +25,7 @@ export class ActionListComponent {
         this.scriptData.actionIndex = index;
         ScriptService.putScript(this.scriptData, this.socket);
     }
+    makeSelected(index: number) {
+        this.scriptData.selectedIndex = index;
+    }
 }

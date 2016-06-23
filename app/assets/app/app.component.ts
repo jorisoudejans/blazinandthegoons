@@ -94,6 +94,13 @@ export class AppComponent implements OnInit {
         }
         this.save();
     }
+    getSelectedActionIndex() {
+        if (this.currentScript.selectedIndex === undefined) {
+            return this.currentScript.actionIndex;
+        } else {
+            return this.currentScript.selectedIndex;
+        }
+    }
     setFlagged() {
         // ugly method to set boolean flag...
         var action = this.currentScript.script.actions[this.currentScript.actionIndex];
