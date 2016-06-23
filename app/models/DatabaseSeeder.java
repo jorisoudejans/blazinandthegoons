@@ -72,6 +72,62 @@ public class DatabaseSeeder {
             Action a = createAction(6 + i, "Action " + i, i, i * 2, models.Preset.find.byId((long) ((i % 2) + 1)), s);
         }
         //printall(); // for debug
+
+        simpleScript();
+    }
+
+    /**
+     * Creates a simple linked script.
+     */
+    private void simpleScript() {
+        Location location = new Location();
+        location.name = "TU Delft";
+        location.save();
+
+        Camera camera1 = Camera.make("Camera One", "192.168.0.13");
+        camera1.location = location;
+        camera1.presets = new ArrayList<>();
+        camera1.save();
+
+        Camera camera2 = Camera.make("Camera Two", "192.168.0.13");
+        camera2.location = location;
+        camera2.presets = new ArrayList<>();
+        camera2.save();
+
+        Script s = new Script(); // create new script
+        s.name = "Linked";
+        s.location = location;
+        s.save();
+
+        Preset p1 = Preset.createDummyPreset("Violin snare closeup", "Really catch the texture of the snares", s); // linked
+        /*p1.pan = 10000;
+        p1.tilt = 10000;
+        p1.zoom = 10;
+        p1.iris = 10;
+        p1.focus = 1;
+        p1.camera = camera1;
+        p1.save();*/
+
+        Preset p2 = Preset.createDummyPreset("Dirigent focus", "Second dirigent focus", s); // linked
+        /*p2.pan = 50000;
+        p2.tilt = 50000;
+        p2.zoom = 1;
+        p2.iris = 1;
+        p2.focus = 1;
+        p2.camera = camera2;
+        p2.save();*/
+
+        Preset p3 = Preset.createDummyPreset("Contrabass player", "Nice bass", s); // linked
+
+        Action a1 = createAction(0, "Open on dirigent", 5, 8, p1, s);
+        Action a2 = createAction(1, "Clarinets", 2, 8, p2, s);
+        Action a3 = createAction(1, "Thirddd", 2, 8, p3, s);
+        Action a4 = createAction(1, "Fourthhhh", 2, 8, p2, s);
+        Action a5 = createAction(1, "Fifth", 2, 8, p3, s);
+        Action a6 = createAction(1, "Sixth", 2, 8, p2, s);
+        Action a7 = createAction(1, "Seventh", 2, 8, p1, s);
+
+
     }
 
     /**
