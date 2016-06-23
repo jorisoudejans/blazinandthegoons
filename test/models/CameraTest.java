@@ -37,7 +37,7 @@ public class CameraTest {
         c.save();
 
         // 1 + 2, 2 pre - seeded
-        assertEquals(1 + 2, Camera.find.all().size());
+        assertEquals(1 + 5, Camera.find.all().size());
     }
 
     /**

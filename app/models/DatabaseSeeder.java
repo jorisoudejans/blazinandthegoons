@@ -72,6 +72,54 @@ public class DatabaseSeeder {
             Action a = createAction(6 + i, "Action " + i, i, i * 2, models.Preset.find.byId((long) ((i % 2) + 1)), s);
         }
         //printall(); // for debug
+
+        simpleScript();
+    }
+
+    /**
+     * Creates a simple linked script.
+     */
+    private void simpleScript() {
+        Location location = new Location();
+        location.name = "TU Delft";
+        location.save();
+
+        Camera camera1 = Camera.make("Camera One", "192.168.0.13");
+        camera1.location = location;
+        camera1.presets = new ArrayList<>();
+        camera1.save();
+
+        Camera camera2 = Camera.make("Camera Two", "192.168.0.14");
+        camera2.location = location;
+        camera2.presets = new ArrayList<>();
+        camera2.save();
+
+        Camera camera3 = Camera.make("Camera Three", "192.168.0.15");
+        camera3.location = location;
+        camera3.presets = new ArrayList<>();
+        camera3.save();
+
+        Script s = new Script(); // create new script
+        s.name = "Demo script";
+        s.location = location;
+        s.save();
+
+        Preset p1_1 = Preset.createDummyPreset("Close up Shane", "Looking up at the master", s); // linked
+        Preset p1_2 = Preset.createDummyPreset("Room overview", "Overall feel", s); // linked
+        Preset p2_1 = Preset.createDummyPreset("Window view", "Nice view", s); // linked
+        Preset p2_2 = Preset.createDummyPreset("Random audience person", "For detail", s); // linked
+        Preset p3_1 = Preset.createDummyPreset("Two people", "Provides overview", s); // linked
+        Preset p3_2 = Preset.createDummyPreset("Presentation location", "Closing pres", s); // linked
+
+        Action a1 = createAction(0, "Opening on Shane", 5, 8, p1_1, s);
+        Action a2 = createAction(1, "View window", 2, 8, p2_1, s);
+        Action a3 = createAction(2, "Show the room", 2, 8, p1_2, s);
+        Action a4 = createAction(3, "Lets do two!", 2, 8, p3_1, s);
+        Action a5 = createAction(4, "Now a single one", 2, 8, p2_2, s);
+        Action a6 = createAction(5, "Our presentation is important", 2, 8, p3_2, s);
+        Action a7 = createAction(6, "And final, the close up", 2, 8, p1_1, s);
+
+
     }
 
     /**

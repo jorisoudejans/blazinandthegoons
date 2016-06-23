@@ -2,6 +2,7 @@ package util.socket;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.ActiveScript;
+import models.Preset;
 import models.Script;
 
 import java.util.Collections;
@@ -27,6 +28,12 @@ public class StartActor extends SocketActor {
             as.runningTime = new Date().getTime();
             as.script = toStart;
             as.save();
+
+            if (as.script.actions.size() > 1) {
+                as.script.actions.get(0).preset.apply();
+                as.script.actions.get(1).preset.apply();
+            }
+
         }
     }
 

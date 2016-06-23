@@ -39,7 +39,11 @@ public class StateActor extends SocketActor {
                 }
             }
 
-            setupPreset(as);
+            try {
+                setupPreset(as);
+            } catch (Exception e) {
+                System.out.println("E " + e.getLocalizedMessage());
+            }
         }
     }
 
@@ -48,15 +52,19 @@ public class StateActor extends SocketActor {
      * @param as The active script
      */
     private void setupPreset(ActiveScript as) {
+        if (as.script.actions.size() <= as.actionIndex + 1) {
+            return;
+        }
         Preset next = as.script.actions.get(as.actionIndex + 1).preset;
+        System.out.println("Applying: " + next.name + " " + next.pan);
         if (next != null && next.camera != null) {
-            if (Math.abs(next.camera.deactTime - System.currentTimeMillis()) < IDLETIME) {
+            /*if (Math.abs(next.camera.deactTime - System.currentTimeMillis()) < IDLETIME) {
                 try {
                     Thread.sleep(IDLETIME);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
             next.apply();
         }
     }
