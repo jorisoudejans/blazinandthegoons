@@ -1,21 +1,37 @@
-<div class="list-header"><h2>Script</h2></div>
-<div class="action-list-container">
-    <ul class="action-list" *ngIf="scriptData">
-        <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index" [class.done]="i < scriptData.actionIndex" [class.selected]="i == scriptData.actionIndex" [class.flagged]="action.flagDescription != null && action.flagDescription != ''">
-            <div class="text-area">
-                <h1 class="action-title">Action description: {{action.description}}</h1>
-                <div class="action-est-time">
-                    <span class="action-est-time">{{action.duration}} sec</span>
+<div class="list-header row"><h2 style="line-height: 20px !important;">Script</h2></div>
+<div class="row">
+    <div class="col-md-12 cameras">
+        <button class="btn btn-info" id="toggle-camera-list" data-target="#camera-list" data-toggle="collapse">Show/hide cameras</button>
+        <ul class="list-group row collapse in" id="camera-list">
+            <li class="list-group-item col-md-4" *ngFor="#camera of cameras; #i = index" (click)="toggleCamera(i)"><input type="checkbox" [(ngModel)]="selectedCameras[i]" /><label>{{ camera.name }}</label></li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="action-list-container">
+        <ul class="action-list" *ngIf="scriptData">
+            <li class="action-list-item" *ngFor="#action of scriptData.script.actions; #i=index"
+                (click)="makeSelected(i)"
+                [class.selected]="i == scriptData.actionIndex"
+                [class.flagged]="action.flagDescription != null && action.flagDescription != ''"
+                [class.highlighted]="i == scriptData.selectedIndex">
+                <div class="text-area">
+                    <h1 class="action-title">Action description: {{action.description}}</h1>
+                    <div class="action-est-time">
+                        <span class="action-est-time">{{action.duration}} sec</span>
+                    </div>
+                    <span *ngIf="i == scriptData.actionIndex">Preset: {{action.preset.name}}</span>
+                    <a class="flag" [class.active-flag]="i == scriptData.actionIndex" aria-label="Link">
+                        <i class="material-icons">flag</i>
+                    </a>
                 </div>
-                <span *ngIf="i == scriptData.actionIndex">Preset: {{action.preset.name}}</span>
-                <a class="flag" aria-label="Link">
-                    <i class="material-icons">flag</i>
-                </a>
-            </div>
-            <div class="slider"
-                 [style.animation-duration]="action.duration + 's'"
-                 *ngIf="i == scriptData.actionIndex"></div>
-        </li>
-    </ul>
-    <div class="shadow"></div>
+                <div class="slider"
+                     [style.animation-duration]="action.duration + 's'"
+                     *ngIf="i == scriptData.actionIndex"></div>
+                <div class="fade-overlay" *ngIf="!selectedCameras[indexOfCamera(action.preset.cameraId)]"></div>
+            </li>
+        </ul>
+        <div class="shadow"></div>
+    </div>
+
 </div>

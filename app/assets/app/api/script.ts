@@ -20,7 +20,8 @@ export class ActiveScript {
         public runningTime: number,
         public percentage: string,
         public actionIndex: number,
-        public script: Script
+        public script: Script,
+        public selectedIndex: number
     ) {  }
 
 

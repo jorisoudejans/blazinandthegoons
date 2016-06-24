@@ -185,3 +185,24 @@ span {
 .label-offset {
   width: 250px;
 }
+
+.overview {
+  margin-bottom: 20px;
+
+  .btn {
+    float: right;
+  }
+}
+
+@media (max-width: 767px) {
+  .top-margin {
+    margin-top: 20px;
+  }
+}
+
+
+.navbar-header {
+  img {
+    float: left;
+  }
+}

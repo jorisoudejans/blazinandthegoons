@@ -75,8 +75,9 @@ public abstract class CameraCommand {
         try {
             BufferedReader br = getHttp(url);
             String msg = br.readLine();
-            if (msg.toUpperCase().startsWith(this.getCommand())) {
-                return msg.toUpperCase().substring(this.getCommand().length());
+            System.out.println("Got " + this.getCommand() + ": " + msg);
+            if (msg.toUpperCase().startsWith(this.getGetCommand())) {
+                return msg.toUpperCase().substring(this.getGetCommand().length());
             }
             return null;
         } catch (IOException e) {

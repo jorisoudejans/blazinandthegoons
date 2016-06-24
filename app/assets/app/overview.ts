@@ -84,32 +84,33 @@ export class Overview implements OnInit {
         document.location.href = '/locations/0';
     }
     isPlayable(script: Script) {
-        var playable = true;
-        script.actions.forEach((action => {
-            if (action.flagged) {
-                playable = false;
-            }
-        }));
-        script.presets.forEach((preset => {
-            if (preset.cameraId === 0) {
-                playable = false;
-            }
-        }));
-        return playable;
+        return this.isLinked(script) && this.isFlagless(script);
     }
     getStatusMessage(script: Script) {
         var statusMessage = "Ready to play.";
-        script.actions.forEach((action => {
-            if (action.flagged) {
-                statusMessage = "Script actions have issues.";
-            }
-        }));
+        if (!this.isFlagless(script))
+            statusMessage = "Script actions have issues.";
+        if (!this.isLinked(script))
+            statusMessage = "Not all presets have been linked to camera's.";
+        return statusMessage;
+    }
+    isLinked(script: Script) {
+        var linked = true;
         script.presets.forEach((preset => {
             if (preset.cameraId === 0) {
-                statusMessage = "Not all presets have been linked to camera's.";
+                linked = false;
             }
         }));
-        return statusMessage;
+        return linked;
+    }
+    isFlagless(script: Script) {
+        var flagless = true;
+        script.actions.forEach((action => {
+            if (action.flagged) {
+                flagless = false;
+            }
+        }));
+        return flagless;
     }
 }
 

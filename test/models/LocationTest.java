@@ -35,7 +35,7 @@ public class LocationTest {
         l.save();
 
         // 1 + 1 due to database seeding
-        assertEquals(2, Location.find.all().size());
+        assertEquals(3, Location.find.all().size());
     }
 
     /**
